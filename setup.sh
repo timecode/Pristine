@@ -10,9 +10,35 @@ set -e
 
 # mac OS
 #####################################
+# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+
 echo ""
 echo "Installing dependencies ..."
-brew install git
+brew install \
+  git \
+  awscli \
+  gpg-agent \
+  python \
+  python3 \
+  rbenv \
+  yarn \
+  go \
+  tree \
+  jq \
+  ncdu \
+  wget \
+  tor
+
+# adns		  gettext		      gradle			libusb		  tmux
+# libffi    libusb-compat
+# gmp		    jfrog-cli-go		md5sha1sum	openssl@1.1
+# cdrtools	gnupg		        p11-kit	    watch
+# coreutils	gnupg2	   kops	libidn2	    nettle	    p7zip	 webkit2png
+# dirmngr		gnutls	        nmap	      packer	    redis
+# libtasn1  libunistring	  npth        ec2-ami-tools
+
+
 
 #####################################
 echo ""
@@ -49,7 +75,6 @@ else
   if [[ -d "${ZDOTDIR:-$HOME}/.zprezto" ]]; then
     rm -rf "${ZDOTDIR:-$HOME}/.zprezto"
   fi
-  echo "Cloning git repo ..."
   git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
   # Configure prezto
   setopt EXTENDED_GLOB
