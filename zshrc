@@ -82,7 +82,7 @@ alias root="sudo su"
 
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
 alias wifimon="open \"/System/Library/CoreServices/Wi-Fi Diagnostics.app\""
-alias profile="atom ~/.zsh_profile"
+alias profile="atom ~/.zshrc"
 alias dev="cd ~/Dropbox/Development/"
 
 # dev stuff
@@ -90,7 +90,8 @@ alias g='bundle exec guard'
 alias subl='atom'
 alias st='atom'
 alias mate='atom'
-# alias sourceme='source ~/.bash_profile'
+alias a='atom .'
+alias sourceme='source ~/.zshrc'
 alias spoof="sudo spoof randomize en1" # see https://github.com/feross/spoof
 
 
@@ -188,13 +189,14 @@ ____EOF
 # $ py3new foo [--update|--force]
 ######################################################################
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-nvm use node
-
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 # export PATH=$PATH:/usr/local/opt/go/libexec/bin
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Starling config
 if [ -e /Users/robplayford/.starling/etc/profile ]; then
