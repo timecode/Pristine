@@ -35,7 +35,7 @@ fi
 
 #####################################
 echo ""
-echo "Installing Powerline fonts ..."
+echo "Installing Prezto ..."
 if [[ -f "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" || true
   echo "... Prezto already installed (updating ...)"
