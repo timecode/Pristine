@@ -39,18 +39,7 @@ alias b="cd ~/.vim/bundle"
 alias nc="ncat"
 # alias traceroute="/usr/local/sbin/mtr"
 alias fd="dscacheutil -flushcache"
-alias ds="dd if=/dev/zero of=/tmp/output.img bs=8k count=256k"
-# alias nb="vim +BlogNew"
-# alias np="vim +BlogNew\ page"
-# alias eb="vim +BlogList"
-# alias ep="vim +BlogList\ page"
-# alias ems="vi ~/.vim/bundle/snippets/snippets/markdown.snippets"
-# alias ehs="vi ~/.vim/bundle/snippets/snippets/html.snippets"
 alias filetree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
-alias rm="rm -f"
-alias ds="du -hs * | sort -h"
-alias isaid="sudo"
-alias fucking="sudo"
 alias push="git push origin master"
 alias comment="git commit -am"
 
@@ -85,7 +74,7 @@ setopt share_history # share command history data
 alias h="history"
 alias c="clear"
 alias l="ls -al"
-# alias ll="ls -al | more"
+alias ll="ls -al | less"
 alias ..="cd .."
 alias su="sudo su"
 alias root="sudo su"
@@ -99,19 +88,120 @@ alias dev="cd ~/Dropbox/Development/"
 # dev stuff
 alias g='bundle exec guard'
 alias subl='atom'
-alias st='subl'
-alias mate='subl'
-alias sourceme='source ~/.bash_profile'
+alias st='atom'
+alias mate='atom'
+# alias sourceme='source ~/.bash_profile'
 alias spoof="sudo spoof randomize en1" # see https://github.com/feross/spoof
 
 
+export PATH="/usr/local/sbin:$PATH"
 
+# added for rbenv
+echo $PATH | grep -q -s "$HOME/.rbenv/bin"
+if [ $? -eq 1 ] ; then
+  export PATH="$HOME/.rbenv/bin":$PATH
+fi
+eval "$(rbenv init -)"
 
+######################################################################
+# VirtualEnv
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Dropbox/Development/python
+alias mkve='mkvirtualenv'
+alias setvep='setvirtualenvproject'
+source /usr/local/bin/virtualenvwrapper.sh
+
+### python 2 version
+pynew() {
+  echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
+  mkvirtualenv $1 # --system-site-packages
+  workon $1
+  pip2 install -U pyscaffold
+  putup --with-tox $1 $2
+  cd $1
+  setvirtualenvproject
+  workon $1
+  pip2 install -U pytest
+  sed -i '' -- 's/\(--cov-report \)term-missing/\1html/g' setup.cfg
+  pip2 install -U watchdog
+  pip2 install -U tox
+  git commit -a -m "Basic project setup"
+  cat <<-____EOF
+
+Add new files alongside the auto-genereated 'skeleton' and 'test_skeleton' files.
+
+$ pynew project-name [--update|--force]
+# --update to update an existing project
+# --force to overwrite an existing directory
+
+To run tests MANUALLY:
+$ python setup.py test
+
+To run tests AUTOMATICALLY:
+$ pyautotest
+
+To view test coverage:
+$ open htmlcov/index.html
+
+____EOF
+  atom .
+}
+# call above with
+# $ pynew foo [--update|--force]
+
+### python 3 version
+py3new() {
+  echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
+  mkvirtualenv $1 # --system-site-packages
+  workon $1
+  pip3 install -U pyscaffold
+  putup --with-tox $1 $2
+  cd $1
+  setvirtualenvproject
+  workon $1
+  pip3 install -U pytest
+  sed -i '' -- 's/\(--cov-report \)term-missing/\1html/g' setup.cfg
+  pip3 install -U watchdog
+  pip3 install -U tox
+  git commit -a -m "Basic project setup"
+  cat <<-____EOF
+
+Add new files alongside the auto-genereated 'skeleton' and 'test_skeleton' files.
+
+$ py3new project-name [--update|--force]
+# --update to update an existing project
+# --force to overwrite an existing directory
+
+To run tests MANUALLY:
+$ python3 setup.py test
+
+To run tests AUTOMATICALLY:
+$ pyautotest
+
+To view test coverage:
+$ open htmlcov/index.html
+
+____EOF
+  atom .
+}
+# call above with
+# $ py3new foo [--update|--force]
+######################################################################
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+nvm use node
+
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+# export PATH=$PATH:/usr/local/opt/go/libexec/bin
+
+# Starling config
+if [ -e /Users/robplayford/.starling/etc/profile ]; then
+  . /Users/robplayford/.starling/etc/profile
+else
+  echo "Could not find '/Users/robplayford/.starling/etc/profile'"
+fi
 
 echo 'Login and run command complete'
 echo
-
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-# Starling Bank AWS additions
-source /Users/rob/.aws/starling-additions/functions.sh
