@@ -92,7 +92,9 @@ alias st='atom'
 alias mate='atom'
 alias a='atom .'
 alias sourceme='source ~/.zshrc'
-alias spoof="sudo spoof randomize en1" # see https://github.com/feross/spoof
+alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
+alias t="tmux attach || tmux"
+alias tls="tmux ls"
 
 
 export PATH="/usr/local/sbin:$PATH"

@@ -28,16 +28,16 @@ brew install \
   jq \
   ncdu \
   wget \
+  tmux \
   tor
 
-# adns		  gettext		      gradle			libusb		  tmux
+# adns		  gradle		 packer
 # libffi    libusb-compat
-# gmp		    jfrog-cli-go		md5sha1sum	openssl@1.1
+# gmp		    jfrog-cli-go		md5sha1sum
 # cdrtools	gnupg		        p11-kit	    watch
-# coreutils	gnupg2	   kops	libidn2	    nettle	    p7zip	 webkit2png
-# dirmngr		gnutls	        nmap	      packer	    redis
-# libtasn1  libunistring	  npth        ec2-ami-tools
-
+# coreutils	gnupg2	   kops	    nettle	    p7zip	 webkit2png
+# dirmngr		gnutls	   nmap	    	    redis
+# libtasn1 	npth       ec2-ami-tools  libusb
 
 
 #####################################
@@ -92,6 +92,10 @@ echo "Setting up initial 'dot' files ..."
 #####################################
 # Copy zshrc to home
 cp ./zshrc "${ZDOTDIR:-$HOME}"/.zshrc
+
+#####################################
+# Copy tmux.conf to home
+cp ./tmux.conf "${ZDOTDIR:-$HOME}"/.tmux.conf
 
 #####################################
 # Copy vimrc to home
