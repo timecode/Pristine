@@ -49,7 +49,7 @@ else
   if [[ -d "${ZDOTDIR:-$HOME}/.zprezto" ]]; then
     rm -rf "${ZDOTDIR:-$HOME}/.zprezto"
   fi
-  echo "Installing Prezto ..."
+  echo "Cloning git repo ..."
   git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
   # Configure prezto
   setopt EXTENDED_GLOB
