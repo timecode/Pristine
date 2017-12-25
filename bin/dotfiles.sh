@@ -14,10 +14,9 @@ fi
 echo "... bootstrapping stow"
 stow -v -d dotfiles --target=$HOME --stow stow
 
+#####################################
+# Add directory/names of apps below to have
+# their dotfiles installed by stow during setup
 stow -v -d dotfiles --target=$HOME --stow \
   bash      \
   tmux
-
-# #####################################
-# # Copy vimrc to home
-# # cp ./vimrc ../.vimrc
