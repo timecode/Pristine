@@ -1,19 +1,23 @@
 #!/bin/zsh
 
 ################################################################################
-# Install fonts
+# Install dotfiles
 
 echo ""
-echo "Setting up initial 'dot' files ..."
+echo "Setting up dotfiles ..."
+if ! type "stow" > /dev/null; then
+  echo "... installing stow"
+  brew install stow
+fi
 
 #####################################
-echo "... copying zshrc"
-cp conf/zshrc "${ZDOTDIR:-$HOME}"/.zshrc
+echo "... bootstrapping stow"
+stow -v -d dotfiles --target=$HOME --stow stow
 
-#####################################
-echo "... copying tmux.conf"
-cp conf/tmux.conf.sh "${ZDOTDIR:-$HOME}"/.tmux.conf
+stow -v -d dotfiles --target=$HOME --stow \
+  bash      \
+  tmux
 
-#####################################
-# Copy vimrc to home
-# cp ./vimrc ../.vimrc
+# #####################################
+# # Copy vimrc to home
+# # cp ./vimrc ../.vimrc

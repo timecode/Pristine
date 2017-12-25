@@ -12,21 +12,22 @@
 echo ""
 if type "brew" > /dev/null; then
   echo "Installing tool dependencies ..."
-  brew install \
-    git \
-    awscli \
-    gpg-agent \
-    python \
-    python3 \
-    rbenv \
-    yarn \
-    go \
-    tree \
-    jq \
-    ncdu \
-    wget \
-    tmux \
-    tor
+  brew install    \
+    git           \
+    awscli        \
+    gpg-agent     \
+    python        \
+    python3       \
+    rbenv         \
+    yarn          \
+    go            \
+    tree          \
+    jq            \
+    ncdu          \
+    wget          \
+    tmux          \
+    tor           \
+    stow
 
   # adns		  gradle		 packer
   # libffi    libusb-compat

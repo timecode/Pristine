@@ -1,18 +1,19 @@
-#######################################################
-# My zsh configuration
-#######################################################
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
 
-# Editor
-
-export EDITOR="/usr/bin/vim"
-
-# Source Prezto
-
+# Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 # Customize to your needs...
+
+# Editor
+export EDITOR="/usr/bin/vim"
 
 # bindkey -v
 # bindkey -M viins 'jk' vi-cmd-mode

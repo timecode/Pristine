@@ -6,6 +6,7 @@ set -e
 ./bin/prezto.sh
 ./bin/dotfiles.sh
 ./bin/defaultshell.sh
+./bin/tmux.sh
 
 ################################################################################
 echo ""
