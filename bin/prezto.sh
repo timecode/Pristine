@@ -34,3 +34,9 @@ echo "Modifying .zpretzorc ..."
 sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'paradox'/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
 
 sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto:module:editor' key-bindings 'vi'/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
+
+#####################################
+echo ""
+echo "Adding custom prompt ..."
+
+cp ../conf/prompt_timecode_setup.sh "${ZDOTDIR:-$HOME}"/.zprezto/modules/prompt/functions/prompt_timecode_setup
