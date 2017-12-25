@@ -94,6 +94,11 @@ echo "Setting up initial 'dot' files ..."
 cp ./zshrc "${ZDOTDIR:-$HOME}"/.zshrc
 
 #####################################
+# Copy zshrc to home
+cp ./prompt_timecode_setup "${ZDOTDIR:-$HOME}"/.zprezto/modules/prompt/functions/prompt_timecode_setup
+
+
+#####################################
 # Copy tmux.conf to home
 cp ./tmux.conf "${ZDOTDIR:-$HOME}"/.tmux.conf
 
@@ -105,7 +110,7 @@ cp ./tmux.conf "${ZDOTDIR:-$HOME}"/.tmux.conf
 echo ""
 echo "Modifying .zpretzorc ..."
 
-sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'paradox'/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
+sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'timecode'/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
 
 sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto:module:editor' key-bindings 'vi'/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
 
