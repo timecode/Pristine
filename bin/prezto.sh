@@ -47,5 +47,5 @@ sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto
 #####################################
 echo "... installing custom .zshrc ..."
 
-rm -f ${ZDOTDIR:-$HOME}/.zprezto/.zprezto/runcoms/zshrc
-cp conf/zsh/zshrc ${ZDOTDIR:-$HOME}/.zprezto/.zprezto/runcoms/
+rm -f ${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshrc
+cp conf/zsh/zshrc ${ZDOTDIR:-$HOME}/.zprezto/runcoms/
