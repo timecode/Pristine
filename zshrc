@@ -14,36 +14,34 @@ fi
 
 # Customize to your needs...
 
-bindkey -v
-bindkey -M viins 'jk' vi-cmd-mode
-
-# History search
-
-bindkey "^R" history-incremental-search-backward
-bindkey "^F" history-incremental-search-forward
-
-# Aliases
-
-alias vim="/usr/bin/vim"
-alias vi="/usr/bin/vim"
-alias bt="wget --report-speed=bits http://cachefly.cachefly.net/400mb.test > /dev/null"
-# alias d="cd /Users/daniel/Desktop"
-# alias www="cd /Users/daniel/Development/htdocs/"
-alias zconf="vi ~/.zshrc"
-alias zsource="source ~/.zshrc"
-alias zhup="source ~/.zshrc"
-alias vhup="source ~/.vimrc"
-alias vconf="vim ~/.vimrc"
-alias v="cd ~/.vim"
-alias b="cd ~/.vim/bundle"
-alias nc="ncat"
-# alias traceroute="/usr/local/sbin/mtr"
-alias fd="dscacheutil -flushcache"
-alias filetree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
-alias push="git push origin master"
-alias comment="git commit -am"
-
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# bindkey -v
+# bindkey -M viins 'jk' vi-cmd-mode
+#
+# # History search
+#
+# bindkey "^R" history-incremental-search-backward
+# bindkey "^F" history-incremental-search-forward
+#
+# # Aliases
+#
+# alias vim="/usr/bin/vim"
+# alias vi="/usr/bin/vim"
+# alias bt="wget --report-speed=bits http://cachefly.cachefly.net/400mb.test > /dev/null"
+# # alias d="cd /Users/daniel/Desktop"
+# # alias www="cd /Users/daniel/Development/htdocs/"
+# alias zconf="vi ~/.zshrc"
+# alias zsource="source ~/.zshrc"
+# alias zhup="source ~/.zshrc"
+# alias vhup="source ~/.vimrc"
+# alias vconf="vim ~/.vimrc"
+# alias v="cd ~/.vim"
+# alias b="cd ~/.vim/bundle"
+# alias nc="ncat"
+# # alias traceroute="/usr/local/sbin/mtr"
+# alias fd="dscacheutil -flushcache"
+# alias filetree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
+# alias push="git push origin master"
+# alias comment="git commit -am"
 
 ## Command history configuration
 
@@ -96,15 +94,28 @@ alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
 alias t="tmux attach || tmux"
 alias tls="tmux ls"
 
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm use node
 
-export PATH="/usr/local/sbin:$PATH"
-
-# added for rbenv
+# RBENV
 echo $PATH | grep -q -s "$HOME/.rbenv/bin"
 if [ $? -eq 1 ] ; then
   export PATH="$HOME/.rbenv/bin":$PATH
 fi
-eval "$(rbenv init -)"
+echo $PATH | grep -q -s "$HOME/.rbenv/shims"
+if [ $? -eq 1 ] ; then
+  eval "$(rbenv init -)"
+fi
+
+# GOLANG
+export GOPATH=$HOME/go
+echo $PATH | grep -q -s "$GOPATH/bin"
+if [ $? -eq 1 ] ; then
+  export PATH="$GOPATH/bin":$PATH
+fi
 
 ######################################################################
 # VirtualEnv
@@ -190,16 +201,6 @@ ____EOF
 # call above with
 # $ py3new foo [--update|--force]
 ######################################################################
-
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-# export PATH=$PATH:/usr/local/opt/go/libexec/bin
-
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm use node
 
 # Starling config
 if [ -e /Users/robplayford/.starling/etc/profile ]; then
