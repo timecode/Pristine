@@ -10,7 +10,7 @@
 # /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
 
 echo ""
-if type "brew2" > /dev/null; then
+if type "brew" > /dev/null; then
   echo "Installing tool dependencies ..."
   brew install \
     git \
@@ -40,6 +40,7 @@ else
   echo "Please install Homebrew first ..."
   echo "Find it here: https://brew.sh/"
   echo ""
+  exit 1
 fi
 
 #####################################
