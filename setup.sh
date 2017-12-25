@@ -105,7 +105,7 @@ cp ./tmux.conf "${ZDOTDIR:-$HOME}"/.tmux.conf
 echo ""
 echo "Modifying .zpretzorc ..."
 
-sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'agnoster'/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
+sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'paradox'/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
 
 sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto:module:editor' key-bindings 'vi'/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
 
