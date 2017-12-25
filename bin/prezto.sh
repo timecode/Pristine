@@ -39,4 +39,4 @@ sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto
 echo ""
 echo "Adding custom prompt ..."
 
-cp ../conf/prompt_timecode_setup.sh "${ZDOTDIR:-$HOME}"/.zprezto/modules/prompt/functions/prompt_timecode_setup
+cp conf/prompt_timecode_setup.sh "${ZDOTDIR:-$HOME}"/.zprezto/modules/prompt/functions/prompt_timecode_setup
