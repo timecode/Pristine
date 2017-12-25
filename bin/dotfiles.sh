@@ -7,11 +7,11 @@ echo ""
 echo "Setting up initial 'dot' files ..."
 
 #####################################
-# Copy zshrc to home
+echo "... copying zshrc"
 cp conf/zshrc "${ZDOTDIR:-$HOME}"/.zshrc
 
 #####################################
-# Copy tmux.conf to home
+echo "... copying tmux.conf"
 cp conf/tmux.conf.sh "${ZDOTDIR:-$HOME}"/.tmux.conf
 
 #####################################

@@ -38,7 +38,7 @@ if type "brew" > /dev/null; then
 
 else
   echo "Please install Homebrew first ..."
-  echo "Find it here: https://brew.sh/"
+  echo "... find it here: https://brew.sh/"
   echo ""
   exit 1
 fi

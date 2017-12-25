@@ -10,7 +10,7 @@ if [[ ! -f "${ZDOTDIR:-$HOME}/Library/Fonts/Meslo LG M Regular for Powerline.ttf
   ./powerline_fonts/install.sh
   rm -rf powerline_fonts
 else
-  echo "... Powerline fonts already installed (skipping)"
+  echo "... fonts already installed (skipping)"
 fi
 
 # Atom font
