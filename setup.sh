@@ -1,12 +1,10 @@
 #!/bin/zsh
 set -e
 
-./bin/tools.sh
-./bin/fonts.sh
-./bin/prezto.sh
-./bin/dotfiles.sh
-./bin/defaultshell.sh
-./bin/tmux.sh
+FILES=($(ls bin | sort -n))
+for file in ${FILES[@]} ; do
+  ./bin/${file}
+done
 
 ################################################################################
 echo ""

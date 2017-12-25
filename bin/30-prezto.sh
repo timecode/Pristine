@@ -43,9 +43,3 @@ echo "... modifying .zpretzorc ..."
 
 sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'timecode'/g" ${ZDOTDIR:-$HOME}/.zpreztorc
 sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto:module:editor' key-bindings 'vi'/g" ${ZDOTDIR:-$HOME}/.zpreztorc
-
-#####################################
-echo "... installing custom .zshrc ..."
-
-rm -f ${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshrc
-cp conf/zsh/zshrc ${ZDOTDIR:-$HOME}/.zprezto/runcoms/
