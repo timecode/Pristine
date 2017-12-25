@@ -12,7 +12,7 @@ cp ../conf/zshrc "${ZDOTDIR:-$HOME}"/.zshrc
 
 #####################################
 # Copy tmux.conf to home
-cp ../conf/tmux.conf "${ZDOTDIR:-$HOME}"/.tmux.conf
+cp ../conf/tmux.conf.sh "${ZDOTDIR:-$HOME}"/.tmux.conf
 
 #####################################
 # Copy vimrc to home
