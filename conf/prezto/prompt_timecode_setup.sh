@@ -4,15 +4,6 @@
 # This theme requires a patched Powerline font, get them from
 # https://github.com/Lokaltog/powerline-fonts.
 #
-# Authors:
-#   Isaac Wolkerstorfer <i@agnoster.net>
-#   Jeff Sandberg <paradox460@gmail.com>
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#   Patrick Bos <egpbos@gmail.com>
-#
-# Screenshots:
-#   http://i.imgur.com/0XIWX.png
-#
 
 # Load dependencies.
 pmodload 'helper'
@@ -27,9 +18,9 @@ function prompt_paradox_start_segment {
   [[ -n "$1" ]] && bg="%K{$1}" || bg="%k"
   [[ -n "$2" ]] && fg="%F{$2}" || fg="%f"
   if [[ "$_prompt_paradox_current_bg" != 'NONE' && "$1" != "$_prompt_paradox_current_bg" ]]; then
-    print -n " $bg%F{$_prompt_paradox_current_bg}$_prompt_paradox_segment_separator$fg "
+    print -n " $bg%F{$_prompt_paradox_current_bg}$_prompt_paradox_segment_separator$fg"
   else
-    print -n "$bg$fg "
+    print -n "$bg$fg"
   fi
   _prompt_paradox_current_bg="$1"
   [[ -n "$3" ]] && print -n "$3"
@@ -46,13 +37,13 @@ function prompt_paradox_end_segment {
 }
 
 function prompt_paradox_build_prompt {
-  prompt_paradox_start_segment black default '%(?::%F{red}✘ )%(!:%F{yellow}⚡ :)%(1j:%F{cyan}⚙ :)%F{blue}%n%F{red}@%F{green}%m%f'
+  prompt_paradox_start_segment black default '%F{blue}# %(?::%F{red}✘)%(!:%F{yellow}⚡ :)%(1j:%F{cyan}⚙ :)'
 
   if [[ -n "$python_info" ]]; then
-    prompt_paradox_start_segment cyan black '${(e)python_info[virtualenv]}'
+    prompt_paradox_start_segment blue black '${(e)python_info[virtualenv]}'
   fi
 
-  prompt_paradox_start_segment blue black '$_prompt_paradox_pwd'
+  prompt_paradox_start_segment cyan black '$_prompt_paradox_pwd'
 
   if [[ -n "$git_info" ]]; then
     prompt_paradox_start_segment yellow black '${(e)git_info[ref]}${(e)git_info[status]}'
@@ -118,38 +109,37 @@ function prompt_paradox_setup {
   add-zsh-hook precmd prompt_paradox_precmd
 
   # Set editor-info parameters.
-  zstyle ':prezto:module:editor:info:completing' format '%B%F{red}...%f%b'
-  zstyle ':prezto:module:editor:info:keymap:primary' format '%B%F{blue}❯%f%b'
-  zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format '%F{red}♺%f'
-  zstyle ':prezto:module:editor:info:keymap:alternate' format '%B%F{red}❮%f%b'
+  zstyle ':prezto:module:editor:info:completing'                format '%B%F{red}...%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary'            format '%B%F{blue}$%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary:overwrite'  format '%F{red}♺%f'
+  zstyle ':prezto:module:editor:info:keymap:alternate'          format '%B%F{red}❮%f%b'
 
   # Set git-info parameters.
-  zstyle ':prezto:module:git:info' verbose 'yes'
-  zstyle ':prezto:module:git:info:action' format ' ⁝ %s'
-  zstyle ':prezto:module:git:info:added' format ' ✚'
-  zstyle ':prezto:module:git:info:ahead' format ' ⬆'
-  zstyle ':prezto:module:git:info:behind' format ' ⬇'
-  zstyle ':prezto:module:git:info:branch' format ' %b'
-  zstyle ':prezto:module:git:info:commit' format '➦ %.7c'
-  zstyle ':prezto:module:git:info:deleted' format ' ✖'
-  zstyle ':prezto:module:git:info:dirty' format ' ⁝'
-  zstyle ':prezto:module:git:info:modified' format ' ✱'
-  zstyle ':prezto:module:git:info:position' format '%p'
-  zstyle ':prezto:module:git:info:renamed' format ' ➙'
-  zstyle ':prezto:module:git:info:stashed' format ' S'
-  zstyle ':prezto:module:git:info:unmerged' format ' ═'
-  zstyle ':prezto:module:git:info:untracked' format ' ?'
-  zstyle ':prezto:module:git:info:keys' format \
-    'ref' '$(coalesce "%b" "%p" "%c")' \
+  zstyle ':prezto:module:git:info'                              verbose 'yes'
+  zstyle ':prezto:module:git:info:action'                       format ' ⁝ %s'
+  zstyle ':prezto:module:git:info:added'                        format ' ✚'
+  zstyle ':prezto:module:git:info:ahead'                        format ' ⬆'
+  zstyle ':prezto:module:git:info:behind'                       format ' ⬇'
+  zstyle ':prezto:module:git:info:branch'                       format ' %b'
+  zstyle ':prezto:module:git:info:commit'                       format '➦ %.7c'
+  zstyle ':prezto:module:git:info:deleted'                      format ' ✖'
+  zstyle ':prezto:module:git:info:dirty'                        format ' ⁝'
+  zstyle ':prezto:module:git:info:modified'                     format ' ✱'
+  zstyle ':prezto:module:git:info:position'                     format '%p'
+  zstyle ':prezto:module:git:info:renamed'                      format ' ➙'
+  zstyle ':prezto:module:git:info:stashed'                      format ' S'
+  zstyle ':prezto:module:git:info:unmerged'                     format ' ═'
+  zstyle ':prezto:module:git:info:untracked'                    format ' ?'
+  zstyle ':prezto:module:git:info:keys'                         format      \
+    'ref' '$(coalesce "%b" "%p" "%c")'                                      \
     'status' '%s%D%A%B%S%a%d%m%r%U%u'
 
   # %v - virtualenv name.
-  zstyle ':prezto:module:python:info:virtualenv' format '%v'
+  zstyle ':prezto:module:python:info:virtualenv'                format '%v'
 
   # Define prompts.
-  PROMPT='
-${(e)$(prompt_paradox_build_prompt)}
- ${editor_info[keymap]} '
+  PROMPT='${(e)$(prompt_paradox_build_prompt)}
+${editor_info[keymap]} '
   RPROMPT='%F{blue}[%F{green}%D{%H:%M:%S}%F{blue}]%f'
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 }
