@@ -1,47 +1,23 @@
 # Pristine
 
-A place to store my shell setup stuffz and dotfiles. Following the instructions here should be all I need to do to setup a new box or clone.
+A place to store my shell setup and dotfiles. This repo should be all I need to setup a new or cloned box.
 
 ## Install
 
 1. Install [Homebrew](https://brew.sh/)
-2. Run this repo's setup script:
+
+2. Clone this repo to a suitable local location. That could be directly under `$HOME` or some other, less prominent, location.
+
+3. Run this repo's setup script:
 
     ```sh
     $ ./setup.sh
     ```
 
 
-### Stow dotfiles
-
-The setup command will install [stow](https://www.gnu.org/software/stow/), which is a a symlink farm manager. I use it to backup [dotfiles](https://dotfiles.github.io/) and place them in version control. In order to add an app's dotfiles to 'stow control':
-
-1. Create a directory in this repo's `dotfiles` directory, named after the app/package that the dotfile(s) belong to...
-
-    ```sh
-    # i.e.
-    dotfiles/appname/
-
-    # e.g.
-    dotfiles/tmux/
-    ```
-
-2. Move the dotfiles **from** their position in `$HOME` **to** the directory created in step 1
-
-3. Run the following command to get `stow` to symlink the dotfiles back to where they came from!
-
-    ```sh
-    $ stow appname
-    ```
-
-4. Add the appname to `bin/dotfiles.sh` to have it automatically installed whenever a new setup is run.
-
-5. `git commit`, etc
-
-
 ## Notes & Bugfixes
 
-- Adding the following to `.zpreztorc` manually at the moment...
+- Add any required language specific modules to `.zpreztorc` manually (for now), i.e.
 
   ```
   .
@@ -61,7 +37,7 @@ The setup command will install [stow](https://www.gnu.org/software/stow/), which
     'ruby'
   ```
 
-- Issue: tmux modifies zsh `$PATH` !
+- There is an issue where tmux modifies `$PATH` when using zsh!
 
     **Solution**: Modify `/etc/zprofile` to the following:
 
@@ -73,6 +49,59 @@ The setup command will install [stow](https://www.gnu.org/software/stow/), which
       fi
     fi
     ```
+
+
+### Dotfiles
+
+This repo's setup command installs [stow](https://www.gnu.org/software/stow/), which is a a symlink farm manager. I use it to backup [dotfiles](https://dotfiles.github.io/) and place them in version control.
+
+It's important to distinguish between dotfiles and 'hidden working/cache files/directories' that just happen to be sitting in the `$HOME` directory. The later should not be placed in version control! For example, whilst the dotfile `.tmux.conf` holds customizable configuration data for a `tmux` install (and may therefore be recorded and monitored in version control), its related `.tmux` directory is used as a cache and will simply be populated to the requirements of the `.tmux.conf` configuration file at runtime.
+
+- Having established an app's actual dotfile(s), in order to use `stow`:
+
+  1. Create a directory in this repo's `dotfiles` directory, named after the dotfile's application:
+
+      ```sh
+      # i.e.                      # e.g.
+      dotfiles/appname/           dotfiles/tmux/
+      ```
+
+  2. **Move** the dotfile(s) **from** the `$HOME` directory **to** the directory created in step 1
+
+  3. Run the following command to get `stow` to symlink the dotfile(s) from the new location (in version control)!
+
+      ```sh
+      $ stow appname
+      ```
+
+  4. Add the appname to `bin/dotfiles.sh` to have it's dotfile(s) automatically installed whenever a new setup is run.
+
+  5. `git commit`, etc
+
+
+- To remove 'stow control' for an application's dotfile(s):
+
+  1. Run the following command to remove associated symlink(s)
+
+      ```sh
+      $ stow --delete appname
+      ```
+
+  2. **Move** the file(s) from the application's corresponding directory (in version control - see step 1 above) back to their original location in the `$HOME` directory
+
+
+**Note**: `stow` will never overwrite a file that it hasn't previously created, or that already exists, so it's fairly safe to rerun any of the following commands at any time:
+
+```sh
+# to stow (and see what's going on)
+$ stow -v appname
+# or for multiple applications that have their dotfile(s) in version control already
+$ stow -v --stow app1name [app2name [app3name]]
+
+# to remove from stow, just use the --delete flag
+$ stow -v --delete app1name [app2name [app3name]]
+# don't forget to copy/move the dotfile(s) back to $HOME manually!
+```
 
 
 ## Inspiration
