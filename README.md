@@ -41,6 +41,26 @@ The setup command will install [stow](https://www.gnu.org/software/stow/), which
 
 ## Notes & Bugfixes
 
+- Adding the following to `.zpreztorc` manually at the moment...
+
+  ```
+  .
+  .
+  .
+  # Set the Prezto modules to load (browse modules).
+  # The order matters.
+  zstyle ':prezto:load' pmodule \
+    'environment' \
+    .
+    .
+    .
+    'prompt'  \
+    'git'     \
+    'python'  \
+    'node'    \
+    'ruby'
+  ```
+
 - Issue: tmux modifies zsh `$PATH` !
 
     **Solution**: Modify `/etc/zprofile` to the following:
