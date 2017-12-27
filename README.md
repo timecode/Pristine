@@ -74,7 +74,7 @@ It's important to distinguish between dotfiles and 'hidden working/cache files/d
       $ stow appname
       ```
 
-  4. Add the appname to `bin/dotfiles.sh` to have it's dotfile(s) automatically installed whenever a new setup is run.
+  4. Add the appname to `bin/dotfiles.sh` to have its dotfile(s) automatically installed from version control whenever a new setup is run.
 
   5. `git commit`, etc
 
@@ -87,15 +87,18 @@ It's important to distinguish between dotfiles and 'hidden working/cache files/d
       $ stow --delete appname
       ```
 
-  2. **Move** the file(s) from the application's corresponding directory (in version control - see step 1 above) back to their original location in the `$HOME` directory
+  2. **Move** the file(s) from the application's corresponding directory (in version control - see step 1 above) back to their original location, i.e the `$HOME` directory
 
 
 **Note**: `stow` will never overwrite a file that it hasn't previously created, or that already exists, so it's fairly safe to rerun any of the following commands at any time:
 
 ```sh
-# to stow (and see what's going on)
+# for dotfile(s) in version control already...
+#
+# to `stow` a single application's dotfile(s)
+# (use the -v flag to see what's going on)
 $ stow -v appname
-# or for multiple applications that have their dotfile(s) in version control already
+# or for multiple applications
 $ stow -v --stow app1name [app2name [app3name]]
 
 # to remove from stow, just use the --delete flag
