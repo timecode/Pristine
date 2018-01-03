@@ -11,6 +11,9 @@
 
 echo ""
 if type "brew" > /dev/null; then
+  echo "Updating brew ..."
+  brew update
+  brew upgrade
   echo "Installing tool dependencies ..."
   brew install    \
     git           \
