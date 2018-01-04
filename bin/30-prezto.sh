@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/pwd || pwd)
+
 ################################################################################
 # Install Prezto
 
@@ -33,7 +35,7 @@ fi
 #####################################
 echo "... adding custom prompt ..."
 
-cp conf/prezto/prompt_timecode_setup.sh ${ZDOTDIR:-$HOME}/.zprezto/modules/prompt/functions/prompt_timecode_setup
+cp ${scriptDirectory}/../conf/prezto/prompt_timecode_setup.sh ${ZDOTDIR:-$HOME}/.zprezto/modules/prompt/functions/prompt_timecode_setup
 if [ $? -ne 0 ]; then
   echo "... continuing ..."
 fi

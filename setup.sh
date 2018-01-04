@@ -1,9 +1,11 @@
 #!/bin/zsh
 set -e
 
-FILES=($(ls bin | sort -n))
+scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/pwd || pwd)
+
+FILES=($(ls ${scriptDirectory}/bin | sort -n))
 for file in ${FILES[@]} ; do
-  ./bin/${file}
+  ${scriptDirectory}/bin/${file}
 done
 
 ################################################################################

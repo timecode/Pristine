@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/pwd || pwd)
+
 ################################################################################
 # Install dotfiles
 
@@ -14,7 +16,7 @@ fi
 echo "... bootstrapping stow"
 
 cat <<EOF > $HOME/.stowrc
---dir=$(pwd)/dotfiles
+--dir=${scriptDirectory}/../dotfiles
 --target=$HOME
 --ignore=.DS_Store
 EOF
@@ -31,4 +33,4 @@ stow -v --stow  \
 # zshrc is a special case as it's being looked after by zprezto
 echo "... installing custom .zshrc ..."
 rm -f ${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshrc
-cp conf/zsh/zshrc ${ZDOTDIR:-$HOME}/.zprezto/runcoms/
+cp ${scriptDirectory}/../conf/zsh/zshrc ${ZDOTDIR:-$HOME}/.zprezto/runcoms/
