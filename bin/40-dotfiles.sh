@@ -22,15 +22,16 @@ cat <<EOF > $HOME/.stowrc
 EOF
 
 #####################################
+if [[ -f "${ZDOTDIR:-$HOME}/.zshrc" ]]; then
+  echo "... removing existing .zshrc ..."
+  rm -f ${ZDOTDIR:-$HOME}/.zshrc
+fi
+
+#####################################
 # Add directory/names of apps below to have
 # their dotfiles installed by stow during setup
 stow -v --stow  \
   stow          \
   bash          \
+  zsh           \
   tmux
-
-#####################################
-# zshrc is a special case as it's being looked after by zprezto
-echo "... installing custom .zshrc ..."
-rm -f ${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshrc
-cp ${scriptDirectory}/../conf/zsh/zshrc ${ZDOTDIR:-$HOME}/.zprezto/runcoms/
