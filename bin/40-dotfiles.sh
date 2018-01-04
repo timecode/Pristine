@@ -34,4 +34,5 @@ stow -v --stow  \
   stow          \
   bash          \
   zsh           \
+  vim           \
   tmux
