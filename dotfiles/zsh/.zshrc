@@ -70,6 +70,8 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history # share command history data
 
+LESS=-r # allow mouse scrolling in less
+
 alias h="history"
 alias c="clear"
 alias l="ls -al"
