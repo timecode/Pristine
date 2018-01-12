@@ -98,6 +98,10 @@ alias t="tmux attach || tmux"
 alias tls="tmux ls"
 
 # NVM
+# nvm install-latest-npm
+# nvm install 9.4.0
+# nvm uninstall 9.3.0
+# nvm ls
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
