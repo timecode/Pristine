@@ -103,6 +103,8 @@ alias tls="tmux ls"
 # nvm install 9.7.0
 # nvm uninstall 9.6.0
 # nvm ls
+# nvm unalias default
+# nvm alias "default" "9.7.0"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -114,6 +116,7 @@ nvm use node
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
 # rbenv install x.x.x     # install a particular version
+# rbenv uninstall x.x.x   # uninstall a particular version
 # rbenv rehash            # run after installing a new version
 # rbenv global x.x.x      # set the version to be used globally
 echo $PATH | grep -q -s "$HOME/.rbenv/bin"
