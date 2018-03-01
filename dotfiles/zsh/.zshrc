@@ -15,34 +15,18 @@ fi
 # Editor
 export EDITOR="/usr/bin/vim"
 
-# bindkey -v
-# bindkey -M viins 'jk' vi-cmd-mode
-#
-# # History search
-#
-# bindkey "^R" history-incremental-search-backward
-# bindkey "^F" history-incremental-search-forward
-#
-# # Aliases
-#
-# alias vim="/usr/bin/vim"
-# alias vi="/usr/bin/vim"
-# alias bt="wget --report-speed=bits http://cachefly.cachefly.net/400mb.test > /dev/null"
-# # alias d="cd /Users/daniel/Desktop"
-# # alias www="cd /Users/daniel/Development/htdocs/"
-# alias zconf="vi ~/.zshrc"
-# alias zsource="source ~/.zshrc"
-# alias zhup="source ~/.zshrc"
-# alias vhup="source ~/.vimrc"
-# alias vconf="vim ~/.vimrc"
-# alias v="cd ~/.vim"
-# alias b="cd ~/.vim/bundle"
-# alias nc="ncat"
-# # alias traceroute="/usr/local/sbin/mtr"
-# alias fd="dscacheutil -flushcache"
-# alias filetree="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
-# alias push="git push origin master"
-# alias comment="git commit -am"
+bindkey -v
+bindkey -M viins 'jk' vi-cmd-mode
+
+# History search
+bindkey "^R" history-incremental-search-backward
+bindkey "^F" history-incremental-search-forward
+
+# Aliases
+alias vim="/usr/bin/vim"
+alias vi="/usr/bin/vim"
+alias bt="wget --report-speed=bits http://cachefly.cachefly.net/100mb.test > /dev/null"
+alias fd="dscacheutil -flushcache"
 
 ## Command history configuration
 
@@ -70,7 +54,22 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history # share command history data
 
-LESS=-r # allow mouse scrolling in less
+export LESSOPEN="|/usr/local/bin/lesspipe.sh %s" LESS_ADVANCED_PREPROCESSOR=1
+
+# set options for less
+export LESS='--raw-control-chars'
+# --ignore-case --status-column --LONG-PROMPT --HILITE-UNREAD --tabs= --quit-if-one-screen --no-init --window=-4
+# or the short version
+# export LESS='-F -i -J -M -R -W -x4 -X -z-4'
+
+# Set colors for less. Borrowed from https://wiki.archlinux.org/index.php/Color_output_in_console#less .
+export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
+export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
+export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 alias h="history"
 alias c="clear"
@@ -82,7 +81,7 @@ alias root="sudo su"
 
 
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
-alias wifimon="open \"/System/Library/CoreServices/Wi-Fi Diagnostics.app\""
+alias wifimon="open '/System/Library/CoreServices/Wi-Fi Diagnostics.app'"
 alias profile="atom ~/.zshrc"
 alias dev="cd ~/Dropbox/Development/"
 
@@ -97,17 +96,26 @@ alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
 alias t="tmux attach || tmux"
 alias tls="tmux ls"
 
+######################################################################
 # NVM
 # nvm install-latest-npm
-# nvm install 9.4.0
-# nvm uninstall 9.3.0
+# nvm ls-remote
+# nvm install 9.7.0
+# nvm uninstall 9.6.0
 # nvm ls
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 nvm use node
 
+######################################################################
 # RBENV
+# https://github.com/rbenv/rbenv
+# rbenv versions          # all local versions
+# rbenv install -l        # all available versions
+# rbenv install x.x.x     # install a particular version
+# rbenv rehash            # run after installing a new version
+# rbenv global x.x.x      # set the version to be used globally
 echo $PATH | grep -q -s "$HOME/.rbenv/bin"
 if [ $? -eq 1 ] ; then
   export PATH="$HOME/.rbenv/bin":$PATH
@@ -116,7 +124,9 @@ echo $PATH | grep -q -s "$HOME/.rbenv/shims"
 if [ $? -eq 1 ] ; then
   eval "$(rbenv init -)"
 fi
+rbenv global 2.5.0
 
+######################################################################
 # GOLANG
 export GOPATH=$HOME/go
 echo $PATH | grep -q -s "$GOPATH/bin"

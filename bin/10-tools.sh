@@ -16,6 +16,7 @@ if type "brew" > /dev/null; then
   brew upgrade
   echo "Installing tool dependencies ..."
   brew install    \
+    lesspipe      \
     git           \
     awscli        \
     gpg-agent     \
