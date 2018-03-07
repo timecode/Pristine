@@ -21,7 +21,7 @@ if type "brew" > /dev/null; then
     awscli        \
     gpg-agent     \
     python        \
-    python3       \
+    python2       \
     rbenv         \
     yarn          \
     go            \

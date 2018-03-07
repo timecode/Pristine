@@ -135,6 +135,10 @@ if [ $? -eq 1 ] ; then
 fi
 
 ######################################################################
+# python2
+export PATH="/usr/local/opt/python@2/bin:$PATH"
+
+######################################################################
 # VirtualEnv
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Dropbox/Development/python
