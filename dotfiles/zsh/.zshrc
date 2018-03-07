@@ -100,8 +100,8 @@ alias tls="tmux ls"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 9.7.0
-# nvm uninstall 9.6.0
+# nvm install 9.7.1
+# nvm uninstall 9.7.0
 # nvm ls
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
