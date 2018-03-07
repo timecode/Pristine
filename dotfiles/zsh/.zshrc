@@ -147,9 +147,9 @@ alias setvep='setvirtualenvproject'
 source /usr/local/bin/virtualenvwrapper.sh
 
 ### python 2 version
-pynew() {
+py2new() {
   echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
-  mkvirtualenv $1 # --system-site-packages
+  mkvirtualenv -p python2 $1 # --system-site-packages
   workon $1
   pip2 install -U pyscaffold
   putup --with-tox $1 $2
@@ -185,9 +185,9 @@ ____EOF
 # $ pynew foo [--update|--force]
 
 ### python 3 version
-py3new() {
+pynew() {
   echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
-  mkvirtualenv $1 # --system-site-packages
+  mkvirtualenv -p python3 $1 # --system-site-packages
   workon $1
   pip3 install -U pyscaffold
   putup --with-tox $1 $2
