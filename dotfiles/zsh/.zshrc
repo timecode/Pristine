@@ -223,6 +223,11 @@ ____EOF
 # $ py3new foo [--update|--force]
 ######################################################################
 
+# keep sensitive / non-repo profile requirements in ~/.zsh_profile
+if [ -e ~/.zsh_profile ]; then
+  . ~/.zsh_profile
+fi
+
 # Starling config
 if [ -e /Users/robplayford/.starling/etc/profile ]; then
   . /Users/robplayford/.starling/etc/profile
