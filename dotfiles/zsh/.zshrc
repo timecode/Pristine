@@ -100,8 +100,8 @@ alias tls="tmux ls"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 9.7.0
-# nvm uninstall 9.6.0
+# nvm install 9.8.0
+# nvm uninstall 9.7.1
 # nvm ls
 # nvm unalias default
 # nvm alias "default" "9.7.0"
@@ -138,6 +138,10 @@ if [ $? -eq 1 ] ; then
 fi
 
 ######################################################################
+# python2
+export PATH="/usr/local/opt/python@2/bin:$PATH"
+
+######################################################################
 # VirtualEnv
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Dropbox/Development/python
@@ -146,9 +150,9 @@ alias setvep='setvirtualenvproject'
 source /usr/local/bin/virtualenvwrapper.sh
 
 ### python 2 version
-pynew() {
+py2new() {
   echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
-  mkvirtualenv $1 # --system-site-packages
+  mkvirtualenv -p python2 $1 # --system-site-packages
   workon $1
   pip2 install -U pyscaffold
   putup --with-tox $1 $2
@@ -184,9 +188,9 @@ ____EOF
 # $ pynew foo [--update|--force]
 
 ### python 3 version
-py3new() {
+pynew() {
   echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
-  mkvirtualenv $1 # --system-site-packages
+  mkvirtualenv -p python3 $1 # --system-site-packages
   workon $1
   pip3 install -U pyscaffold
   putup --with-tox $1 $2
@@ -221,6 +225,11 @@ ____EOF
 # call above with
 # $ py3new foo [--update|--force]
 ######################################################################
+
+# keep sensitive / non-repo profile requirements in ~/.zsh_profile
+if [ -e ~/.zsh_profile ]; then
+  . ~/.zsh_profile
+fi
 
 # Starling config
 if [ -e /Users/robplayford/.starling/etc/profile ]; then
