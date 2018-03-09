@@ -81,7 +81,7 @@ alias root="sudo su"
 
 
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
-alias wifimon="open '/System/Library/CoreServices/Wi-Fi Diagnostics.app'"
+alias wifimon="open '/System/Library/CoreServices/Applications/Wireless\ Diagnostics.app'"
 alias profile="atom ~/.zshrc"
 alias dev="cd ~/Dropbox/Development/"
 
