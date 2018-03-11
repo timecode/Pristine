@@ -59,10 +59,10 @@ brew install          \
   git                 \
   awscli              \
   gpg-agent           \
-  python              \
   python2             \
+  python              \
+  pipenv              \
   rbenv               \
-  yarn --without-node \
   go                  \
   tree                \
   jq                  \
@@ -72,6 +72,9 @@ brew install          \
   tor                 \
   stow
 
+brew install          \
+  yarn --without-node
+
 # adns		  gradle		 packer
 # libffi    libusb-compat
 # gmp		    jfrog-cli-go		md5sha1sum
@@ -79,6 +82,9 @@ brew install          \
 # coreutils	gnupg2	   kops	    nettle	    p7zip	 webkit2png
 # dirmngr		gnutls	   nmap	    	    redis
 # libtasn1 	npth       ec2-ami-tools  libusb
+
+# pip3 install --upgrade pip3 setuptools
+# pip2 install --upgrade pip2 setuptools
 
 #####################################
 # Linux

@@ -137,9 +137,56 @@ if [ $? -eq 1 ] ; then
   export PATH="$GOPATH/bin":$PATH
 fi
 
-######################################################################
-# python2
-export PATH="/usr/local/opt/python@2/bin:$PATH"
+# AWAITING PyScaffold to work with pipenv
+# ...
+# ######################################################################
+# # PipEnv
+# pip3env() {
+#   project_dir=$PWD/$1
+#   echo "Creating new python env and project directory '$1' at $project_dir"
+#   mkdir ${project_dir}
+#   cd ${project_dir}
+#   atom .
+#   pipenv --three
+#   # pipenv --two
+#   pipenv install setuptools
+#   pipenv install --dev pytest pytest-cov pytest-mock moto watchdog tox
+#
+#   cat << \EOF > tox.ini
+# # Tox configuration file
+# # Read more under https://tox.readthedocs.org/
+# # THIS SCRIPT IS SUPPOSED TO BE AN EXAMPLE. MODIFY IT ACCORDING TO YOUR NEEDS!
+# [tox]
+# envlist = py27,py31
+# skip_missing_interpreters = True
+#
+# [testenv]
+# commands =
+#     py.test {posargs} --verbose --cov --cov-report=term --cov-report=html
+# deps =
+#     pytest
+#     pytest-cov
+#     # -r{toxinidir}/requirements.txt
+#     # -r{toxinidir}/test-requirements.txt
+#
+# # Options for pytest
+# [pytest]
+# addopts = -rsxvXf
+# EOF
+#
+#   # setvirtualenvproject
+#
+#   # create .gitignore
+#   rm -f .gitignore; touch .gitignore
+#   curl -s 'https://raw.githubusercontent.com/github/gitignore/master/Global/macOS.gitignore' >> .gitignore
+#   curl -s 'https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore' >> .gitignore
+#
+#
+#   # sed -i '' -- 's/\(--cov-report \)term-missing/\1html/g' setup.cfg
+#   # git commit -a -m "Basic project setup"
+#
+#   pipenv shell
+# }
 
 ######################################################################
 # VirtualEnv
@@ -155,7 +202,7 @@ py2new() {
   mkvirtualenv -p python2 $1 # --system-site-packages
   workon $1
   pip2 install -U pyscaffold
-  putup --with-tox $1 $2
+  putup --tox $1 $2
   cd $1
   setvirtualenvproject
   workon $1
@@ -193,7 +240,7 @@ pynew() {
   mkvirtualenv -p python3 $1 # --system-site-packages
   workon $1
   pip3 install -U pyscaffold
-  putup --with-tox $1 $2
+  putup --tox $1 $2
   cd $1
   setvirtualenvproject
   workon $1
