@@ -19,7 +19,8 @@ else
   exit 1
 fi
 
-# install latest nvm and node
+######################################
+# nvm and node
 echo "Installing nvm, node, npm..."
 
 if [ -f /usr/local/bin/npm ]; then
@@ -49,6 +50,8 @@ echo ""
 echo "Installing node modules..."
 npm install spoof -g
 
+######################################
+# brew
 echo ""
 echo "Checking Homebrew..."
 brew --version
@@ -58,31 +61,41 @@ brew prune
 # check brew health
 brew doctor
 echo "Installing tool dependencies..."
-brew install          \
-  lesspipe            \
-  git                 \
-  gpg-agent           \
-  tree                \
-  jq                  \
-  ncdu                \
-  wget                \
-  tmux                \
-  tor                 \
+brew install              \
+  lesspipe                \
+  git                     \
+  gpg-agent               \
+  tree                    \
+  jq                      \
+  ncdu                    \
+  wget                    \
+  tmux                    \
+  tor                     \
   stow
 
-brew install          \
-  awscli              \
-  python@2            \
-  python@3            \
-  pipenv              \
-  rbenv               \
-  go                  \
+brew install              \
+  awscli                  \
+  python@2                \
+  python@3                \
+  pipenv                  \
+  rbenv                   \
+  go                      \
 
-brew install          \
+brew install              \
   yarn --without-node
 
 # remove unused brew archives
 brew cleanup
+
+######################################
+# python installs
+pip2 install -U           \
+  virtualenv              \
+  virtualenvwrapper
+
+pip3 install -U           \
+  virtualenv              \
+  virtualenvwrapper
 
 #####################################
 # Linux
