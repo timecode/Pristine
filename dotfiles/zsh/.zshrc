@@ -149,7 +149,7 @@ fi
 #   atom .
 #   pipenv --three
 #   # pipenv --two
-#   pipenv install setuptools
+#   pipenv install click setuptools
 #   pipenv install --dev pytest pytest-cov pytest-mock moto watchdog tox
 #
 #   cat << \EOF > tox.ini
