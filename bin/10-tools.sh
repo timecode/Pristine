@@ -51,19 +51,17 @@ npm install spoof -g
 
 echo ""
 echo "Checking Homebrew..."
+brew --version
 brew upgrade
+# tidy symlinks
+brew prune
+# check brew health
 brew doctor
 echo "Installing tool dependencies..."
 brew install          \
   lesspipe            \
   git                 \
-  awscli              \
   gpg-agent           \
-  python2             \
-  python              \
-  pipenv              \
-  rbenv               \
-  go                  \
   tree                \
   jq                  \
   ncdu                \
@@ -73,18 +71,18 @@ brew install          \
   stow
 
 brew install          \
+  awscli              \
+  python@2            \
+  python@3            \
+  pipenv              \
+  rbenv               \
+  go                  \
+
+brew install          \
   yarn --without-node
 
-# adns		  gradle		 packer
-# libffi    libusb-compat
-# gmp		    jfrog-cli-go		md5sha1sum
-# cdrtools	gnupg		        p11-kit	    watch
-# coreutils	gnupg2	   kops	    nettle	    p7zip	 webkit2png
-# dirmngr		gnutls	   nmap	    	    redis
-# libtasn1 	npth       ec2-ami-tools  libusb
-
-# pip3 install --upgrade pip3 setuptools
-# pip2 install --upgrade pip2 setuptools
+# remove unused brew archives
+brew cleanup
 
 #####################################
 # Linux
