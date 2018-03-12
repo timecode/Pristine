@@ -1,0 +1,87 @@
+# -*- mode: shell-script -*-
+#
+
+######################################################################
+# VirtualEnv
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/Dropbox/Development/python
+# alias mkve='mkvirtualenv'
+# alias setvep='setvirtualenvproject'
+source /usr/local/bin/virtualenvwrapper.sh
+
+### python 2 version
+py2new() {
+  echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
+  mkvirtualenv -p python2 $1 # --system-site-packages
+  workon $1
+  pip2 install -U pyscaffold
+  putup --tox $1 $2
+  cd $1
+  setvirtualenvproject
+  workon $1
+  pip2 install -U pytest
+  sed -i '' -- 's/\(--cov-report \)term-missing/\1html/g' setup.cfg
+  pip2 install -U watchdog
+  pip2 install -U tox
+  git commit -a -m "Basic project setup"
+  cat <<-____EOF
+
+Add new files alongside the auto-genereated 'skeleton' and 'test_skeleton' files.
+
+$ pynew project-name [--update|--force]
+# --update to update an existing project
+# --force to overwrite an existing directory
+
+To run tests MANUALLY:
+$ python setup.py test
+
+To run tests AUTOMATICALLY:
+$ pyautotest
+
+To view test coverage:
+$ open htmlcov/index.html
+
+____EOF
+  atom .
+}
+# call above with
+# $ pynew foo [--update|--force]
+
+### python 3 version
+pynew() {
+  echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
+  mkvirtualenv -p python3 $1 # --system-site-packages
+  workon $1
+  pip3 install -U pyscaffold
+  putup --tox $1 $2
+  cd $1
+  setvirtualenvproject
+  workon $1
+  pip3 install -U pytest
+  sed -i '' -- 's/\(--cov-report \)term-missing/\1html/g' setup.cfg
+  pip3 install -U watchdog
+  pip3 install -U tox
+  git commit -a -m "Basic project setup"
+  cat <<-____EOF
+
+Add new files alongside the auto-genereated 'skeleton' and 'test_skeleton' files.
+
+$ py3new project-name [--update|--force]
+# --update to update an existing project
+# --force to overwrite an existing directory
+
+To run tests MANUALLY:
+$ python3 setup.py test
+
+To run tests AUTOMATICALLY:
+$ pyautotest
+
+To view test coverage:
+$ open htmlcov/index.html
+
+____EOF
+  atom .
+}
+# call above with
+# $ py3new foo [--update|--force]
+######################################################################
