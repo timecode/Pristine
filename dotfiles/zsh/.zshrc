@@ -137,6 +137,11 @@ if [ $? -eq 1 ] ; then
   export PATH="$GOPATH/bin":$PATH
 fi
 
+# source functions-dev
+if [ -e ~/.functions-dev ]; then
+  . ~/.functions-dev
+fi
+
 # source functions
 if [ -e ~/.functions ]; then
   . ~/.functions

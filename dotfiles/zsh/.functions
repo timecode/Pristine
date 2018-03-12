@@ -3,10 +3,10 @@
 
 ######################################################################
 # VirtualEnv
-# export WORKON_HOME=$HOME/.virtualenvs
-# export PROJECT_HOME=$HOME/Dropbox/Development/python
-# alias mkve='mkvirtualenv'
-# alias setvep='setvirtualenvproject'
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Dropbox/Development/python
+alias mkve='mkvirtualenv'
+alias setvep='setvirtualenvproject'
 source /usr/local/bin/virtualenvwrapper.sh
 
 ### python 2 version
