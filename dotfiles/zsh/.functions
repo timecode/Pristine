@@ -9,40 +9,115 @@ alias mkve='mkvirtualenv'
 alias setvep='setvirtualenvproject'
 source /usr/local/bin/virtualenvwrapper.sh
 
+customise_scaffold() {
+  readmerst='README.rst'
+  readme='README.md'
+
+  sed -i '' -- 's/=//g' $readmerst
+  sed -i '' -- "s/^\($1\)/# \1/g" $readmerst
+  tail -n +2 $readmerst > $readme
+
+  sed -i '' -- 's/\(Description\)/## \1/g' $readme
+  sed -i '' -- 's/\(Note\)/## \1/g' $readme
+  cat << \EOF >> $readme
+
+## Dev
+
+Add requirements using `pipenv`, e.g.:
+
+```sh
+$ pipenv install click
+# or
+$ pipenv install --dev tox
+```
+
+Add new files alongside the auto-genereated 'skeleton' and 'test_skeleton' files.
+
+```sh
+$ pynew project-name [--update|--force]
+# --update to update an existing project
+# --force to overwrite an existing directory
+```
+
+To run tests MANUALLY:
+
+```sh
+$ python setup.py test
+```
+
+To run tests AUTOMATICALLY:
+
+```sh
+$ pyautotest
+# or
+$ autotox
+```
+
+To view test coverage:
+
+```sh
+$ open htmlcov/index.html
+```
+EOF
+
+  setupcfg='setup.cfg'
+  sed -i '' -- 's/\(--cov-report \)term-missing/\1html --last-failed/g' $setupcfg
+  sed -i '' -- "s/\(description-file =\) $readmerst/\1 $readme/g" $setupcfg
+  sed -i '' -- 's/\[\(pytest\)\]/\[tool:\1\]/g' $setupcfg
+
+
+  toxini='tox.ini'
+  if [ -e $toxini ]; then
+    sed -i '' -- 's/-r{toxinidir}.*//g' $toxini
+    sed -i '' -- 's/\(py.test\) {posargs}$/\1 --verbose --cov-report=html {posargs}/g' $toxini
+    sed -i '' -- 's/\(envlist =\) py27,py33,py34,flake8/\1 py27,py36,flake8/g' $toxini
+    sed -i '' -- 's/\(addopts = \)-rsxXf/\1--cov --cov-report=html --last-failed --verbose/g' $toxini
+    sed -i '' -- 's/\(  pytest\)$/\1-cov/g' $toxini
+  fi
+
+  rm -f $readmerst AUTHORS.rst CHANGES.rst LICENSE.txt
+
+  scaffold_pipenv
+}
+
+scaffold_pipenv() {
+  pipenv install -r requirements.txt
+  pipenv install --dev -r test-requirements.txt
+  pipenv install --dev watchdog tox
+  rm -f requirements.txt test-requirements.txt
+}
+
+reset_git() {
+  rm -rf .git
+  git init
+  cat .gitignore | grep -q -s "DS_Store"
+  if [ $? -eq 1 ] ; then
+    echo "\n" >> .gitignore
+    curl -s 'https://raw.githubusercontent.com/github/gitignore/master/Global/macOS.gitignore' >> .gitignore
+  fi
+  cat .gitignore | grep -q -s "Pipfile.lock"
+  if [ $? -eq 1 ] ; then
+    echo "\n# pipenv" >> .gitignore
+    echo "Pipfile.lock" >> .gitignore
+  fi
+  git add .
+  git commit -a -m "Initial project setup"
+}
+
 ### python 2 version
 py2new() {
   echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
   mkvirtualenv -p python2 $1 # --system-site-packages
   workon $1
-  pip2 install -U pyscaffold
-  putup --tox $1 $2
+  pip install -U pyscaffold==2.5
+  putup --with-tox $1 $2
   cd $1
   setvirtualenvproject
   workon $1
-  pip2 install -U pytest
-  sed -i '' -- 's/\(--cov-report \)term-missing/\1html/g' setup.cfg
-  pip2 install -U watchdog
-  pip2 install -U tox
-  git commit -a -m "Basic project setup"
-  cat <<-____EOF
-
-Add new files alongside the auto-genereated 'skeleton' and 'test_skeleton' files.
-
-$ pynew project-name [--update|--force]
-# --update to update an existing project
-# --force to overwrite an existing directory
-
-To run tests MANUALLY:
-$ python setup.py test
-
-To run tests AUTOMATICALLY:
-$ pyautotest
-
-To view test coverage:
-$ open htmlcov/index.html
-
-____EOF
   atom .
+
+  customise_scaffold $1
+  reset_git
 }
 # call above with
 # $ pynew foo [--update|--force]
@@ -52,35 +127,15 @@ pynew() {
   echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
   mkvirtualenv -p python3 $1 # --system-site-packages
   workon $1
-  pip3 install -U pyscaffold
+  pip install -U pyscaffold
   putup --tox $1 $2
   cd $1
   setvirtualenvproject
   workon $1
-  pip3 install -U pytest
-  sed -i '' -- 's/\(--cov-report \)term-missing/\1html/g' setup.cfg
-  pip3 install -U watchdog
-  pip3 install -U tox
-  git commit -a -m "Basic project setup"
-  cat <<-____EOF
-
-Add new files alongside the auto-genereated 'skeleton' and 'test_skeleton' files.
-
-$ py3new project-name [--update|--force]
-# --update to update an existing project
-# --force to overwrite an existing directory
-
-To run tests MANUALLY:
-$ python3 setup.py test
-
-To run tests AUTOMATICALLY:
-$ pyautotest
-
-To view test coverage:
-$ open htmlcov/index.html
-
-____EOF
   atom .
+
+  customise_scaffold $1
+  reset_git
 }
 # call above with
 # $ py3new foo [--update|--force]
