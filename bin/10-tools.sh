@@ -68,6 +68,7 @@ brew install              \
   tree                    \
   jq                      \
   ncdu                    \
+  nmap                    \
   wget                    \
   tmux                    \
   tor                     \
