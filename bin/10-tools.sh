@@ -91,10 +91,12 @@ brew cleanup
 ######################################
 # python installs
 pip2 install -U           \
+  pip                     \
   virtualenv              \
   virtualenvwrapper
 
 pip3 install -U           \
+  pip                     \
   virtualenv              \
   virtualenvwrapper
 
