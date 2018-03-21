@@ -93,12 +93,14 @@ brew cleanup
 pip2 install -U           \
   pip                     \
   virtualenv              \
-  virtualenvwrapper
+  virtualenvwrapper       \
+  autopep8
 
 pip3 install -U           \
   pip                     \
   virtualenv              \
-  virtualenvwrapper
+  virtualenvwrapper       \
+  autopep8
 
 #####################################
 # Linux
