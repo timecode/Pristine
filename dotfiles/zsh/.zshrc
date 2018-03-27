@@ -86,6 +86,7 @@ alias profile="atom ~/.zshrc"
 alias dev="cd ~/Dropbox/Development/"
 
 # dev stuff
+alias update='~/Pristine/setup.sh'
 alias g='bundle exec guard'
 alias subl='atom'
 alias st='atom'
@@ -100,8 +101,8 @@ alias tls="tmux ls"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 9.8.0
-# nvm uninstall 9.7.1
+# nvm install 9.9.0
+# nvm uninstall 9.8.0
 # nvm ls
 # nvm unalias default
 # nvm alias "default" "9.7.0"
