@@ -81,6 +81,7 @@ brew install              \
   pipenv                  \
   rbenv                   \
   go                      \
+  caskroom/cask/java
 
 brew install              \
   yarn --without-node
