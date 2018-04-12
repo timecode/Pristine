@@ -75,7 +75,6 @@ brew install              \
   stow
 
 brew install              \
-  awscli                  \
   python@2                \
   python@3                \
   pipenv                  \
@@ -85,6 +84,14 @@ brew install              \
 
 brew install              \
   yarn --without-node
+
+brew install              \
+  awscli                  \
+  gradle                  \
+  jfrog-cli-go
+
+brew install              \
+  caskroom/cask/insomnia  \
 
 # remove unused brew archives
 brew cleanup
