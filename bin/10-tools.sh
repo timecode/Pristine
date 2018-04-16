@@ -92,6 +92,8 @@ brew install              \
 
 brew install              \
   caskroom/cask/insomnia  \
+  caskroom/cask/ngrok     \
+  openresty/brew/openresty \
 
 # remove unused brew archives
 brew cleanup
