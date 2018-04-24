@@ -91,6 +91,7 @@ brew install              \
   jfrog-cli-go
 
 brew install              \
+  caskroom/cask/shiftit   \
   caskroom/cask/insomnia  \
   caskroom/cask/ngrok     \
   openresty/brew/openresty \
@@ -98,6 +99,8 @@ brew install              \
 # remove unused brew archives
 brew cleanup
 
+echo ""
+echo "Installing python(s)..."
 ######################################
 # python installs
 pip2 install -U           \
