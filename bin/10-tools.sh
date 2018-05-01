@@ -91,6 +91,7 @@ brew install              \
   jfrog-cli-go
 
 brew install              \
+  caskroom/cask/vagrant   \
   caskroom/cask/shiftit   \
   caskroom/cask/insomnia  \
   caskroom/cask/ngrok     \

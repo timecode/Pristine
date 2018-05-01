@@ -101,11 +101,11 @@ alias tls="tmux ls"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 9.9.0
-# nvm uninstall 9.8.0
+# nvm install 10.0.1
+# nvm uninstall 10.0.0
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "9.7.0"
+# nvm alias "default" "10.0.1"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -128,7 +128,7 @@ echo $PATH | grep -q -s "$HOME/.rbenv/shims"
 if [ $? -eq 1 ] ; then
   eval "$(rbenv init -)"
 fi
-rbenv global 2.5.0
+rbenv global 2.5.1
 
 ######################################################################
 # GOLANG
