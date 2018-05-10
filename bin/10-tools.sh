@@ -88,7 +88,8 @@ brew install              \
 brew install              \
   awscli                  \
   gradle                  \
-  jfrog-cli-go
+  jfrog-cli-go            \
+  coreos-ct
 
 brew install              \
   caskroom/cask/vagrant   \
