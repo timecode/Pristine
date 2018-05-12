@@ -55,11 +55,14 @@ npm install spoof -g
 echo ""
 echo "Checking Homebrew..."
 brew --version
+# check brew health
+brew doctor
+# check for upgrades
 brew upgrade
 # tidy symlinks
 brew prune
-# check brew health
-brew doctor
+
+echo ""
 echo "Installing tool dependencies..."
 brew install              \
   lesspipe                \
@@ -99,6 +102,8 @@ brew install              \
   openresty/brew/openresty \
 
 # remove unused brew archives
+echo ""
+echo "Tidying up brew..."
 brew cleanup
 
 echo ""
