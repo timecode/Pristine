@@ -55,6 +55,8 @@ npm install spoof -g
 echo ""
 echo "Checking Homebrew..."
 brew --version
+brew cask --version
+
 # check brew health
 brew doctor
 # check for upgrades
@@ -100,6 +102,11 @@ brew install              \
   caskroom/cask/insomnia  \
   caskroom/cask/ngrok     \
   openresty/brew/openresty \
+
+# remove unused brew archives
+echo ""
+echo "Upgrading brew casks..."
+brew cask upgrade
 
 # remove unused brew archives
 echo ""
