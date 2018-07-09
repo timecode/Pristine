@@ -160,5 +160,14 @@ else
   echo "Could not find '/Users/robplayford/.starling/etc/profile'"
 fi
 
+dir=~/Applications/dynamodb_local_latest
+echo ${dir}
+if [ -e ${dir} ]; then
+  alias dynamodb="cd ${dir}; java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb"
+else
+  alias dynamodb='echo "first, install dynamodb locally at ${dir}...
+  see https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html"'
+fi
+
 echo 'Login and run command complete'
 echo
