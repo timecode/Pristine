@@ -161,7 +161,6 @@ else
 fi
 
 dir=~/Applications/dynamodb_local_latest
-echo ${dir}
 if [ -e ${dir} ]; then
   alias dynamodb="cd ${dir}; java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb"
 else
@@ -169,7 +168,7 @@ else
   see https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html"'
 fi
 
-source .zshrc_private
+. ~/.zshrc_private
 
 echo 'Login and run command complete'
 echo
