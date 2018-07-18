@@ -92,6 +92,7 @@ brew install              \
 
 brew install              \
   awscli                  \
+  packer                  \
   gradle                  \
   jfrog-cli-go            \
   coreos-ct
