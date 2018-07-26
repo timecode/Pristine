@@ -59,8 +59,10 @@ brew cask --version
 
 # check brew health
 brew doctor
+brew cask doctor
 # check for upgrades
 brew upgrade
+brew cask upgrade
 # tidy symlinks
 brew prune
 
@@ -84,8 +86,14 @@ brew install              \
   python@3                \
   pipenv                  \
   rbenv                   \
-  go                      \
-  caskroom/cask/java
+  go
+
+declare -a casks=(
+  java
+)
+
+brew cask install ${casks[@]}
+brew cask upgrade ${casks[@]}
 
 brew install              \
   yarn --without-node
@@ -95,24 +103,24 @@ brew install              \
   packer                  \
   gradle                  \
   jfrog-cli-go            \
-  coreos-ct
+  coreos-ct               \
+  openresty
 
-brew install              \
-  caskroom/cask/vagrant   \
-  caskroom/cask/shiftit   \
-  caskroom/cask/insomnia  \
-  caskroom/cask/ngrok     \
-  openresty/brew/openresty \
+declare -a casks=(
+  vagrant
+  shiftit
+  insomnia
+  ngrok
+)
 
-# remove unused brew archives
-echo ""
-echo "Upgrading brew casks..."
-brew cask upgrade
+brew cask install ${casks[@]}
+brew cask upgrade ${casks[@]}
 
 # remove unused brew archives
 echo ""
 echo "Tidying up brew..."
 brew cleanup
+brew cask cleanup
 
 echo ""
 echo "Installing python(s)..."
