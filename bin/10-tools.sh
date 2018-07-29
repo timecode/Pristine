@@ -26,18 +26,19 @@ fi
 
 ######################################
 # nvm and node
-echo "Checking nvm, node, npm status..."
 echo ""
+echo "Checking nvm, node, npm status..."
 
 if [ -f /usr/local/bin/npm ]; then
-  echo "Removing non-nvm installed npm..."
+  echo "... removing non-nvm installed npm..."
   rm /usr/local/bin/npm
 fi
 
 if [ -d $HOME/.nvm ]; then
-  echo "nvm already installed..."
+  echo "... a version of nvm is already installed"
 else
-  echo "Installing nvm..."
+  echo "... installing nvm"
+  echo ""
   # https://github.com/creationix/nvm
   curl -o- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
   # wget -qO- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
