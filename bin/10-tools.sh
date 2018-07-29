@@ -49,8 +49,9 @@ npm config delete prefix
 nvm use node
 
 echo ""
-echo "Installing node modules..."
-npm install spoof -g
+echo "Installing global node modules..."
+npm install -g \
+  spoof
 
 ######################################
 # brew
@@ -140,6 +141,11 @@ pip3 install -U           \
   virtualenv              \
   virtualenvwrapper       \
   autopep8
+
+echo ""
+echo "Installing system python module..."
+pip install -U \
+  speedtest-cli
 
 #####################################
 # Linux
