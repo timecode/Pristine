@@ -113,7 +113,7 @@ brew install              \
   gradle                  \
   jfrog-cli-go            \
   coreos-ct               \
-  openresty
+  openresty/brew/openresty
 
 declare -a casks=(
   vagrant
