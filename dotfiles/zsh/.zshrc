@@ -128,7 +128,12 @@ echo $PATH | grep -q -s "$HOME/.rbenv/shims"
 if [ $? -eq 1 ] ; then
   eval "$(rbenv init -)"
 fi
-rbenv global 2.5.1
+RUBY_VERSION=2.5.1
+rbenv global ${RUBY_VERSION}
+if [ $? -ne 0 ]; then
+  echo "install required version with:"
+  echo "$ rbenv install ${RUBY_VERSION}"
+fi
 
 ######################################################################
 # GOLANG
