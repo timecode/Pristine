@@ -122,16 +122,17 @@ echo "Tidying up brew..."
 brew cleanup
 brew cask cleanup
 
-echo ""
-echo "Installing python(s)..."
 ######################################
 # python installs
+echo ""
+echo "Installing python 2..."
 pip2 install -U           \
   pip                     \
   virtualenv              \
   virtualenvwrapper       \
   autopep8
-
+echo ""
+echo "Installing python 3..."
 pip3 install -U           \
   pip                     \
   virtualenv              \
