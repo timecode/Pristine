@@ -57,6 +57,11 @@ npm install -g \
 # brew
 echo ""
 echo "Checking Homebrew..."
+if ! [ -d /usr/local/Frameworks ]; then
+  echo "... adding missing `/usr/local/Frameworks`"
+  sudo mkdir -p /usr/local/Frameworks
+  sudo chown $(whoami):admin /usr/local/Frameworks
+fi
 brew --version
 brew cask --version
 
