@@ -10,6 +10,11 @@
 echo ""
 if type "brew" > /dev/null; then
   echo "Homebrew already installed :-)"
+  if ! [ -d /usr/local/Frameworks ]; then
+    echo "... need to add missing dir '/usr/local/Frameworks'"
+    sudo mkdir -p /usr/local/Frameworks
+    sudo chown $(whoami):admin /usr/local/Frameworks
+  fi
 else
   # /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   # /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
@@ -57,11 +62,6 @@ npm install -g \
 # brew
 echo ""
 echo "Checking Homebrew..."
-if ! [ -d /usr/local/Frameworks ]; then
-  echo "... adding missing `/usr/local/Frameworks`"
-  sudo mkdir -p /usr/local/Frameworks
-  sudo chown $(whoami):admin /usr/local/Frameworks
-fi
 brew --version
 brew cask --version
 
