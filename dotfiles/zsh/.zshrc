@@ -153,13 +153,6 @@ if [ -e ~/.zsh_profile ]; then
   . ~/.zsh_profile
 fi
 
-# Starling config
-if [ -e /Users/robplayford/.starling/etc/profile ]; then
-  . /Users/robplayford/.starling/etc/profile
-else
-  echo "Could not find '/Users/robplayford/.starling/etc/profile'"
-fi
-
 dir=~/Applications/dynamodb_local_latest
 if [ -e ${dir} ]; then
   alias dynamodb="cd ${dir}; java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb"
