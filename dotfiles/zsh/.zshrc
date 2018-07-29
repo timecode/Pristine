@@ -166,7 +166,5 @@ else
   see https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html"'
 fi
 
-. ~/.zshrc_private
-
 echo 'Login and run command complete'
 echo
