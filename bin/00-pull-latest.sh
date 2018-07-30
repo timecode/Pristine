@@ -3,6 +3,9 @@
 ################################################################################
 # Update this repo
 
+echo ""
+cd $0/../../
+
 if output=$(git status --porcelain) && [ -z "$output" ]; then
   echo "Attempting to update this repo first..."
   git pull
