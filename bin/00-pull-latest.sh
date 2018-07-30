@@ -3,6 +3,9 @@
 ################################################################################
 # Update this repo
 
-echo "Attempting to update this repo first..."
-cd $0/../../
-git pull
+if output=$(git status --porcelain) && [ -z "$output" ]; then
+  echo "Attempting to update this repo first..."
+  git pull
+else
+  echo "This repo has uncommited changes, so ignoring update..."
+fi
