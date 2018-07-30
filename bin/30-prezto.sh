@@ -35,7 +35,7 @@ fi
 #####################################
 echo "... adding custom prompt ..."
 
-cp ${scriptDirectory}/../conf/prezto/prompt_timecode_setup.sh ${ZDOTDIR:-$HOME}/.zprezto/modules/prompt/functions/prompt_timecode_setup
+cp ${scriptDirectory}/../conf/prezto/prompt_pristine_setup.sh ${ZDOTDIR:-$HOME}/.zprezto/modules/prompt/functions/prompt_pristine_setup
 if [ $? -ne 0 ]; then
   echo "... continuing ..."
 fi
