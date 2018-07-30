@@ -23,7 +23,8 @@ EOF
 
 #####################################
 if [[ -f "${ZDOTDIR:-$HOME}/.zshrc" ]]; then
-  echo "... removing existing .zshrc ..."
+  echo "... backing-up existing .zshrc ..."
+  cp ${ZDOTDIR:-$HOME}/.zshrc ${ZDOTDIR:-$HOME}/.zshrc_bak
   rm -f ${ZDOTDIR:-$HOME}/.zshrc
 fi
 
