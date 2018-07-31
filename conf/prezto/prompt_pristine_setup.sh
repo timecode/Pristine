@@ -44,6 +44,12 @@ function prompt_paradox_build_prompt {
     prompt_paradox_start_segment blue black '${(e)python_info[virtualenv]}'
   fi
 
+  if [[ "$USER" != "$DEFAULT_USER" ]] ||
+      [[ -n "$SSH_CLIENT" ]] ||
+      [[ -n "$SSH_TTY" ]]; then
+    prompt_paradox_start_segment red black " ${PROMPT_MACHINE_SHORTNAME}"
+  fi
+
   prompt_paradox_start_segment cyan black '$_prompt_paradox_pwd'
 
   if [[ -n "$git_info" ]]; then

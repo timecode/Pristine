@@ -6,6 +6,9 @@
 #
 
 # Source Prezto.
+# Force yourself as the system's default user
+# DEFAULT_USER="$(whoami)"
+
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
