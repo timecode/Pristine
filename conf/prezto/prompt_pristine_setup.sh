@@ -41,7 +41,7 @@ function prompt_paradox_build_prompt {
   prompt_paradox_start_segment black default '%F{blue}# %(?::%F{red}✘)%(!:%F{yellow}⚡ :)%(1j:%F{cyan}⚙ :)'
 
   if [[ -n "$python_info" ]]; then
-    prompt_paradox_start_segment blue black '${(e)python_info[virtualenv]}'
+    prompt_paradox_start_segment blue black ' ${(e)python_info[virtualenv]}'
   fi
 
   if [[ "$USER" != "$DEFAULT_USER" ]] ||
