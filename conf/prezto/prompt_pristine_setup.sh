@@ -47,10 +47,14 @@ function prompt_paradox_build_prompt {
   if [[ "$USER" != "$DEFAULT_USER" ]] ||
       [[ -n "$SSH_CLIENT" ]] ||
       [[ -n "$SSH_TTY" ]]; then
-    prompt_paradox_start_segment red black " ${PROMPT_MACHINE_SHORTNAME}"
+    local shell_identifier=$USER
+    if [[ -n $PROMPT_MACHINE_SHORTNAME ]]; then
+      shell_identifier=$PROMPT_MACHINE_SHORTNAME
+    fi
+    prompt_paradox_start_segment red black " $shell_identifier"
   fi
 
-  prompt_paradox_start_segment cyan black '$_prompt_paradox_pwd'
+  prompt_paradox_start_segment cyan black ' $_prompt_paradox_pwd'
 
   if [[ -n "$git_info" ]]; then
     prompt_paradox_start_segment yellow black '${(e)git_info[ref]}${(e)git_info[status]}'
