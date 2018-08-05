@@ -52,7 +52,7 @@ echo "Ensuring latest node..."
 nvm install node
 nvm install-latest-npm
 npm config delete prefix
-nvm use node
+nvm use stable
 
 echo ""
 echo "Installing global node modules..."
