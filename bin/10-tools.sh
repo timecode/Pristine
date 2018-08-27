@@ -208,6 +208,7 @@ declare -a work_bottles=(
 brew_install_bottles "${work_bottles[@]}"
 
 declare -a work_casks=(
+  virtualbox
   vagrant
   ngrok
 )
