@@ -1,5 +1,80 @@
 #!/bin/zsh
 
+export HOMEBREW_NO_AUTO_UPDATE=1
+
+function brew_installed_bottles() {
+  echo $(brew ls -1)
+}
+
+function brew_installed_casks() {
+  echo $(brew cask ls -1)
+}
+
+function brew_installed_bottles_list() {
+  local installed=($(brew_installed_bottles))
+  if [ ${#installed[@]} -gt 0 ]; then
+    echo ""
+    echo "Installed bottles..."
+    brew ls --versions ${installed}
+  fi
+}
+
+function brew_installed_casks_list() {
+  local installed=($(brew_installed_casks))
+  if [ ${#installed[@]} -gt 0 ]; then
+    echo ""
+    echo "Installed casks..."
+    brew cask ls --versions ${installed}
+  fi
+}
+
+function brew_install_bottles() {
+  local arr=("$@")
+  local installed=($(brew_installed_bottles))
+  local install=()
+  # find uninstalled tools
+  for element in "${arr[@]}"; do
+    $(for e in "${installed[@]}"; do [[ "${e}" == "${element}" ]] && exit 0; done)
+    if [ $? -ne 0 ]; then
+      install+=(${element})
+    fi
+  done
+  IFS=$'\n' sorted=($(sort <<<"${install[*]}"))
+  unset IFS
+  # install uninstalled bottles
+  if [ ${#sorted[@]} -gt 0 ]; then
+    for element in "${sorted[@]}"; do
+      # special case !
+      if [[ "${element}" == "yarn" ]]; then
+        brew install ${element} --without-node
+      else
+        brew install ${element}
+      fi
+    done
+  fi
+}
+
+function brew_install_casks() {
+  local arr=("$@")
+  local installed=($(brew_installed_casks))
+  local install=()
+  # find uninstalled tools
+  for element in "${arr[@]}"; do
+    $(for e in "${installed[@]}"; do [[ "${e}" == "${element}" ]] && exit 0; done)
+    if [ $? -ne 0 ]; then
+      install+=(${element})
+    fi
+  done
+  IFS=$'\n' sorted=($(sort <<<"${install[*]}"))
+  unset IFS
+  # install uninstalled casks
+  if [ ${#sorted[@]} -gt 0 ]; then
+    for element in "${sorted[@]}"; do
+      brew cask install ${element}
+    done
+  fi
+}
+
 ################################################################################
 # Install software
 
@@ -59,7 +134,7 @@ echo "Installing global node modules..."
 npm install -g \
   spoof
 
-######################################
+# ######################################
 # brew
 echo ""
 echo "Checking Homebrew..."
@@ -70,60 +145,73 @@ brew cask --version
 brew doctor
 brew cask doctor
 # check for upgrades
+# Homebrew automatically taps and keeps Homebrew-Cask updated. brew update is all that is required.
+brew update
 brew upgrade
 brew cask upgrade
 # tidy symlinks
 brew prune
 
+# list currently installed versions
+brew_installed_bottles_list
+brew_installed_casks_list
+
 echo ""
-echo "Installing tool dependencies..."
-brew install              \
-  lesspipe                \
-  git                     \
-  gpg-agent               \
-  tree                    \
-  jq                      \
-  ncdu                    \
-  nmap                    \
-  wget                    \
-  tmux                    \
-  tor                     \
+echo "Checking for uninstalled dependencies..."
+
+declare -a my_essential_bottles=(
+  lesspipe
+  git
+  gpg-agent
+  tree
+  jq
+  ncdu
+  nmap
+  wget
+  tmux
+  tor
   stow
-
-brew install              \
-  python@2                \
-  python@3                \
-  pipenv                  \
-  rbenv                   \
-  go
-
-declare -a casks=(
-  java
 )
+brew_install_bottles "${my_essential_bottles[@]}"
 
-brew cask install ${casks[@]}
-brew cask upgrade ${casks[@]}
-
-brew install              \
-  yarn --without-node
-
-brew install              \
-  awscli                  \
-  packer                  \
-  gradle                  \
-  jfrog-cli-go            \
-  coreos-ct               \
-  openresty/brew/openresty
-
-declare -a casks=(
-  vagrant
+declare -a my_essential_casks=(
   shiftit
   insomnia
+)
+brew_install_casks ${my_essential_casks[@]}
+# brew cask upgrade ${my_essential_casks[@]}
+
+declare -a language_bottles=(
+  python@2
+  python       # now the default for python@3
+  pipenv
+  rbenv
+  go
+  yarn
+)
+brew_install_bottles "${language_bottles[@]}"
+
+declare -a language_casks=(
+  java
+)
+brew_install_casks ${language_casks[@]}
+# brew cask upgrade ${language_casks[@]}
+
+declare -a work_bottles=(
+  awscli
+  packer
+  gradle
+  jfrog-cli-go
+  coreos-ct
+  openresty
+)
+brew_install_bottles "${work_bottles[@]}"
+
+declare -a work_casks=(
+  vagrant
   ngrok
 )
-
-brew cask install ${casks[@]}
-brew cask upgrade ${casks[@]}
+brew_install_casks "${work_casks[@]}"
 
 # remove unused brew archives
 echo ""
@@ -133,14 +221,14 @@ brew cleanup
 ######################################
 # python installs
 echo ""
-echo "Installing python 2..."
+echo "Setting up python 2 environment..."
 pip2 install -U           \
   pip                     \
   virtualenv              \
   virtualenvwrapper       \
   autopep8
 echo ""
-echo "Installing python 3..."
+echo "Setting up python 3 environment..."
 pip3 install -U           \
   pip                     \
   virtualenv              \
