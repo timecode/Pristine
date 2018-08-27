@@ -138,6 +138,7 @@ npm install -g \
 # brew
 echo ""
 echo "Checking Homebrew..."
+brew update
 brew --version
 brew cask --version
 
@@ -146,7 +147,6 @@ brew doctor
 brew cask doctor
 # check for upgrades
 # Homebrew automatically taps and keeps Homebrew-Cask updated. brew update is all that is required.
-brew update
 brew upgrade
 brew cask upgrade
 # tidy symlinks
