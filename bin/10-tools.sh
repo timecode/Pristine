@@ -129,7 +129,6 @@ brew cask upgrade ${casks[@]}
 echo ""
 echo "Tidying up brew..."
 brew cleanup
-brew cask cleanup
 
 ######################################
 # python installs
