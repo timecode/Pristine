@@ -30,7 +30,6 @@ function node_install_packages() {
   local installed=($(node_installed_packages))
   local outdated_installed=($(node_outdated_installed__packages))
   local install=()
-  # find uninstalled tools
   for element in "${arr[@]}"; do
     $(for e in "${installed[@]}"; do [[ "${e}" == "${element}" ]] && exit 0; done)
     if [ $? -ne 0 ]; then
@@ -46,6 +45,7 @@ function node_install_packages() {
     npm install -g ${sorted}
   fi
 
+  # update outdated packages
   if [ ${#outdated_installed[@]} -gt 0 ]; then
     echo ""
     echo "Updating global node packages..."

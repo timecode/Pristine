@@ -61,6 +61,9 @@ nvm use stable
 # list currently installed package versions
 node_installed_packages_list
 
+echo ""
+echo "Checking for uninstalled packages..."
+
 declare -a my_essential_node_packages=(
   spoof
 )
