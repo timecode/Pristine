@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/pwd || pwd)
+. $scriptDirectory/../conf/node/helpers.sh
 . $scriptDirectory/../conf/brew/helpers.sh
 
 ################################################################################
@@ -57,15 +58,18 @@ nvm install-latest-npm
 npm config delete prefix
 nvm use stable
 
-echo ""
-echo "Installing global node modules..."
-npm install -g \
+# list currently installed package versions
+node_installed_packages_list
+
+declare -a my_essential_node_packages=(
   spoof
+)
+node_install_packages "${my_essential_node_packages[@]}"
 
 # ######################################
 # brew
 echo ""
-echo "Checking Homebrew..."
+echo "Checking Homebrew state..."
 brew update
 brew --version
 brew cask --version
@@ -144,7 +148,7 @@ brew_install_casks "${work_casks[@]}"
 
 # remove unused brew archives
 echo ""
-echo "Tidying up brew..."
+echo "Tidying brew state..."
 brew cleanup
 
 ######################################
@@ -165,7 +169,7 @@ pip3 install -U           \
   autopep8
 
 echo ""
-echo "Installing system python module..."
+echo "Installing system python modules..."
 pip install -U \
   speedtest-cli
 
