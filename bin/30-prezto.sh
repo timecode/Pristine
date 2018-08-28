@@ -8,7 +8,7 @@ scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/
 echo ""
 echo "Installing Prezto ..."
 if [[ -f ${ZDOTDIR:-$HOME}/.zprezto/init.zsh ]]; then
-  source ${ZDOTDIR:-$HOME}/.zprezto/init.zsh || true
+  . ${ZDOTDIR:-$HOME}/.zprezto/init.zsh || true
   echo "... Prezto already installed (updating ...)"
   ## PERFORMING UPDATES
   # Run this command ...

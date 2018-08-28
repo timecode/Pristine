@@ -10,7 +10,7 @@
 DEFAULT_USER="$(whoami)"
 
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+  . "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 # Customize to your needs...
@@ -95,7 +95,7 @@ alias subl='atom'
 alias st='atom'
 alias mate='atom'
 alias a='atom .'
-alias sourceme='source ~/.zshrc'
+alias sourceme='. ~/.zshrc'
 alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
 alias t="tmux attach || tmux"
 alias tls="tmux ls"
