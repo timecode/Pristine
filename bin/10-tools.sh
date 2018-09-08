@@ -110,6 +110,7 @@ declare -a my_essential_bottles=(
 brew_install_bottles "${my_essential_bottles[@]}"
 
 declare -a my_essential_casks=(
+  macdown
   shiftit
   insomnia
 )
