@@ -100,6 +100,12 @@ alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
 alias t="tmux attach || tmux"
 alias tls="tmux ls"
 
+# docker-machine - installed with brew
+alias dmm='docker-machine create --driver virtualbox DockerMachine'
+alias dme='eval $(docker-machine env DockerMachine)'
+alias dma='docker-machine start DockerMachine && dme'
+alias dmz='docker-machine stop DockerMachine'
+
 ######################################################################
 # NVM
 # nvm install-latest-npm
