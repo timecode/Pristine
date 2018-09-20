@@ -147,6 +147,7 @@ declare -a work_casks=(
   virtualbox
   vagrant
   ngrok
+  docker-toolbox
 )
 brew_install_casks "${work_casks[@]}"
 
