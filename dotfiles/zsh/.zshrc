@@ -100,6 +100,10 @@ alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
 alias t="tmux attach || tmux"
 alias tls="tmux ls"
 
+# dropbox conflicted
+alias conflicted="find ~/Dropbox -name \"*conflicted*\" -depth"
+alias rmconflicted="conflicted -exec rm {} \;"
+
 # docker-machine - installed with brew
 alias dmm='docker-machine create --driver virtualbox DockerMachine'
 alias dme='eval $(docker-machine env DockerMachine)'
