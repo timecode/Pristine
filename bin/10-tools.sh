@@ -75,7 +75,6 @@ echo ""
 echo "Checking Homebrew state..."
 brew update
 brew --version
-brew cask --version
 
 # check brew health
 brew doctor
