@@ -90,6 +90,7 @@ alias dev="cd ~/Dropbox/Development/"
 
 # dev stuff
 alias update='~/Pristine/setup.sh'
+alias pris='atom ~/Pristine'
 alias g='bundle exec guard'
 alias subl='atom'
 alias st='atom'
