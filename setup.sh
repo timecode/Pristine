@@ -10,5 +10,8 @@ done
 
 ################################################################################
 echo ""
-echo "Done! Now exit this shell and create a new one to use the new setup."
+echo "Done! Now exit this shell and create a new one to use the new setup..."
+echo ""
+echo "Or run:"
+echo 'exec "$SHELL"'
 echo ""
