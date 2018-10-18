@@ -53,6 +53,9 @@ export NVM_DIR="$HOME/.nvm"
 
 echo ""
 echo "Ensuring latest node..."
+if ($( brew uninstall --ignore-dependencies node >/dev/null 2>&1 )) ; then
+  echo "Removed brew's install of node!"
+fi
 nvm install node
 nvm install-latest-npm
 npm config delete prefix
