@@ -69,6 +69,7 @@ echo "Checking for uninstalled packages..."
 
 declare -a my_essential_node_packages=(
   spoof
+  http-server
 )
 node_install_packages "${my_essential_node_packages[@]}"
 
