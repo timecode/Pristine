@@ -97,6 +97,16 @@ brew_installed_casks_list
 echo ""
 echo "Checking for uninstalled dependencies..."
 
+declare -a my_essential_casks=(
+  atom
+  github
+  macdown
+  shiftit
+  insomnia
+)
+brew_install_casks ${my_essential_casks[@]}
+# brew cask upgrade ${my_essential_casks[@]}
+
 declare -a my_essential_bottles=(
   lesspipe
   git
@@ -112,14 +122,11 @@ declare -a my_essential_bottles=(
 )
 brew_install_bottles "${my_essential_bottles[@]}"
 
-declare -a my_essential_casks=(
-  github
-  macdown
-  shiftit
-  insomnia
+declare -a language_casks=(
+  java
 )
-brew_install_casks ${my_essential_casks[@]}
-# brew cask upgrade ${my_essential_casks[@]}
+brew_install_casks ${language_casks[@]}
+# brew cask upgrade ${language_casks[@]}
 
 declare -a language_bottles=(
   python@2
@@ -131,11 +138,13 @@ declare -a language_bottles=(
 )
 brew_install_bottles "${language_bottles[@]}"
 
-declare -a language_casks=(
-  java
+declare -a work_casks=(
+  virtualbox
+  vagrant
+  ngrok
+  docker-toolbox
 )
-brew_install_casks ${language_casks[@]}
-# brew cask upgrade ${language_casks[@]}
+brew_install_casks "${work_casks[@]}"
 
 declare -a work_bottles=(
   awscli
@@ -146,14 +155,6 @@ declare -a work_bottles=(
   openresty
 )
 brew_install_bottles "${work_bottles[@]}"
-
-declare -a work_casks=(
-  virtualbox
-  vagrant
-  ngrok
-  docker-toolbox
-)
-brew_install_casks "${work_casks[@]}"
 
 # remove unused brew archives
 echo ""
