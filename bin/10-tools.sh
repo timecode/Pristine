@@ -143,6 +143,7 @@ declare -a work_casks=(
   vagrant
   ngrok
   docker-toolbox
+  minikube
 )
 brew_install_casks "${work_casks[@]}"
 
