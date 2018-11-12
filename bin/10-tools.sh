@@ -148,6 +148,7 @@ brew_install_casks "${work_casks[@]}"
 
 declare -a work_bottles=(
   awscli
+  kubectl
   packer
   gradle
   jfrog-cli-go
