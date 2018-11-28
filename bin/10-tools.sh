@@ -171,15 +171,16 @@ pip2 install -U           \
   pip                     \
   virtualenv              \
   virtualenvwrapper       \
-  autopep8
+  autopep8                \
+  watchdog
 echo ""
 echo "Setting up python 3 environment..."
 pip3 install -U           \
   pip                     \
   virtualenv              \
   virtualenvwrapper       \
-  autopep8
-
+  autopep8                \
+  watchdog
 echo ""
 echo "Installing system python modules..."
 pip install -U \
