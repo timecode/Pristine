@@ -1,20 +1,70 @@
 # -*- mode: shell-script -*-
 #
 
-######################################################################
-# VirtualEnv
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Dropbox/Development/python
-alias mkve='mkvirtualenv'
-alias setvep='setvirtualenvproject'
-source /usr/local/bin/virtualenvwrapper.sh
+# ######################################################################
+# # VirtualEnv
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/Dropbox/Development/python
+# alias mkve='mkvirtualenv'
+# alias setvep='setvirtualenvproject'
+# . /usr/local/bin/virtualenvwrapper.sh
+
+# python_valid_identifier() {
+#   string = string.strip()
+#   string = string.replace("-", "_")
+#   string = string.replace(" ", "_")
+#   string = re.sub('[^_a-zA-Z0-9]', '_', string)
+#   string = string.lower()
+# }
+
+create_tox_file() {
+  rm -rf tox.ini
+  cat << \EOF > tox.ini
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# tox (https://tox.readthedocs.io/) is a tool for running tests in multiple
+# virtualenvs. This configuration file will run the test suite on all supported
+# python versions. "pip install tox" and then run "tox" from this directory.
+
+[tox]
+skipsdist = True
+envlist = py{37},flake8
+skip_missing_interpreters = True
+
+[testenv]
+# uncomment to omit testing package builds & installs for faster runs
+skipsdist=True
+whitelist_externals = python
+extras = testing
+# deps =
+    # dependencies go here
+commands =
+    python setup.py develop
+    pytest --basetemp={envtmpdir} {posargs}
+
+[testenv:flake8]
+skip_install = true
+changedir = {toxinidir}
+deps = flake8
+commands = flake8 setup.py src tests
+
+[flake8]
+ignore =
+    # F401    # imported but unused
+    # E722    # do not use bare except
+    # E402    # module level import not at top of file
+    # E241    # multiple spaces after ','
+    # E226    # missing white space around arithmetic operator
+    # E222    # multiple spaces after operator
+EOF
+}
 
 customise_scaffold() {
   readmerst='README.rst'
   readme='README.md'
 
   sed -i '' -- 's/=//g' $readmerst
-  sed -i '' -- "s/^\($1\)/# \1/g" $readmerst
+  sed -i '' -- 's/^\($1\)/# \1/g' $readmerst
   tail -n +2 $readmerst > $readme
 
   sed -i '' -- 's/\(Description\)/## \1/g' $readme
@@ -27,30 +77,24 @@ Add requirements using `pipenv`, e.g.:
 
 ```sh
 $ pipenv install click
-# or
-$ pipenv install --dev tox
-```
-
-Add new files alongside the auto-genereated 'skeleton' and 'test_skeleton' files.
-
-```sh
-$ pynew project-name [--update|--force]
-# --update to update an existing project
-# --force to overwrite an existing directory
-```
-
-To run tests MANUALLY:
-
-```sh
-$ python setup.py test
+# or (for dev requirements)
+$ pipenv install --dev pytest
 ```
 
 To run tests AUTOMATICALLY:
 
 ```sh
-$ pyautotest
+$ autotox                   # DO NOT run from pipenv shell
 # or
-$ autotox
+$ pyautotest                # Run from pipenv shell
+```
+
+To run tests MANUALLY:
+
+```sh
+$ tox                       # DO NOT run from pipenv shell
+# or
+$ python setup.py test      # Run from pipenv shell
 ```
 
 To view test coverage:
@@ -61,82 +105,178 @@ $ open htmlcov/index.html
 EOF
 
   setupcfg='setup.cfg'
-  sed -i '' -- 's/\(--cov-report \)term-missing/\1html --last-failed/g' $setupcfg
+  sed -i '' -- 's/\(--cov\s*\).*\(\s*--cov-report\s*\).*/\1 src \2 html --last-failed/g' $setupcfg
   sed -i '' -- "s/\(description-file =\) $readmerst/\1 $readme/g" $setupcfg
   sed -i '' -- 's/\[\(pytest\)\]/\[tool:\1\]/g' $setupcfg
 
+  create_tox_file
 
-  toxini='tox.ini'
-  if [ -e $toxini ]; then
-    sed -i '' -- 's/-r{toxinidir}.*//g' $toxini
-    sed -i '' -- 's/\(py.test\) {posargs}$/\1 --verbose --cov-report=html {posargs}/g' $toxini
-    sed -i '' -- 's/\(envlist =\) py27,py33,py34,flake8/\1 py27,py36,flake8/g' $toxini
-    sed -i '' -- 's/\(addopts = \)-rsxXf/\1--cov --cov-report=html --last-failed --verbose/g' $toxini
-    sed -i '' -- 's/\(  pytest\)$/\1-cov/g' $toxini
-  fi
+  rm -f $readmerst AUTHORS.rst CHANGELOG.rst LICENSE.txt
 
-  rm -f $readmerst AUTHORS.rst CHANGES.rst LICENSE.txt
+  rm -rf docs
+
+  setup_test_dir
 
   scaffold_pipenv
 }
 
+customise_sam() {
+  template='template.yaml'
+
+  sed -i '' -- 's/CodeUri: hello_world/CodeUri: src\/hello_world/g' $template
+}
+
+setup_test_dir() {
+  mkdir -p tests/unit tests/fixtures
+  mv -f tests/test_skeleton.py tests/unit
+  touch tests/unit/__init__.py
+}
+
 scaffold_pipenv() {
-  pipenv install -r requirements.txt
-  pipenv install --dev -r test-requirements.txt
-  pipenv install --dev watchdog tox
-  rm -f requirements.txt test-requirements.txt
+  if [ -f requirements.txt ]; then
+    pipenv install -r requirements.txt
+  fi
+
+  if [ -f test-requirements.txt ]; then
+    pipenv install --dev -r test-requirements.txt
+  fi
+
+  rm -rf requirements.txt test-requirements.txt
 }
 
 reset_git() {
   rm -rf .git
   git init
+  touch .gitignore
   cat .gitignore | grep -q -s "DS_Store"
   if [ $? -eq 1 ] ; then
     echo "\n" >> .gitignore
     curl -s 'https://raw.githubusercontent.com/github/gitignore/master/Global/macOS.gitignore' >> .gitignore
   fi
-  cat .gitignore | grep -q -s "Pipfile.lock"
-  if [ $? -eq 1 ] ; then
-    echo "\n# pipenv" >> .gitignore
-    echo "Pipfile.lock" >> .gitignore
-  fi
+  # cat .gitignore | grep -q -s "Pipfile.lock"
+  # if [ $? -eq 1 ] ; then
+  #   echo "\n# pipenv" >> .gitignore
+  #   echo "Pipfile.lock" >> .gitignore
+  # fi
   git add .
   git commit -a -m "Initial project setup"
 }
 
+add_scaffold() {
+  : ${2:=--force}
+  pipenv install --dev pyscaffold pytest pytest-cov pytest-mock
+  pipenv run putup --tox $1 $2
+  cp -Rf $1/.* .
+  cp -Rf $1/* .
+  rm -rf $1
+  customise_scaffold $1
+  pipenv run python setup.py develop
+}
+
+add_sam() {
+  pipenv install --dev aws-sam-cli boto3 moto
+  pipenv run sam init --runtime python --name $1
+  mkdir -p tests/unit src
+  mv -f $1/tests/unit/*.py tests/unit/
+  mv -f $1/hello_world src
+  mv -f $1/template.yaml .
+  mv -f $1/README.md README-SAM.md
+  touch .gitignore
+  touch $1/.gitignore
+  cat $1/.gitignore >> .gitignore
+  customise_sam $1
+  rm -rf $1
+  pipenv run python setup.py develop
+}
+
+make_project_dir() {
+  echo "Creating new python pipenv and project directory '$1' at $PWD/$1"
+  mkdir -p $1 && cd $1
+  pipenv --python $(which python3)
+}
+
 ### python 2 version
 py2new() {
-  echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
-  mkvirtualenv -p python2 $1 # --system-site-packages
-  workon $1
-  pip install -U pyscaffold==2.5
-  putup --with-tox $1 $2
-  cd $1
-  setvirtualenvproject
-  workon $1
-  atom .
+  : ${2:=--force}
+  echo "Creating new python pipenv and project directory '$1' at $PWD/$1"
+  mkdir $1 && cd $1
+  pipenv --python $(which python2)
 
+  pipenv install --dev pyscaffold==2.5 tox
+  pipenv run putup --tox $1 $2
+  cp -rf $1/.* .
+  cp -rf $1/* .
+  rm -rf $1
   customise_scaffold $1
+
   reset_git
+
+  pipenv run atom .
+
+  pipenv shell
 }
 # call above with
 # $ pynew foo [--update|--force]
 
 ### python 3 version
 pynew() {
-  echo "Creating new python virtualenv and project directory '$1' at $PWD/$1"
-  mkvirtualenv -p python3 $1 # --system-site-packages
-  workon $1
-  pip install -U pyscaffold
-  putup --tox $1 $2
-  cd $1
-  setvirtualenvproject
-  workon $1
-  atom .
+  make_project_dir $1
 
-  customise_scaffold $1
+  add_scaffold $1 $2
+
   reset_git
+
+  pipenv run atom .
+
+  pipenv shell
 }
 # call above with
-# $ py3new foo [--update|--force]
+# $ pynewenv foo [--update]
+# run py[auto]test from pipenv shell
+# run [auto]tox from regular shell
 ######################################################################
+
+### python 3 version
+pynewsam() {
+  make_project_dir $1
+
+  add_scaffold $1 $2
+
+  add_sam $1
+
+  reset_git
+
+  pipenv run atom .
+
+  pipenv shell
+}
+# call above with
+# $ pynewenv foo [--update]
+######################################################################
+
+
+pyautotest_master () {
+  # /usr/local/bin/pyautotest
+  #!/bin/bash
+  echo "watching for changes..."
+  watchmedo shell-command                 \
+    --wait                                \
+    --patterns="*.py;*.txt"               \
+    --recursive                           \
+    --ignore-pattern="*egg*;*.pyc"        \
+    --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching pytest..."; python setup.py test' \
+    .
+}
+
+autotox_master () {
+  # /usr/local/bin/autotox
+  #!/bin/bash
+  echo "watching for changes..."
+  watchmedo shell-command                 \
+    --wait                                \
+    --patterns="*.py;*.txt"               \
+    --recursive                           \
+    --ignore-pattern="*egg*;*tox*"        \
+    --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching tox..."; tox -q' \
+    .
+}
