@@ -132,7 +132,6 @@ brew_install_casks ${language_casks[@]}
 declare -a language_bottles=(
   python@2
   python       # now the default for python@3
-  pipenv
   rbenv
   go
   yarn
@@ -168,9 +167,11 @@ brew cleanup
 # python installs
 declare -a my_essential_python_modules=(
   pip
+  pipenv
   setuptools
   wheel
   watchdog
+  tox-pipenv
   autopep8
 )
 
