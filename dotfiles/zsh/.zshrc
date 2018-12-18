@@ -9,6 +9,8 @@
 # Force yourself as the system's default user
 DEFAULT_USER="$(whoami)"
 
+unsetopt nomatch
+
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   . "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
