@@ -3,6 +3,7 @@
 scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/pwd || pwd)
 . $scriptDirectory/../conf/node/helpers.sh
 . $scriptDirectory/../conf/brew/helpers.sh
+. $scriptDirectory/../conf/python/helpers.sh
 
 ################################################################################
 # Install software
@@ -165,26 +166,31 @@ brew cleanup
 
 ######################################
 # python installs
+declare -a my_essential_python_modules=(
+  pip
+  setuptools
+  wheel
+  watchdog
+  autopep8
+)
+
 echo ""
 echo "Setting up python 2 environment..."
-pip2 install -U           \
-  pip                     \
-  virtualenv              \
-  virtualenvwrapper       \
-  autopep8                \
-  watchdog
+pip2_install "${my_essential_python_modules[@]}"
+
 echo ""
 echo "Setting up python 3 environment..."
-pip3 install -U           \
-  pip                     \
-  virtualenv              \
-  virtualenvwrapper       \
-  autopep8                \
-  watchdog
+pip3_install "${my_essential_python_modules[@]}"
+
+declare -a my_system_python_modules=(
+  speedtest-cli
+)
+
 echo ""
 echo "Installing system python modules..."
-pip install -U \
-  speedtest-cli
+pip2_install "${my_system_python_modules[@]}"
+pip3_install "${my_system_python_modules[@]}"
+
 
 #####################################
 # Linux
