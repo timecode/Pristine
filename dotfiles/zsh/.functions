@@ -190,11 +190,11 @@ test:
 	python setup.py test
 
 clean:
+  rm -rf .tox .eggs .pytest_cache
 	rm -rf lambda_package.zip lambda_package deploy.yaml
 	find . -name "*.pyc" -depth -exec rm -rf {} \;
 	find . -name "__pycache__" -depth -exec rm -rf {} \;
 	find . -name "*.egg-info" -depth -exec rm -rf {} \;
-	rm -rf .tox .eggs .pytest_cache
 
 build:
 	pipenv lock -r | sed 's/-e //g' | pipenv run pip install -r /dev/stdin --target lambda_package
