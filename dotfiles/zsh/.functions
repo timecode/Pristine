@@ -51,12 +51,16 @@ commands = flake8 setup.py src tests
 
 [flake8]
 ignore =
+    # E712    # poor comparison to False
+    # E501    # line too long
     # F401    # imported but unused
     # E722    # do not use bare except
     # E402    # module level import not at top of file
     # E241    # multiple spaces after ','
     # E226    # missing white space around arithmetic operator
     # E222    # multiple spaces after operator
+    # W503    # line break before binary operator
+    # W504    # line break after binary operator
 EOF
 }
 
@@ -328,7 +332,7 @@ pyautotest () {
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
-    --patterns="*.py;*.txt"               \
+    --patterns="*.py;*.txt;*.ini;*.cfg"   \
     --recursive                           \
     --ignore-pattern="*egg*;*.pyc"        \
     --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching pytest..."; python setup.py test' \
@@ -339,9 +343,9 @@ autotox () {
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
-    --patterns="*.py;*.txt"               \
+    --patterns="*.py;*.txt;*.ini;*.cfg"   \
     --recursive                           \
-    --ignore-pattern="*egg*;*.pyc;*tox*"  \
+    --ignore-pattern="*egg*;*.pyc"  \
     --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching tox..."; tox -q' \
     .
 }
