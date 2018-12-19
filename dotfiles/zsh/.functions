@@ -18,13 +18,14 @@
 # }
 
 create_tox_file() {
+  toxini='tox.ini'
   rm -rf tox.ini
-  cat << \EOF > tox.ini
+  cat << \EOF > ${toxini}
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # tox (https://tox.readthedocs.io/) is a tool for running tests in multiple
 # virtualenvs. This configuration file will run the test suite on all supported
-# python versions. "pip install tox" and then run "tox" from this directory.
+# python versions referenced in the 'envlist' (py{...}) below.
 
 [tox]
 skipsdist = True
@@ -63,12 +64,12 @@ customise_scaffold() {
   readmerst='README.rst'
   readme='README.md'
 
-  sed -i '' -- 's/=//g' $readmerst
-  sed -i '' -- 's/^\($1\)/# \1/g' $readmerst
+  perl -pi -e "s/=//g" $readmerst
+  perl -pi -e "s/^($1)/# \1/g" $readmerst
   tail -n +2 $readmerst > $readme
 
-  sed -i '' -- 's/\(Description\)/## \1/g' $readme
-  sed -i '' -- 's/\(Note\)/## \1/g' $readme
+  perl -pi -e "s/(Description)/## \1/g" $readme
+  perl -pi -e "s/(Note)/## \1/g" $readme
   cat << \EOF >> $readme
 
 ## Dev
@@ -84,17 +85,17 @@ $ pipenv install --dev pytest
 To run tests AUTOMATICALLY:
 
 ```sh
-$ autotox                   # DO NOT run from pipenv shell
+$ autotox                           # Run from regular shell (NOT pipenv shell)
 # or
-$ pyautotest                # Run from pipenv shell
+$ pyautotest                        # Run from pipenv shell
 ```
 
 To run tests MANUALLY:
 
 ```sh
-$ tox                       # DO NOT run from pipenv shell
+$ tox                               # Run from regular shell (NOT pipenv shell)
 # or
-$ python setup.py test      # Run from pipenv shell
+$ python setup.py test              # Run from pipenv shell
 ```
 
 To view test coverage:
@@ -105,9 +106,9 @@ $ open htmlcov/index.html
 EOF
 
   setupcfg='setup.cfg'
-  sed -i '' -- 's/\(--cov\s*\).*\(\s*--cov-report\s*\).*/\1 src \2 html --last-failed/g' $setupcfg
-  sed -i '' -- "s/\(description-file =\) $readmerst/\1 $readme/g" $setupcfg
-  sed -i '' -- 's/\[\(pytest\)\]/\[tool:\1\]/g' $setupcfg
+  perl -pi -e "s/(--cov\s*).*(--cov-report\s*).*/\1src \2html --last-failed/g" $setupcfg
+  perl -pi -e "s/(description-file =) $readmerst/\1 $readme/g" $setupcfg
+  perl -pi -e "s/\[(pytest)\]/\[tool:\1\]/g" $setupcfg
 
   create_tox_file
 
@@ -123,7 +124,9 @@ EOF
 customise_sam() {
   template='template.yaml'
 
-  sed -i '' -- 's/CodeUri: hello_world/CodeUri: src\/hello_world/g' $template
+  perl -pi -e "s/(CodeUri:\s*).*/\1lambda_package\//g" $template
+  perl -pi -e "s/(Handler:\s*)(.*)/\1hello_world.\2/g" $template
+  perl -pi -e "s/'|\"//g" $template
 }
 
 setup_test_dir() {
@@ -162,6 +165,77 @@ reset_git() {
   git commit -a -m "Initial project setup"
 }
 
+make_project_dir() {
+  echo "Creating new python pipenv and project directory '$1' at $PWD/$1"
+  mkdir -p $1 && cd $1
+  pipenv --python $(which python3)
+}
+
+add_sam_makefile() {
+  makefile='Makefile'
+  rm -rf ${makefile}
+  cat << \EOF > ${makefile}
+VERSION=$$(date +"%Y%m%d_%H%M%S")
+COMPONENT=COMPONENT_NAME_HERE
+TEMPLATE_FILE=template.yaml
+PACKAGE_FILE=deploy.yaml
+CF_BUCKET=users-infrastructure-starlingbank-com-k8d4j5r5ack9
+
+pip-setup:
+	pipenv install --dev
+
+pip-update: pip-setup
+
+test:
+	python setup.py test
+
+clean:
+	rm -rf lambda_package.zip lambda_package deploy.yaml
+	find . -name "*.pyc" -depth -exec rm -rf {} \;
+	find . -name "__pycache__" -depth -exec rm -rf {} \;
+	find . -name "*.egg-info" -depth -exec rm -rf {} \;
+	rm -rf .tox .eggs .pytest_cache
+
+build:
+	pipenv lock -r | sed 's/-e //g' | pipenv run pip install -r /dev/stdin --target lambda_package
+	rsync -avm --include='*.py' -f 'hide,! */' src/* lambda_package
+
+package:
+	cd lambda_package && zip -r9 ../lambda_package.zip *
+	rm -rf lambda_package
+
+make: sam package
+
+sam: clean build
+
+samvalidate:
+	pipenv run sam validate
+
+sampackage: samvalidate sam
+	@echo "Packaging version ${USER}/${VERSION}"
+	@pipenv run sam package \
+      --template-file ${TEMPLATE_FILE} \
+      --s3-bucket ${CF_BUCKET} \
+      --s3-prefix ${COMPONENT}/${USER}/${VERSION} \
+      --output-template-file ${PACKAGE_FILE}
+	rm -rf lambda_package
+
+samdeploy:
+	@pipenv run sam deploy \
+			--capabilities CAPABILITY_NAMED_IAM CAPABILITY_IAM \
+			--template-file ${PACKAGE_FILE} \
+			--stack-name ${COMPONENT}
+
+samclean: clean
+	@pipenv run aws s3 rm \
+	    s3://${CF_BUCKET}/${COMPONENT}/ \
+	      --recursive \
+	      --exclude "*" \
+	      --include "*${USER}*"
+EOF
+perl -pi -e "s/COMPONENT_NAME_HERE/$1/g" ${makefile}
+}
+
 add_scaffold() {
   : ${2:=--force}
   pipenv install --dev pyscaffold pytest pytest-cov pytest-mock
@@ -187,12 +261,7 @@ add_sam() {
   customise_sam $1
   rm -rf $1
   pipenv run python setup.py develop
-}
-
-make_project_dir() {
-  echo "Creating new python pipenv and project directory '$1' at $PWD/$1"
-  mkdir -p $1 && cd $1
-  pipenv --python $(which python3)
+  add_sam_makefile $1
 }
 
 ### python 2 version
@@ -255,9 +324,7 @@ pynewsam() {
 ######################################################################
 
 
-pyautotest_master () {
-  # /usr/local/bin/pyautotest
-  #!/bin/bash
+pyautotest () {
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
@@ -268,15 +335,13 @@ pyautotest_master () {
     .
 }
 
-autotox_master () {
-  # /usr/local/bin/autotox
-  #!/bin/bash
+autotox () {
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
     --patterns="*.py;*.txt"               \
     --recursive                           \
-    --ignore-pattern="*egg*;*tox*"        \
+    --ignore-pattern="*egg*;*.pyc;*tox*"  \
     --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching tox..."; tox -q' \
     .
 }
