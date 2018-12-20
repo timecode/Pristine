@@ -334,7 +334,7 @@ pyautotest () {
     --wait                                \
     --patterns="*.py;*.txt;*.ini;*.cfg"   \
     --recursive                           \
-    --ignore-pattern="*egg*;*.pyc"        \
+    --ignore-pattern="*egg*;*.pyc;*.tox"  \
     --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching pytest..."; python setup.py test' \
     .
 }
@@ -345,7 +345,7 @@ autotox () {
     --wait                                \
     --patterns="*.py;*.txt;*.ini;*.cfg"   \
     --recursive                           \
-    --ignore-pattern="*egg*;*.pyc"  \
+    --ignore-pattern="*egg*;*.pyc;*.tox"  \
     --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching tox..."; tox -q' \
     .
 }
