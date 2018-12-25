@@ -129,7 +129,7 @@ nvm use stable
 
 ######################################################################
 # RBENV
-RUBY_VERSION=2.5.1
+RUBY_VERSION=2.5.3
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
