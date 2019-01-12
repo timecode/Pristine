@@ -88,8 +88,6 @@ brew cask doctor
 # Homebrew automatically taps and keeps Homebrew-Cask updated. brew update is all that is required.
 brew upgrade
 brew cask upgrade $(brew_installed_casks)
-# tidy symlinks
-brew prune
 
 # list currently installed versions
 brew_installed_bottles_list
