@@ -39,11 +39,25 @@ if [ -f /usr/local/bin/npm ]; then
   rm /usr/local/bin/npm
 fi
 
+install_nvm=0
 if [ -d $HOME/.nvm ]; then
   echo "... a version of nvm is already installed"
+
+  # check it's up-to-date
+  current=$(grep -hnr '"version":' $HOME/.nvm/package.json | sed -E 's/.*: "(.*)".*/\1/')
+  latest=$(git ls-remote --tags git://github.com/creationix/nvm.git | cut -d/ -f3- | sort -t. -nk1,2 -k2 | awk '/^[^{]*$/{version=$1}END{print version}' | sed s/v//g)
+  if [[ ${current} != ${latest} ]]; then
+    echo "... updating nvm"
+    echo ""
+    install_nvm=1
+  fi
 else
   echo "... installing nvm"
   echo ""
+  install_nvm=1
+fi
+
+if [ ${install_nvm} -eq 1 ]; then
   # https://github.com/creationix/nvm
   curl -o- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
   # wget -qO- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
@@ -62,6 +76,11 @@ nvm install-latest-npm
 npm config delete prefix
 nvm use stable
 
+echo ""
+echo "To remove previous node versions..."
+echo "$ nvm ls"
+echo "$ nvm uninstall <version>"
+
 # list currently installed package versions
 node_installed_packages_list
 
@@ -71,6 +90,8 @@ echo "Checking for uninstalled packages..."
 declare -a my_essential_node_packages=(
   spoof
   http-server
+  graphql@^0.13.0
+  @aws-amplify/cli
 )
 node_install_packages "${my_essential_node_packages[@]}"
 
