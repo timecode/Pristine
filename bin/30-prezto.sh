@@ -45,4 +45,6 @@ echo "... modifying .zpretzorc ..."
 
 sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'pristine'/g" ${ZDOTDIR:-$HOME}/.zpreztorc
 sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto:module:editor' key-bindings 'vi'/g" ${ZDOTDIR:-$HOME}/.zpreztorc
-sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'node' 'ruby' \\\/g" ${ZDOTDIR:-$HOME}/.zpreztorc
+# sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' 'node' \\\/g" ${ZDOTDIR:-$HOME}/.zpreztorc
+# removing node module due to prezto-grunt-cache.502.zsh:37: command not found: compdef
+sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' \\\/g" ${ZDOTDIR:-$HOME}/.zpreztorc
