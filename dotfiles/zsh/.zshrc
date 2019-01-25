@@ -116,52 +116,6 @@ alias dma='docker-machine start DockerMachine && dme'
 alias dmz='docker-machine stop DockerMachine'
 
 ######################################################################
-# RBENV
-RUBY_VERSION=2.5.3
-# https://github.com/rbenv/rbenv
-# rbenv versions          # all local versions
-# rbenv install -l        # all available versions
-# rbenv install x.x.x     # install a particular version
-# rbenv uninstall x.x.x   # uninstall a particular version
-# rbenv rehash            # run after installing a new version
-# rbenv global x.x.x      # set the version to be used globally
-echo $PATH | grep -q -s "$HOME/.rbenv/bin"
-if [ $? -eq 1 ] ; then
-  export PATH="$HOME/.rbenv/bin":$PATH
-fi
-echo $PATH | grep -q -s "$HOME/.rbenv/shims"
-if [ $? -eq 1 ] ; then
-  eval "$(rbenv init -)"
-fi
-rbenv global ${RUBY_VERSION}
-if [ $? -ne 0 ]; then
-  echo "install required version with:"
-  echo "$ rbenv install ${RUBY_VERSION}"
-fi
-
-######################################################################
-# GOLANG
-export GOPATH=$HOME/go
-echo $PATH | grep -q -s "$GOPATH/bin"
-if [ $? -eq 1 ] ; then
-  export PATH="$GOPATH/bin":$PATH
-fi
-
-######################################################################
-# NVM
-# nvm install-latest-npm
-# nvm ls-remote
-# nvm install 11.0.1
-# nvm uninstall 11.0.0
-# nvm ls
-# nvm unalias default
-# nvm alias "default" "11.0.1"
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm use stable
-
-######################################################################
 # Source other files
 
 # source functions-dev
@@ -187,5 +141,66 @@ else
   see https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html"'
 fi
 
+######################################################################
+######################################################################
+# Setup Language Environment helpers
+
+######################################################################
+# RBENV
+RUBY_VERSION=2.5.3
+# https://github.com/rbenv/rbenv
+# rbenv versions          # all local versions
+# rbenv install -l        # all available versions
+# rbenv install x.x.x     # install a particular version
+# rbenv uninstall x.x.x   # uninstall a particular version
+# rbenv rehash            # run after installing a new version
+# rbenv global x.x.x      # set the version to be used globally
+echo $PATH | grep -q -s "$HOME/.rbenv/bin"
+if [ $? -eq 1 ] ; then
+  export PATH="$HOME/.rbenv/bin":$PATH
+fi
+echo $PATH | grep -q -s "$HOME/.rbenv/shims"
+if [ $? -eq 1 ] ; then
+  eval "$(rbenv init -)"
+fi
+rbenv global ${RUBY_VERSION}
+if [ $? -ne 0 ]; then
+  echo "install required version with:"
+  echo "$ rbenv install ${RUBY_VERSION}"
+fi
+
+echo "Now using $(ruby --version)"
+
+######################################################################
+# GOLANG
+export GOPATH=$HOME/go
+echo $PATH | grep -q -s "$GOPATH/bin"
+if [ $? -eq 1 ] ; then
+  export PATH="$GOPATH/bin":$PATH
+fi
+
+echo "Now using $(go version)"
+
+######################################################################
+# NVM
+# nvm install-latest-npm
+# nvm ls-remote
+# nvm install 11.0.1
+# nvm uninstall 11.0.0
+# nvm ls
+# nvm unalias default
+# nvm alias "default" "11.0.1"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm use stable
+
+######################################################################
+# Python
+echo "Now using $(python --version 2>&1)"
+
+######################################################################
+######################################################################
+echo
 echo 'Login and run command complete'
 echo
