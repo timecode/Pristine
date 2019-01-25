@@ -114,20 +114,6 @@ alias dma='docker-machine start DockerMachine && dme'
 alias dmz='docker-machine stop DockerMachine'
 
 ######################################################################
-# NVM
-# nvm install-latest-npm
-# nvm ls-remote
-# nvm install 10.0.1
-# nvm uninstall 10.0.0
-# nvm ls
-# nvm unalias default
-# nvm alias "default" "10.0.1"
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm use stable
-
-######################################################################
 # RBENV
 RUBY_VERSION=2.5.3
 # https://github.com/rbenv/rbenv
@@ -158,6 +144,23 @@ echo $PATH | grep -q -s "$GOPATH/bin"
 if [ $? -eq 1 ] ; then
   export PATH="$GOPATH/bin":$PATH
 fi
+
+######################################################################
+# NVM
+# nvm install-latest-npm
+# nvm ls-remote
+# nvm install 11.0.1
+# nvm uninstall 11.0.0
+# nvm ls
+# nvm unalias default
+# nvm alias "default" "11.0.1"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm use stable
+
+######################################################################
+# Source other files
 
 # source functions-dev
 if [ -e ~/.functions-dev ]; then
