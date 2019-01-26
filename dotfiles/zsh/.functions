@@ -9,13 +9,9 @@
 # alias setvep='setvirtualenvproject'
 # . /usr/local/bin/virtualenvwrapper.sh
 
-# python_valid_identifier() {
-#   string = string.strip()
-#   string = string.replace("-", "_")
-#   string = string.replace(" ", "_")
-#   string = re.sub('[^_a-zA-Z0-9]', '_', string)
-#   string = string.lower()
-# }
+python_valid_identifier() {
+  echo $(echo "$1" | sed -e 's/[^a-zA-Z0-9]/_/g' | tr '[A-Z]' '[a-z]')
+}
 
 create_tox_file() {
   toxini='tox.ini'
@@ -33,35 +29,45 @@ envlist = py{37},flake8
 skip_missing_interpreters = True
 
 [testenv]
+basepython = python3
 # uncomment to omit testing package builds & installs for faster runs
 skipsdist=True
 whitelist_externals = python
 extras = testing
-# deps =
-    # dependencies go here
+deps =
+    pytest
+    coverage
 commands =
     python setup.py develop
-    pytest --basetemp={envtmpdir} {posargs}
+    pytest {posargs} --basetemp={envtmpdir} --verbose --cov=COMPONENT_NAME_HERE --cov-report html
 
 [testenv:flake8]
 skip_install = true
 changedir = {toxinidir}
-deps = flake8
-commands = flake8 setup.py src tests
+deps =
+    flake8
+    pep8-naming
+    flake8-colors
+commands =
+    flake8 setup.py src/COMPONENT_NAME_HERE tests
+    # --verbose
 
 [flake8]
+format = ${cyan}%(path)s${reset}:${yellow_bold}%(row)d${reset}:${green_bold}%(col)d${reset}: ${red_bold}%(code)s${reset} %(text)s
 ignore =
     # E712    # poor comparison to False
-    # E501    # line too long
+    E501    # line too long
     # F401    # imported but unused
     # E722    # do not use bare except
     # E402    # module level import not at top of file
     # E241    # multiple spaces after ','
     # E226    # missing white space around arithmetic operator
     # E222    # multiple spaces after operator
-    # W503    # line break before binary operator
-    # W504    # line break after binary operator
+    W503    # line break before binary operator
+    W504    # line break after binary operator
 EOF
+python_name=$(python_valid_identifier $1)
+perl -pi -e "s/COMPONENT_NAME_HERE/${python_name}/g" ${toxini}
 }
 
 customise_scaffold() {
@@ -114,7 +120,7 @@ EOF
   perl -pi -e "s/(description-file =) $readmerst/\1 $readme/g" $setupcfg
   perl -pi -e "s/\[(pytest)\]/\[tool:\1\]/g" $setupcfg
 
-  create_tox_file
+  create_tox_file $1
 
   rm -f $readmerst AUTHORS.rst CHANGELOG.rst LICENSE.txt
 
@@ -186,19 +192,22 @@ PACKAGE_FILE=deploy.yaml
 CF_BUCKET=users-infrastructure-starlingbank-com-k8d4j5r5ack9
 
 pip-setup:
-	pipenv install --dev
+	@ pip install --upgrade \
+		pipenv \
+		tox-pipenv \
+	&& pipenv install --dev
 
 pip-update: pip-setup
 
 test:
-	python setup.py test
+	pipenv run python setup.py test
 
 clean:
-  rm -rf .tox .eggs .pytest_cache
-	rm -rf lambda_package.zip lambda_package deploy.yaml
-	find . -name "*.pyc" -depth -exec rm -rf {} \;
-	find . -name "__pycache__" -depth -exec rm -rf {} \;
-	find . -name "*.egg-info" -depth -exec rm -rf {} \;
+	@ rm -rf .tox .eggs .pytest_cache
+	@ rm -rf lambda_package.zip ${BUILD_PATH}/*
+	@ find . -name "*.pyc" -depth -exec rm -rf {} \;
+	@ find . -name "__pycache__" -depth -exec rm -rf {} \;
+	@ find . -name "*.egg-info" -depth -exec rm -rf {} \;
 
 build:
 	pipenv lock -r | sed 's/-e //g' | pipenv run pip install -r /dev/stdin --target lambda_package
@@ -213,7 +222,7 @@ make: sam package
 sam: clean build
 
 samvalidate:
-	pipenv run sam validate
+	@ pipenv run sam validate
 
 sampackage: samvalidate sam
 	@echo "Packaging version ${USER}/${VERSION}"
