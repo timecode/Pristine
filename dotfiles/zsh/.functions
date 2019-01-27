@@ -134,7 +134,7 @@ EOF
 customise_sam() {
   template='template.yaml'
 
-  perl -pi -e "s/(CodeUri:\s*).*/\1lambda_package\//g" $template
+  perl -pi -e "s/(CodeUri:\s*).*/\1src\//g" $template
   perl -pi -e "s/(Handler:\s*)(.*)/\1hello_world.\2/g" $template
   perl -pi -e "s/'|\"//g" $template
 }
@@ -399,6 +399,19 @@ pyautotest () {
     --ignore-pattern="*egg*;*.pyc;*.tox*;*.aws-sam*"  \
     --ignore-directories                  \
     --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching pytest..."; python setup.py test' \
+    .
+}
+
+samautobuild () {
+  echo "watching for changes..."
+  watchmedo shell-command                 \
+    --wait                                \
+    --drop                                \
+    --patterns="*.py;*.txt;*.ini;*.cfg;*.yaml"   \
+    --recursive                           \
+    --ignore-pattern="*egg*;*.pyc;*.tox*;*.aws-sam*;*/tests/*"  \
+    --ignore-directories                  \
+    --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching fresh sam local start-api..."; make sam-local-clean; make build' \
     .
 }
 
