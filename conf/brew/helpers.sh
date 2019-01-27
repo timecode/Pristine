@@ -12,7 +12,7 @@ function brew_installed_bottles_list() {
   local installed=($(brew_installed_bottles))
   if [ ${#installed[@]} -gt 0 ]; then
     echo ""
-    echo "Installed bottles..."
+    echo "Currently installed bottles..."
     brew ls --versions ${installed}
   fi
 }
@@ -21,7 +21,7 @@ function brew_installed_casks_list() {
   local installed=($(brew_installed_casks))
   if [ ${#installed[@]} -gt 0 ]; then
     echo ""
-    echo "Installed casks..."
+    echo "Currently installed casks..."
     brew cask ls --versions ${installed}
   fi
 }

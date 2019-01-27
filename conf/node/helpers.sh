@@ -145,7 +145,7 @@ function yarn_global_installed_packages_list() {
   local installed=($(yarn_global_installed_packages))
   if [ ${#installed[@]} -gt 0 ]; then
     echo ""
-    echo "Installed yarn global packages..."
+    echo "Currently installed yarn global packages..."
     for element in "${installed[@]}"; do
       echo "${element}"
     done
