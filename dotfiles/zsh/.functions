@@ -279,9 +279,9 @@ add_sam_makefile() {
   			${COMPONENTS_PATH}/${COMPONENT}/${TEMPLATE_FILE} \
   			${DEPLOYMENT_BUILD_PATH}/${COMPONENT}
 
-  sam-local:
-    @ sam local start-api \
-  			--template ${COMPONENTS_PATH}/${COMPONENT}/${TEMPLATE_FILE}
+  sam-local: sam-local-clean sam-local-build
+  	@ sam local start-api \
+  			--template ${BUILD_PATH}/${TEMPLATE_FILE}
 
   package:
   	@ cd ${BUILD_PACKAGE_DIR} && \
@@ -328,19 +328,19 @@ add_sam_makefile() {
   			s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/config \
   	&& echo "Uploaded files for BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})"
 
-  sam-package: sam-validate deploy-clean deploy-build set-build-number sam-stage
-
   sam-sync-deploy-files:
-  	@ rm -rf ${LOCAL_DIR}/config
-  	@ rm -rf ${LOCAL_DIR}/${DEPLOYMENT_FILE}
-  	@ pipenv run aws s3 sync \
+  	@ rm -rf ${LOCAL_DIR}/config \
+  	&& rm -rf ${LOCAL_DIR}/${DEPLOYMENT_FILE} \
+  	&& pipenv run aws s3 sync \
   		s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/config \
-  		${LOCAL_DIR}/config
-  	@ pipenv run aws s3 cp \
+  		${LOCAL_DIR}/config \
+  	&& pipenv run aws s3 cp \
   		s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/${DEPLOYMENT_FILE} \
   		${LOCAL_DIR}/${DEPLOYMENT_FILE}
 
-  sam-deploy: sam-sync-deploy-files check-properties-file
+  sam-package: sam-validate deploy-clean deploy-build set-build-number sam-stage
+
+  sam-deploy: check-properties-file
   	@ source ${PROPERTIES_FILE_PATH} \
   	&& echo "Deploying BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})" \
   	&& pipenv run sam deploy \
