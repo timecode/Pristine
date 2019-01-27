@@ -393,9 +393,11 @@ pyautotest () {
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
+    --drop                                \
     --patterns="*.py;*.txt;*.ini;*.cfg"   \
     --recursive                           \
-    --ignore-pattern="*egg*;*.pyc;*.tox*"  \
+    --ignore-pattern="*egg*;*.pyc;*.tox*;*.aws-sam*"  \
+    --ignore-directories                  \
     --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching pytest..."; python setup.py test' \
     .
 }
@@ -404,9 +406,11 @@ autotox () {
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
+    --drop                                \
     --patterns="*.py;*.txt;*.ini;*.cfg"   \
     --recursive                           \
-    --ignore-pattern="*egg*;*.pyc;*.tox*"  \
+    --ignore-pattern="*egg*;*.pyc;*.tox*;*.aws-sam*"  \
+    --ignore-directories                  \
     --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching tox..."; tox -q' \
     .
 }
