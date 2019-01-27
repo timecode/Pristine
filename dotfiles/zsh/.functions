@@ -185,66 +185,118 @@ add_sam_makefile() {
   makefile='Makefile'
   rm -rf ${makefile}
   cat << \EOF > ${makefile}
-VERSION=$$(date +"%Y%m%d_%H%M%S")
-COMPONENT=COMPONENT_NAME_HERE
-TEMPLATE_FILE=template.yaml
-PACKAGE_FILE=deploy.yaml
-CF_BUCKET=users-infrastructure-starlingbank-com-k8d4j5r5ack9
+  #!make
+  SHELL := /bin/bash
 
-pip-setup:
-	@ pip install --upgrade \
-		pipenv \
-		tox-pipenv \
-	&& pipenv install --dev
+  COMPONENT ?= COMPONENT_NAME_HERE
+  SAM_ARTIFACTS_BUCKET ?= account-infrastructure-catsizerats-com-201901262215
+  DEPLOYMENT_BUCKET ?= ${SAM_ARTIFACTS_BUCKET}
 
-pip-update: pip-setup
+  SAM_BUILD_DIR := .aws-sam
+  BUILD_PATH := ${SAM_BUILD_DIR}/build
+  PYTHON_COMPONENT := $$(echo "${COMPONENT}" \
+  	| sed -e 's/[^a-zA-Z0-9]/_/g' \
+  	| tr '[A-Z]' '[a-z]')
+  PYTHON_APP_DIR := src/${PYTHON_COMPONENT}
+  BUILD_PACKAGE_DIR := ${BUILD_PATH}/src
+  TEMPLATE_FILE := template.yaml
+  DEPLOYMENT_FILE := main.yml
+  CONFIG_PATH := deployment/config
+  COMPONENTS_PATH := deployment/components
 
-test:
-	pipenv run python setup.py test
+  USER ?= "unknown_user"
+  DATE_STAMP := $$(date +"%Y%m%d.%H%M")
+  BUILD_NUMBER ?= ${USER}/${DATE_STAMP}.SNAPSHOT
+  BUILD_NUMBER_FILE := ${COMPONENTS_PATH}/${COMPONENT}/build-number
+  AWS_DEFAULT_REGION ?= ${AWS_REGION}
 
-clean:
-	@ rm -rf .tox .eggs .pytest_cache
-	@ rm -rf lambda_package.zip ${BUILD_PATH}/*
-	@ find . -name "*.pyc" -depth -exec rm -rf {} \;
-	@ find . -name "__pycache__" -depth -exec rm -rf {} \;
-	@ find . -name "*.egg-info" -depth -exec rm -rf {} \;
+  make: sam-package
 
-build:
-	pipenv lock -r | sed 's/-e //g' | pipenv run pip install -r /dev/stdin --target lambda_package
-	rsync -avm --include='*.py' -f 'hide,! */' src/* lambda_package
+  pip-setup:
+  	@ pip install --upgrade \
+  		pipenv \
+  		tox-pipenv \
+  	&& pipenv install --dev
 
-package:
-	cd lambda_package && zip -r9 ../lambda_package.zip *
-	rm -rf lambda_package
+  pip-update: pip-setup
 
-make: sam package
+  test:
+  	pipenv run python setup.py test
 
-sam: clean build
+  clean:
+  	@ rm -rf .tox .eggs .pytest_cache
+  	@ rm -rf lambda_package.zip ${SAM_BUILD_DIR}
+  	@ find . -name "*.pyc" -depth -exec rm -rf {} \;
+  	@ find . -name "__pycache__" -depth -exec rm -rf {} \;
+  	@ find . -name "*.egg-info" -depth -exec rm -rf {} \;
 
-samvalidate:
-	@ pipenv run sam validate
+  build:
+  	@ echo "Building ${PYTHON_COMPONENT} ${BUILD_NUMBER}"
+  	@ pipenv lock \
+  			--requirements \
+  				| sed 's/-e //g' \
+  				| pipenv run pip install \
+            --upgrade \
+  					--requirement /dev/stdin \
+  					--target ${BUILD_PACKAGE_DIR}/${PYTHON_COMPONENT}
+  	@ rsync \
+  			--archive \
+  			--prune-empty-dirs \
+  			--include='*.py' \
+  			--filter='hide,! */' \
+  				${PYTHON_APP_DIR} \
+  				${BUILD_PACKAGE_DIR}
+  	@ cp \
+  			template.yaml \
+  			${BUILD_PATH}
 
-sampackage: samvalidate sam
-	@echo "Packaging version ${USER}/${VERSION}"
-	@pipenv run sam package \
-      --template-file ${TEMPLATE_FILE} \
-      --s3-bucket ${CF_BUCKET} \
-      --s3-prefix ${COMPONENT}/${USER}/${VERSION} \
-      --output-template-file ${PACKAGE_FILE}
-	rm -rf lambda_package
+  package:
+  	@ cd ${BUILD_PACKAGE_DIR} && \
+  		zip -r9 \
+  			../../../lambda_package.zip \
+  			*
+  	@ rm -rf ${SAM_BUILD_DIR}
 
-samdeploy:
-	@pipenv run sam deploy \
-			--capabilities CAPABILITY_NAMED_IAM CAPABILITY_IAM \
-			--template-file ${PACKAGE_FILE} \
-			--stack-name ${COMPONENT}
+  sam-validate:
+  	@ pipenv run sam validate
 
-samclean: clean
-	@pipenv run aws s3 rm \
-	    s3://${CF_BUCKET}/${COMPONENT}/ \
-	      --recursive \
-	      --exclude "*" \
-	      --include "*${USER}*"
+  set-build-number:
+  	@ mkdir -p ${COMPONENTS_PATH}/${COMPONENT} \
+  		&& echo "${BUILD_NUMBER}" > ${BUILD_NUMBER_FILE}
+
+  sam-stage:
+  	@ echo "Packaging version ${BUILD_NUMBER}"
+  	@ pipenv run sam package \
+  		--template-file ${TEMPLATE_FILE} \
+  		--s3-bucket ${SAM_ARTIFACTS_BUCKET} \
+  		--s3-prefix ${COMPONENT}/$$(<${BUILD_NUMBER_FILE}) \
+  		--output-template-file ${COMPONENTS_PATH}/${COMPONENT}/${DEPLOYMENT_FILE} \
+  	&& echo "Uploaded SAM artifacts for BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})" \
+  	&& pipenv run aws s3 cp \
+  		${COMPONENTS_PATH}/${COMPONENT}/${DEPLOYMENT_FILE} \
+  		s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/${DEPLOYMENT_FILE} \
+  	&& pipenv run aws s3 sync \
+  		--exclude "*" \
+  		--include "*/${PROPERTIES_FILE}" \
+  			${CONFIG_PATH} \
+  			s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/config \
+  	&& echo "Uploaded files for BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})" \
+  	&& rm -rf ${BUILD_PACKAGE_DIR}
+
+  sam-package: sam-validate clean build set-build-number sam-stage
+
+  sam-deploy:
+  	@ pipenv run sam deploy \
+  			--capabilities CAPABILITY_NAMED_IAM CAPABILITY_IAM \
+  			--template-file ${DEPLOYMENT_FILE} \
+  			--stack-name ${COMPONENT}
+
+  sam-clean: clean
+  	@ pipenv run aws s3 rm \
+  	    s3://${SAM_ARTIFACTS_BUCKET}/${COMPONENT}/ \
+  	      --recursive \
+  	      --exclude "*" \
+  	      --include "*${USER}*"
 EOF
 perl -pi -e "s/COMPONENT_NAME_HERE/$1/g" ${makefile}
 }
