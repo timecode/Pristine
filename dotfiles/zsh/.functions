@@ -194,6 +194,7 @@ add_sam_makefile() {
 
   SAM_BUILD_DIR := .aws-sam
   BUILD_PATH := ${SAM_BUILD_DIR}/build
+  DEPLOYMENT_BUILD_PATH := deployment/build
   PYTHON_COMPONENT := $$(echo "${COMPONENT}" \
   	| sed -e 's/[^a-zA-Z0-9]/_/g' \
   	| tr '[A-Z]' '[a-z]')
@@ -207,8 +208,12 @@ add_sam_makefile() {
   USER ?= "unknown_user"
   DATE_STAMP := $$(date +"%Y%m%d.%H%M")
   BUILD_NUMBER ?= ${USER}/${DATE_STAMP}.SNAPSHOT
-  BUILD_NUMBER_FILE := ${COMPONENTS_PATH}/${COMPONENT}/build-number
+  BUILD_NUMBER_FILE := ${DEPLOYMENT_BUILD_PATH}/${COMPONENT}/build-number
   AWS_DEFAULT_REGION ?= ${AWS_REGION}
+
+  LOCAL_DIR := ${DEPLOYMENT_BUILD_PATH}/${COMPONENT}
+  PROPERTIES_FILE := ${COMPONENT}.properties
+  PROPERTIES_FILE_PATH ?= ${LOCAL_DIR}/config/${PROPERTIES_FILE}
 
   make: sam-package
 
@@ -225,30 +230,58 @@ add_sam_makefile() {
 
   clean:
   	@ rm -rf .tox .eggs .pytest_cache
-  	@ rm -rf lambda_package.zip ${SAM_BUILD_DIR}
   	@ find . -name "*.pyc" -depth -exec rm -rf {} \;
   	@ find . -name "__pycache__" -depth -exec rm -rf {} \;
   	@ find . -name "*.egg-info" -depth -exec rm -rf {} \;
 
-  build:
+  deploy-clean: clean
+  	@ rm -rf lambda_package.zip ${DEPLOYMENT_BUILD_PATH}
+
+  sam-local-clean:
+  	@ rm -rf ${SAM_BUILD_DIR}
+
+  sam-local-build:
+  		@ pipenv lock \
+  				--requirements \
+  					| sed 's/-e //g' \
+  					| pipenv run pip install \
+  						--upgrade \
+  						--requirement /dev/stdin \
+  						--target ${BUILD_PACKAGE_DIR}
+  		@ rsync \
+  				--archive \
+  				--prune-empty-dirs \
+  				--include='*.py' \
+  				--filter='hide,! */' \
+  					${PYTHON_APP_DIR} \
+  					${BUILD_PACKAGE_DIR}
+  		@ cp \
+  				${COMPONENTS_PATH}/${COMPONENT}/${TEMPLATE_FILE} \
+  				${BUILD_PATH}
+
+  deploy-build:
   	@ echo "Building ${PYTHON_COMPONENT} ${BUILD_NUMBER}"
   	@ pipenv lock \
   			--requirements \
   				| sed 's/-e //g' \
   				| pipenv run pip install \
-            --upgrade \
+  					--upgrade \
   					--requirement /dev/stdin \
-  					--target ${BUILD_PACKAGE_DIR}/${PYTHON_COMPONENT}
+  					--target ${DEPLOYMENT_BUILD_PATH}/${COMPONENT}/src
   	@ rsync \
   			--archive \
   			--prune-empty-dirs \
   			--include='*.py' \
   			--filter='hide,! */' \
   				${PYTHON_APP_DIR} \
-  				${BUILD_PACKAGE_DIR}
+  				${DEPLOYMENT_BUILD_PATH}/${COMPONENT}/src
   	@ cp \
-  			template.yaml \
-  			${BUILD_PATH}
+  			${COMPONENTS_PATH}/${COMPONENT}/${TEMPLATE_FILE} \
+  			${DEPLOYMENT_BUILD_PATH}/${COMPONENT}
+
+  sam-local:
+    @ sam local start-api \
+  			--template ${COMPONENTS_PATH}/${COMPONENT}/${TEMPLATE_FILE}
 
   package:
   	@ cd ${BUILD_PACKAGE_DIR} && \
@@ -257,46 +290,78 @@ add_sam_makefile() {
   			*
   	@ rm -rf ${SAM_BUILD_DIR}
 
+  check-properties-file:
+  ifeq (,$(wildcard ${PROPERTIES_FILE_PATH}))
+  	@ echo "" \
+  	&& echo "Couldn't find properties config for BUILD_NUMBER: ${BUILD_NUMBER}" \
+  	&& echo "Please check BUILD_NUMBER is correct, or include a" \
+  	&& echo "PROPERTIES_FILE_PATH value at the command, i.e." \
+  	&& echo "make command PROPERTIES_FILE_PATH=..." \
+  	&& echo "" \
+  	&& echo "... exiting"
+  	@ (exit 1)
+  endif
+
   sam-validate:
-  	@ pipenv run sam validate
+  	@ pipenv run sam validate \
+  			--template ${COMPONENTS_PATH}/${COMPONENT}/${TEMPLATE_FILE}
 
   set-build-number:
-  	@ mkdir -p ${COMPONENTS_PATH}/${COMPONENT} \
+  	@ mkdir -p ${DEPLOYMENT_BUILD_PATH}/${COMPONENT} \
   		&& echo "${BUILD_NUMBER}" > ${BUILD_NUMBER_FILE}
 
   sam-stage:
   	@ echo "Packaging version ${BUILD_NUMBER}"
   	@ pipenv run sam package \
-  		--template-file ${TEMPLATE_FILE} \
-  		--s3-bucket ${SAM_ARTIFACTS_BUCKET} \
-  		--s3-prefix ${COMPONENT}/$$(<${BUILD_NUMBER_FILE}) \
-  		--output-template-file ${COMPONENTS_PATH}/${COMPONENT}/${DEPLOYMENT_FILE} \
+  			--template-file ${DEPLOYMENT_BUILD_PATH}/${COMPONENT}/${TEMPLATE_FILE} \
+  			--s3-bucket ${SAM_ARTIFACTS_BUCKET} \
+  			--s3-prefix ${COMPONENT}/$$(<${BUILD_NUMBER_FILE}) \
+  			--output-template-file ${DEPLOYMENT_BUILD_PATH}/${COMPONENT}/${DEPLOYMENT_FILE} \
   	&& echo "Uploaded SAM artifacts for BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})" \
   	&& pipenv run aws s3 cp \
-  		${COMPONENTS_PATH}/${COMPONENT}/${DEPLOYMENT_FILE} \
+  		${DEPLOYMENT_BUILD_PATH}/${COMPONENT}/${DEPLOYMENT_FILE} \
   		s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/${DEPLOYMENT_FILE} \
   	&& pipenv run aws s3 sync \
   		--exclude "*" \
-  		--include "*/${PROPERTIES_FILE}" \
+  		--include "${PROPERTIES_FILE}" \
   			${CONFIG_PATH} \
   			s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/config \
-  	&& echo "Uploaded files for BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})" \
-  	&& rm -rf ${BUILD_PACKAGE_DIR}
+  	&& echo "Uploaded files for BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})"
 
-  sam-package: sam-validate clean build set-build-number sam-stage
+  sam-package: sam-validate deploy-clean deploy-build set-build-number sam-stage
 
-  sam-deploy:
-  	@ pipenv run sam deploy \
-  			--capabilities CAPABILITY_NAMED_IAM CAPABILITY_IAM \
-  			--template-file ${DEPLOYMENT_FILE} \
+  sam-sync-deploy-files:
+  	@ rm -rf ${LOCAL_DIR}/config
+  	@ rm -rf ${LOCAL_DIR}/${DEPLOYMENT_FILE}
+  	@ pipenv run aws s3 sync \
+  		s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/config \
+  		${LOCAL_DIR}/config
+  	@ pipenv run aws s3 cp \
+  		s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/${DEPLOYMENT_FILE} \
+  		${LOCAL_DIR}/${DEPLOYMENT_FILE}
+
+  sam-deploy: sam-sync-deploy-files check-properties-file
+  	@ source ${PROPERTIES_FILE_PATH} \
+  	&& echo "Deploying BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})" \
+  	&& pipenv run sam deploy \
+  			--capabilities \
+  				CAPABILITY_NAMED_IAM \
+  				CAPABILITY_IAM \
+  			--template-file ${LOCAL_DIR}/${DEPLOYMENT_FILE} \
+  			--no-fail-on-empty-changeset \
   			--stack-name ${COMPONENT}
 
-  sam-clean: clean
+  sam-clean: deploy-clean
   	@ pipenv run aws s3 rm \
-  	    s3://${SAM_ARTIFACTS_BUCKET}/${COMPONENT}/ \
-  	      --recursive \
-  	      --exclude "*" \
-  	      --include "*${USER}*"
+        --recursive \
+        --exclude "*" \
+        --include "*${USER}*" \
+  				s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/
+  	@ pipenv run aws s3 rm \
+  			--recursive \
+  			--exclude "*" \
+  			--include "*${USER}*" \
+  				s3://${SAM_ARTIFACTS_BUCKET}/${COMPONENT}/
 EOF
 perl -pi -e "s/COMPONENT_NAME_HERE/$1/g" ${makefile}
 }
@@ -390,6 +455,8 @@ pynewsam() {
 
 
 pyautotest () {
+  echo "Inititalising..."
+  python setup.py test
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
@@ -403,19 +470,24 @@ pyautotest () {
 }
 
 samautobuild () {
+  echo "Inititalising..."
+  make sam-local-clean
+  make sam-local-build
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
     --drop                                \
     --patterns="*.py;*.txt;*.ini;*.cfg;*.yaml"   \
     --recursive                           \
-    --ignore-pattern="*egg*;*.pyc;*.tox*;*.aws-sam*;*/tests/*"  \
+    --ignore-pattern="*egg*;*.pyc;*.tox*;*.aws-sam*;*/tests/*;*/deployment/*"  \
     --ignore-directories                  \
-    --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching fresh sam local start-api..."; make sam-local-clean; make build' \
+    --command='clear; echo "${watch_event_type} ${watch_src_path}"; echo "launching fresh sam local start-api..."; make sam-local-clean; make sam-local-build' \
     .
 }
 
 autotox () {
+  echo "Inititalising..."
+  tox -q
   echo "watching for changes..."
   watchmedo shell-command                 \
     --wait                                \
