@@ -328,6 +328,8 @@ add_sam_makefile() {
   			s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/config \
   	&& echo "Uploaded files for BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})"
 
+  sam-package: sam-validate deploy-clean deploy-build set-build-number sam-stage
+
   sam-sync-deploy-files:
   	@ rm -rf ${LOCAL_DIR}/config \
   	&& rm -rf ${LOCAL_DIR}/${DEPLOYMENT_FILE} \
@@ -338,9 +340,7 @@ add_sam_makefile() {
   		s3://${DEPLOYMENT_BUCKET}/${COMPONENT}/$$(<${BUILD_NUMBER_FILE})/${DEPLOYMENT_FILE} \
   		${LOCAL_DIR}/${DEPLOYMENT_FILE}
 
-  sam-package: sam-validate deploy-clean deploy-build set-build-number sam-stage
-
-  sam-deploy: check-properties-file
+  sam-create-and-execute-change-set: check-properties-file
   	@ source ${PROPERTIES_FILE_PATH} \
   	&& echo "Deploying BUILD_NUMBER: $$(<${BUILD_NUMBER_FILE})" \
   	&& pipenv run sam deploy \
@@ -350,6 +350,11 @@ add_sam_makefile() {
   			--template-file ${LOCAL_DIR}/${DEPLOYMENT_FILE} \
   			--no-fail-on-empty-changeset \
   			--stack-name ${COMPONENT}
+
+  sam-deploy:
+  	@ make sam-package \
+  	&& make sam-sync-deploy-files \
+  	&& make sam-create-and-execute-change-set
 
   sam-clean: deploy-clean
   	@ pipenv run aws s3 rm \
