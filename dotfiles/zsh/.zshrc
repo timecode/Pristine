@@ -108,6 +108,7 @@ alias tls="tmux ls"
 # dropbox conflicted
 alias conflicted="find ~/Dropbox -name \"*conflicted*\" -depth"
 alias rmconflicted="conflicted -exec rm {} \;"
+alias dropboxclean-'find ~/Dropbox -name "*conflicted copy*" -delete'
 
 # docker-machine - installed with brew
 alias dmm='docker-machine create --driver virtualbox DockerMachine'
