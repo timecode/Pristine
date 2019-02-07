@@ -178,6 +178,7 @@ declare -a work_node_packages=(
   react-static
   @aws-amplify/cli
   jest
+  serverless
   # graphql # cannot global add (yet)
 )
 # node_global_install_packages "${work_node_packages[@]}"
