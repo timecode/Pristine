@@ -55,7 +55,7 @@ function ensure_latest_node() {
   nvm install node
   # nvm install-latest-npm
   # npm config delete prefix
-  # nvm use stable
+  nvm use stable >/dev/null 2>&1
   remove_npm
 
   nvm ls
@@ -185,18 +185,33 @@ function yarn_outdated_global_installed_packages() {
 function yarn_global_install_packages() {
   local install=("$@")
   local installed=($(yarn_global_installed_packages))
+  declare -a to_install
+  local len=${#install[@]}
+  local marker='INSTALLED'
 
-  for del in ${installed[@]}; do
-     install=("${install[@]/$del}")
+  for target in ${installed}; do
+    for (( i=0; i<=${len}; i++ )); do
+      if [[ ${install[$i]} = ${target} ]]; then
+        install[i]=${marker}
+        break
+      fi
+    done
   done
 
-  IFS=$'\n' sorted=($(sort <<<"${install[*]}"))
+  for (( i=0; i<=${len}; i++ )); do
+    if [[ ${install[$i]} != ${marker} ]]; then
+      to_install=(${to_install[@]} ${install[$i]})
+    fi
+  done
+
+  IFS=$'\n' to_install=($(sort <<<"${to_install[*]}"))
   unset IFS
   # install uninstalled packages
-  if [ ${#sorted[@]} -gt 0 ]; then
+  if [ ${#to_install[@]} -gt 0 ]; then
     echo ""
     echo "Installing global node packages..."
-    yarn global add ${sorted}
+    echo ${to_install}
+    yarn global add ${to_install}
   fi
 }
 
