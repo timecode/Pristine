@@ -40,7 +40,8 @@ function remove_npm() {
     echo "... removing npm!"
     echo "... to get npm back ..."
     echo "... nvm install <node version>"
-    npm uninstall npm -g
+    # npm uninstall npm -g
+    rm -rf /usr/local/{lib/node{,/.npm,_modules},bin,share/man}/npm*
   else
     echo "... npm not installed"
   fi

@@ -205,3 +205,13 @@ echo "Now using $(python --version 2>&1)"
 echo
 echo 'Login and run command complete'
 echo
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh
