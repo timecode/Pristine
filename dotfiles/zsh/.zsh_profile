@@ -1,0 +1,5 @@
+echo "Loading .zsh_profile"
+
+# add (personal) profile commands below
+# they won't be backed up to the repo though
+# so you'll need to persist this file another way!

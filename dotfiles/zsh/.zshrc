@@ -116,24 +116,6 @@ alias dme='eval $(docker-machine env DockerMachine)'
 alias dma='docker-machine start DockerMachine && dme'
 alias dmz='docker-machine stop DockerMachine'
 
-######################################################################
-# Source other files
-
-# source functions-dev
-if [ -e ~/.functions-dev ]; then
-  . ~/.functions-dev
-fi
-
-# source functions
-if [ -e ~/.functions ]; then
-  . ~/.functions
-fi
-
-# keep sensitive / non-repo profile requirements in ~/.zsh_profile
-if [ -e ~/.zsh_profile ]; then
-  . ~/.zsh_profile
-fi
-
 dir=~/Applications/dynamodb_local_latest
 if [ -e ${dir} ]; then
   alias dynamodb="cd ${dir}; java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb"
@@ -201,17 +183,25 @@ nvm use stable
 echo "Now using $(python --version 2>&1)"
 
 ######################################################################
+# Source other files
+
+# source functions-dev
+if [ -e ~/.functions-dev ]; then
+  . ~/.functions-dev
+fi
+
+# source functions
+if [ -e ~/.functions ]; then
+  . ~/.functions
+fi
+
+# keep sensitive / non-repo profile requirements in ~/.zsh_profile
+if [ -e ~/.zsh_profile ]; then
+  . ~/.zsh_profile
+fi
+
+######################################################################
 ######################################################################
 echo
 echo 'Login and run command complete'
 echo
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
-# tabtab source for slss package
-# uninstall by removing these lines or running `tabtab uninstall slss`
-[[ -f /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/rob/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh
