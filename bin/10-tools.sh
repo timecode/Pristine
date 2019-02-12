@@ -49,6 +49,11 @@ brew_installed_bottles_list
 brew_installed_casks_list
 
 echo ""
+echo "Adding aws/tap..."
+
+brew tap aws/tap
+
+echo ""
 echo "Checking for uninstalled dependencies..."
 
 declare -a my_essential_casks=(
@@ -108,6 +113,7 @@ declare -a work_bottles=(
   jfrog-cli-go
   coreos-ct
   openresty
+  aws-sam-cli
 )
 brew_install_bottles "${work_bottles[@]}"
 
