@@ -208,10 +208,10 @@ echo
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/robplayford/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/robplayford/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
+[[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/robplayford/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/robplayford/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
+[[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
-[[ -f /Users/robplayford/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/robplayford/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh
+[[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh
