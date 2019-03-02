@@ -115,6 +115,8 @@ alias dmm='docker-machine create --driver virtualbox DockerMachine'
 alias dme='eval $(docker-machine env DockerMachine)'
 alias dma='docker-machine start DockerMachine && dme'
 alias dmz='docker-machine stop DockerMachine'
+alias drmc='docker rm -f $(docker ps -a -q)'
+alias drmi='docker rmi $(docker images -q)'
 
 dir=~/Applications/dynamodb_local_latest
 if [ -e ${dir} ]; then
