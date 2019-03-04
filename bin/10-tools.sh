@@ -114,6 +114,7 @@ declare -a work_bottles=(
   coreos-ct
   openresty
   aws-sam-cli
+  terraform
 )
 brew_install_bottles "${work_bottles[@]}"
 
