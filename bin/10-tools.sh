@@ -152,6 +152,9 @@ echo "Installing system python modules..."
 pip2_install "${my_system_python_modules[@]}"
 pip3_install "${my_system_python_modules[@]}"
 
+echo ""
+echo "Forcing python3 to be default..."
+ln -fs /usr/local/bin/python3 /usr/local/bin/python
 
 ######################################
 # nvm and node
