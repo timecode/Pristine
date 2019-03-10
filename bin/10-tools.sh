@@ -155,6 +155,7 @@ pip3_install "${my_system_python_modules[@]}"
 echo ""
 echo "Forcing python3 to be default..."
 ln -fs /usr/local/bin/python3 /usr/local/bin/python
+ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
 
 ######################################
 # nvm and node
