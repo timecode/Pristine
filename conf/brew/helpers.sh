@@ -43,8 +43,10 @@ function brew_install_bottles() {
   if [ ${#sorted[@]} -gt 0 ]; then
     for element in "${sorted[@]}"; do
       # special case !
+      echo "... installing ${element}"
       if [[ "${element}" == "yarn" ]]; then
-        brew install ${element} --without-node
+        brew install ${element} --ignore-dependencies
+        ln -sf $(which node) /usr/local/Cellar/
       else
         brew install ${element}
       fi
