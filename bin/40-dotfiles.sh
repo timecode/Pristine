@@ -34,6 +34,7 @@ fi
 stow -v --stow  \
   stow          \
   bash          \
+  pip           \
   zsh           \
   vim           \
   tmux
