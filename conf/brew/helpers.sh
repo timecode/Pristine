@@ -42,11 +42,12 @@ function brew_install_bottles() {
   # install uninstalled bottles
   if [ ${#sorted[@]} -gt 0 ]; then
     for element in "${sorted[@]}"; do
-      # special case !
+
       echo "... installing ${element}"
       if [[ "${element}" == "yarn" ]]; then
+        # special case !
         brew install ${element} --ignore-dependencies
-        ln -sf $(which node) /usr/local/Cellar/
+        # ln -sf $(which node) /usr/local/Cellar/
       else
         brew install ${element}
       fi
