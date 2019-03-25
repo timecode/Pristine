@@ -182,6 +182,17 @@ nvm use stable
 
 ######################################################################
 # Python
+gpip() {
+    PIP_REQUIRE_VIRTUALENV=false pip "$@"
+}
+
+gpip2() {
+    PIP_REQUIRE_VIRTUALENV=false pip2 "$@"
+}
+
+gpip3() {
+    PIP_REQUIRE_VIRTUALENV=false pip3 "$@"
+}
 echo "Now using $(python --version 2>&1)"
 
 ######################################################################
