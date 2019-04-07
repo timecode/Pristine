@@ -93,6 +93,7 @@ declare -a language_bottles=(
   rbenv
   go
   yarn
+  nodeenv
 )
 brew_install_bottles "${language_bottles[@]}"
 
