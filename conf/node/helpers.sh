@@ -36,12 +36,13 @@ function ensure_latest_nvm() {
 ##############################################################################
 
 function remove_npm() {
+  echo "Checking for npm ..."
   if npm --version >> /dev/null 2>&1 ; then
-    echo "... removing npm!"
+    echo "... removing npm ..."
+    npm uninstall npm -g
+    echo $(rm -rf /usr/local/{lib/node{,/.npm,_modules},bin,share/man}/npm*)
     echo "... to get npm back ..."
     echo "... nvm install <node version>"
-    npm uninstall npm -g
-    rm -rf /usr/local/{lib/node{,/.npm,_modules},bin,share/man}/npm*
   else
     echo "... npm not installed"
   fi
