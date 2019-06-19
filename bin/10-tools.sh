@@ -107,6 +107,9 @@ declare -a work_casks=(
 brew_install_casks "${work_casks[@]}"
 
 declare -a work_bottles=(
+  kite
+  wireguard-tools
+  qrencode
   awscli
   kubectl
   packer
