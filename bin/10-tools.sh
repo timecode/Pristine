@@ -130,21 +130,18 @@ brew cleanup
 ######################################
 # python installs
 declare -a my_essential_python_modules=(
-  pip
   pipenv
-  setuptools
-  wheel
-  watchdog
-  tox-pipenv
   autopep8
 )
 
 echo ""
 echo "Setting up python 2 environment..."
+pip2_install pip setuptools
 pip2_install "${my_essential_python_modules[@]}"
 
 echo ""
 echo "Setting up python 3 environment..."
+pip3_install pip setuptools
 pip3_install "${my_essential_python_modules[@]}"
 
 declare -a my_system_python_modules=(
