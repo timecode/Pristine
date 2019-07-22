@@ -72,6 +72,7 @@ declare -a my_essential_bottles=(
   gpg-agent
   tree
   jq
+  yq
   ncdu
   nmap
   wget
