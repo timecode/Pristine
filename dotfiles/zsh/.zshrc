@@ -220,6 +220,14 @@ echo
 echo 'Login and run command complete'
 echo
 
+######################################################################
+# OPENSSL 1.1
+export GOPATH=$HOME/go
+echo $PATH | grep -q -s "openssl@1.1"
+if [ $? -eq 1 ] ; then
+  export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+fi
+
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
 [[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
