@@ -152,9 +152,9 @@ function prompt_paradox_setup {
   zstyle ':prezto:module:python:info:virtualenv'                format '%v'
 
   # Define prompts.
-  PROMPT='${(e)$(prompt_paradox_build_prompt)}
+  PROMPT='%F{blue}[%F{green}%D{%H:%M:%S}%F{blue}]%f ${(e)$(prompt_paradox_build_prompt)}
 ${editor_info[keymap]} '
-  RPROMPT='%F{blue}[%F{green}%D{%H:%M:%S}%F{blue}]%f'
+  RPROMPT=''
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 }
 
