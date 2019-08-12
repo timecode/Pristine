@@ -119,6 +119,9 @@ function prompt_paradox_setup {
   add-zsh-hook preexec prompt_paradox_preexec
   add-zsh-hook precmd prompt_paradox_precmd
 
+  # Tell prezto we can manage this prompt
+  zstyle ':prezto:module:prompt'                                managed 'yes'
+
   # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing'                format '%B%F{red}...%f%b'
   zstyle ':prezto:module:editor:info:keymap:primary'            format '%B%F{blue}$%f%b'
