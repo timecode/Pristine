@@ -57,6 +57,7 @@ echo ""
 echo "Checking for uninstalled dependencies..."
 
 declare -a my_essential_casks=(
+  visual-studio-code
   atom
   github
   macdown
