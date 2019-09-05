@@ -132,7 +132,7 @@ fi
 
 ######################################################################
 # RBENV
-RUBY_VERSION=2.6.3
+RUBY_VERSION=2.6.4
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
