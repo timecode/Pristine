@@ -91,8 +91,7 @@ brew_install_casks ${language_casks[@]}
 # brew cask upgrade ${language_casks[@]}
 
 declare -a language_bottles=(
-  python@2
-  python       # now the default for python@3
+  python
   rbenv
   go
   yarn
