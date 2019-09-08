@@ -137,14 +137,9 @@ declare -a my_essential_python_modules=(
 )
 
 echo ""
-echo "Setting up python 2 environment..."
-pip2_install pip setuptools
-pip2_install "${my_essential_python_modules[@]}"
-
-echo ""
-echo "Setting up python 3 environment..."
-pip3_install pip setuptools
-pip3_install "${my_essential_python_modules[@]}"
+echo "Setting up python environment..."
+pip_install pip setuptools
+pip_install "${my_essential_python_modules[@]}"
 
 declare -a my_system_python_modules=(
   speedtest-cli
@@ -152,8 +147,7 @@ declare -a my_system_python_modules=(
 
 echo ""
 echo "Installing system python modules..."
-pip2_install "${my_system_python_modules[@]}"
-pip3_install "${my_system_python_modules[@]}"
+pip_install "${my_system_python_modules[@]}"
 
 echo ""
 echo "Forcing python3 to be default..."
