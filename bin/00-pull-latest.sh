@@ -4,7 +4,7 @@
 # Update this repo
 
 echo ""
-cd $0/../../
+cd $(dirname $0)/../
 
 if output=$(git status --porcelain) && [ -z "$output" ]; then
   echo "Attempting to update this repo first..."
