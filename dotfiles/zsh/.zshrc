@@ -132,7 +132,7 @@ fi
 
 ######################################################################
 # RBENV
-RUBY_VERSION=2.6.4
+RUBY_VERSION=2.6.5
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
@@ -215,12 +215,6 @@ if [ -e ~/.zsh_profile ]; then
 fi
 
 ######################################################################
-######################################################################
-echo
-echo 'Login and run command complete'
-echo
-
-######################################################################
 # OPENSSL 1.1
 export GOPATH=$HOME/go
 echo $PATH | grep -q -s "openssl@1.1"
@@ -237,3 +231,9 @@ fi
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
 [[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh
+
+######################################################################
+######################################################################
+echo
+echo 'Login and run command complete'
+echo
