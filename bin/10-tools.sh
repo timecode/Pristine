@@ -162,7 +162,7 @@ echo "Checking nvm, node, npm status..."
 
 if [ -f /usr/local/bin/npm ]; then
   echo "... removing non-nvm installed npm..."
-  rm /usr/local/bin/npm
+  rm -f /usr/local/bin/npm
 fi
 
 ensure_latest_nvm
