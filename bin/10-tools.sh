@@ -199,6 +199,9 @@ yarn_upgrade_global_outdated
 # echo "Tidying yarn cache..."
 # yarn cache clean
 
+# npm keeps sneaking back in somewhere, so...
+remove_npm
+
 #####################################
 # Linux
 #####################################
