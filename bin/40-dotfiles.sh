@@ -37,4 +37,5 @@ stow -v --stow  \
   pip           \
   zsh           \
   vim           \
+  qlmarkdown    \
   tmux

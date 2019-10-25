@@ -62,6 +62,7 @@ declare -a my_essential_casks=(
   atom
   github
   macdown
+  qlcommonmark
   shiftit
   insomnia
 )
