@@ -204,9 +204,6 @@ echo ""
 echo "Tidying nvm cache..."
 nvm cache clear
 
-# npm keeps sneaking back in somewhere, so...
-remove_npm
-
 #####################################
 # Linux
 #####################################
