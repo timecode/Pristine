@@ -196,9 +196,13 @@ yarn_global_install_packages "${work_node_packages[@]}"
 
 yarn_upgrade_global_outdated
 
-# echo ""
-# echo "Tidying yarn cache..."
-# yarn cache clean
+echo ""
+echo "Tidying yarn cache..."
+yarn cache clean
+
+echo ""
+echo "Tidying nvm cache..."
+nvm cache clear
 
 # npm keeps sneaking back in somewhere, so...
 remove_npm
