@@ -2,3 +2,4 @@
 bin-off
 .zsh_profile
 dotfiles/vim/.vim/pack
+*.bak
