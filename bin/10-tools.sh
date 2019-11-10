@@ -176,6 +176,7 @@ yarn_global_installed_packages_list
 
 declare -a my_essential_node_packages=(
   spoof
+  nodemon
 )
 # npm_global_install_packages "${my_essential_node_packages[@]}"
 yarn_global_install_packages "${my_essential_node_packages[@]}"
@@ -189,7 +190,9 @@ declare -a work_node_packages=(
   @aws-amplify/cli
   jest
   serverless
-  # graphql # cannot global add (yet)
+  graphql
+  graphql-cli
+  prisma
 )
 # node_global_install_packages "${work_node_packages[@]}"
 yarn_global_install_packages "${work_node_packages[@]}"
