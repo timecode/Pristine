@@ -59,7 +59,6 @@ function ensure_latest_node() {
   # nvm install-latest-npm
   # npm config delete prefix
   nvm use stable >/dev/null 2>&1
-  remove_npm
 
   nvm ls
   echo ""

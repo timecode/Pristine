@@ -207,6 +207,8 @@ echo ""
 echo "Tidying nvm cache..."
 nvm cache clear
 
+remove_npm
+
 #####################################
 # Linux
 #####################################
