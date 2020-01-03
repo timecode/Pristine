@@ -94,6 +94,7 @@ brew_install_casks ${language_casks[@]}
 
 declare -a language_bottles=(
   python
+  python@3.8
   rbenv
   go
   yarn
@@ -151,10 +152,16 @@ echo ""
 echo "Installing system python modules..."
 pip_install "${my_system_python_modules[@]}"
 
+# echo ""
+# echo "Forcing python3 to be default..."
+# ln -fs /usr/local/bin/python3 /usr/local/bin/python
+# ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
+
 echo ""
-echo "Forcing python3 to be default..."
-ln -fs /usr/local/bin/python3 /usr/local/bin/python
-ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
+echo "Forcing python3.8 to be default..."
+ln -fs /usr/local/Cellar/python@3.8/3.8.1/bin/python3 /usr/local/bin/python3.8
+ln -fs /usr/local/bin/python3.8 /usr/local/bin/python
+ln -fs /usr/local/bin/pip3.8 /usr/local/bin/pip
 
 ######################################
 # nvm and node
@@ -175,6 +182,7 @@ ensure_latest_node
 yarn_global_installed_packages_list
 
 declare -a my_essential_node_packages=(
+  node-gyp
   spoof
   nodemon
 )
@@ -190,7 +198,6 @@ declare -a work_node_packages=(
   @aws-amplify/cli
   jest
   serverless
-  graphql
   graphql-cli
   prisma
 )
