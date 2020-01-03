@@ -89,17 +89,17 @@ alias root="sudo su"
 
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
 alias wifimon="open '/System/Library/CoreServices/Applications/Wireless\ Diagnostics.app'"
-alias profile="atom ~/.zshrc"
-alias dev="cd ~/Dropbox/Development/"
+alias profile="code ~/.zshrc"
+alias dev="cd ~/Development/"
 
 # dev stuff
 alias update='~/Pristine/setup.sh'
 alias pris='code ~/Pristine'
 alias g='bundle exec guard'
-alias subl='atom'
-alias st='atom'
-alias mate='atom'
-alias a='atom .'
+alias subl='code'
+alias st='code'
+alias mate='code'
+alias a='code .'
 alias sourceme='. ~/.zshrc'
 alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
 alias t="tmux attach || tmux"
@@ -171,11 +171,11 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 11.0.1
-# nvm uninstall 11.0.0
+# nvm install 13.5.0
+# nvm uninstall 13.5.0
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "11.0.1"
+# nvm alias "default" "13.5.0"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
