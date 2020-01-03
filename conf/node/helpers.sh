@@ -51,20 +51,30 @@ function remove_npm() {
 
 function ensure_latest_node() {
   echo ""
-  echo "Ensuring latest node..."
+  echo "Updating node..."
   if ($( brew uninstall --ignore-dependencies node >/dev/null 2>&1 )) ; then
     echo "Removed brew's install of node!"
   fi
+
+  echo ""
+  echo "Ensuring latest lts/erbium (v12.x) node..."
+  nvm install --lts=erbium
+
+  echo ""
+  echo "Ensuring latest node..."
   nvm install node
   # nvm install-latest-npm
   # npm config delete prefix
   nvm use stable >/dev/null 2>&1
 
+  echo ""
+  echo "Currently installed node versions..."
   nvm ls
   echo ""
   echo "To remove previous node versions..."
   # echo "$ nvm ls"
   echo "$ nvm uninstall <version>"
+  echo ""
 }
 
 ##############################################################################
