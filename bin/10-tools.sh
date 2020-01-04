@@ -145,7 +145,7 @@ brew cleanup
 
 echo ""
 echo "Forcing python3.8 to be default..."
-ln -fs /usr/local/Cellar/python@3.8/3.8.1/bin/python3 /usr/local/bin/python3.8
+ln -fs /usr/local/opt/python@3.8/bin/python3.8 /usr/local/bin/python3.8
 ln -fs /usr/local/bin/python3.8 /usr/local/bin/python
 ln -fs /usr/local/bin/pip3.8 /usr/local/bin/pip
 
