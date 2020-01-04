@@ -108,6 +108,7 @@ declare -a work_casks=(
   ngrok
   docker-toolbox
   minikube
+  pgadmin4
 )
 brew_install_casks "${work_casks[@]}"
 
@@ -124,8 +125,10 @@ declare -a work_bottles=(
   openresty
   aws-sam-cli
   terraform
+  mongodb-community
 )
 brew_install_bottles "${work_bottles[@]}"
+# brew tap mongodb/brew
 
 # remove unused brew archives
 echo ""
@@ -134,23 +137,6 @@ brew cleanup
 
 ######################################
 # python installs
-declare -a my_essential_python_modules=(
-  pipenv
-  autopep8
-)
-
-echo ""
-echo "Setting up python environment..."
-pip_install pip setuptools
-pip_install "${my_essential_python_modules[@]}"
-
-declare -a my_system_python_modules=(
-  speedtest-cli
-)
-
-echo ""
-echo "Installing system python modules..."
-pip_install "${my_system_python_modules[@]}"
 
 # echo ""
 # echo "Forcing python3 to be default..."
@@ -162,6 +148,23 @@ echo "Forcing python3.8 to be default..."
 ln -fs /usr/local/Cellar/python@3.8/3.8.1/bin/python3 /usr/local/bin/python3.8
 ln -fs /usr/local/bin/python3.8 /usr/local/bin/python
 ln -fs /usr/local/bin/pip3.8 /usr/local/bin/pip
+
+echo ""
+echo "Setting up python environment..."
+pip_install pip setuptools
+
+echo ""
+echo "Installing system python modules..."
+declare -a my_essential_python_modules=(
+  pipenv
+  autopep8
+)
+pip_install "${my_essential_python_modules[@]}"
+
+declare -a my_system_python_modules=(
+  speedtest-cli
+)
+pip_install "${my_system_python_modules[@]}"
 
 ######################################
 # nvm and node
