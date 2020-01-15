@@ -66,7 +66,6 @@ declare -a my_essential_casks=(
   shiftit
   insomnia
 )
-
 brew_install_casks ${my_essential_casks[@]}
 # brew cask upgrade ${my_essential_casks[@]}
 
@@ -108,7 +107,6 @@ declare -a work_casks=(
   vagrant
   ngrok
   docker-toolbox
-  minikube
   pgadmin4
 )
 brew_install_casks "${work_casks[@]}"
@@ -118,6 +116,7 @@ declare -a work_bottles=(
   wireguard-tools
   qrencode
   awscli
+  minikube
   kubectl
   packer
   gradle
