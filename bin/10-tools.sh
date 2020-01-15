@@ -66,13 +66,14 @@ declare -a my_essential_casks=(
   shiftit
   insomnia
 )
+
 brew_install_casks ${my_essential_casks[@]}
 # brew cask upgrade ${my_essential_casks[@]}
 
 declare -a my_essential_bottles=(
   lesspipe
   git
-  gpg-agent
+  gnupg
   tree
   jq
   yq
@@ -122,7 +123,7 @@ declare -a work_bottles=(
   gradle
   jfrog-cli-go
   coreos-ct
-  openresty
+  openresty/brew/openresty
   aws-sam-cli
   terraform
   mongodb-community
