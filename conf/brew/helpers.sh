@@ -29,6 +29,9 @@ function brew_installed_casks_list() {
 function brew_install_bottles() {
   local arr=("$@")
   local installed=($(brew_installed_bottles))
+  if [ ${#installed[@]} -eq 0 ]; then
+    installed=("EMPTY!")
+  fi
   local install=()
   # find uninstalled tools
   for element in "${arr[@]}"; do
@@ -42,7 +45,6 @@ function brew_install_bottles() {
   # install uninstalled bottles
   if [ ${#sorted[@]} -gt 0 ]; then
     for element in "${sorted[@]}"; do
-
       echo "... installing ${element}"
       if [[ "${element}" == "yarn" ]]; then
         # special case !
@@ -58,6 +60,9 @@ function brew_install_bottles() {
 function brew_install_casks() {
   local arr=("$@")
   local installed=($(brew_installed_casks))
+  if [ ${#installed[@]} -eq 0 ]; then
+    installed=("EMPTY!")
+  fi
   local install=()
   # find uninstalled tools
   for element in "${arr[@]}"; do

@@ -5,6 +5,7 @@
 
 echo ""
 echo "Installing Powerline fonts ..."
+mkdir -p "${ZDOTDIR:-$HOME}/Library/Fonts"
 if [[ ! -f "${ZDOTDIR:-$HOME}/Library/Fonts/Meslo LG M Regular for Powerline.ttf" ]]; then
   git clone https://github.com/powerline/fonts.git --depth=1 powerline_fonts
   ./powerline_fonts/install.sh
