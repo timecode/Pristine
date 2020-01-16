@@ -58,6 +58,7 @@ echo "Checking for uninstalled dependencies..."
 
 declare -a my_essential_casks=(
   1password-cli
+  iterm2
   visual-studio-code
   atom
   github
