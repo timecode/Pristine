@@ -113,6 +113,7 @@ declare -a work_casks=(
 brew_install_casks "${work_casks[@]}"
 
 declare -a work_bottles=(
+  docker-credential-helper
   kite
   wireguard-tools
   qrencode
