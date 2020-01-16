@@ -39,3 +39,12 @@ stow -v --stow  \
   vim           \
   qlmarkdown    \
   tmux
+
+#####################################
+# special settings for iterm2
+stow -v --stow  \
+  iterm2
+# specify preferences directory (now under dotfile control)
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.iterm2_profile"
+# use custom preferences
+defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
