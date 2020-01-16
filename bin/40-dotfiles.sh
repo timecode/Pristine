@@ -38,7 +38,8 @@ stow -v --stow  \
   zsh           \
   vim           \
   qlmarkdown    \
-  tmux
+  tmux          \
+  docker
 
 #####################################
 # special settings for iterm2
