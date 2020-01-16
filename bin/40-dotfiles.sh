@@ -49,3 +49,11 @@ stow -v --stow  \
 defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.iterm2_profile"
 # use custom preferences
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+
+#####################################
+# special settings for vscode as config is not dotfile compatible
+# open a vanilla install of vscode
+# install settings-sync
+# https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync
+# `shift + alt + D`
+# to download last sync'd settings
