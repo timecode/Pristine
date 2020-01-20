@@ -63,12 +63,28 @@ declare -a my_essential_casks=(
   atom
   github
   macdown
-  qlcommonmark
   shiftit
   insomnia
+  qlmarkdown
+  qlstephen
+  qlcolorcode
+  quicklook-json
+  qlvideo
+  betterzip
 )
 brew_install_casks ${my_essential_casks[@]}
 # brew cask upgrade ${my_essential_casks[@]}
+
+# setup qlcolorcode defaults
+defaults delete org.n8gray.QLColorCode
+defaults write org.n8gray.QLColorCode pathHL /usr/local/bin/highlight
+defaults write org.n8gray.QLColorCode textEncoding UTF-16
+defaults write org.n8gray.QLColorCode webkitTextEncoding UTF-16
+defaults write org.n8gray.QLColorCode font "Menlo"
+defaults write org.n8gray.QLColorCode fontSizePoints 10
+defaults write org.n8gray.QLColorCode hlTheme zenburn
+defaults write org.n8gray.QLColorCode extraHLFlags "--line-numbers"
+qlmanage -r >/dev/null 2>&1
 
 declare -a my_essential_bottles=(
   lesspipe

@@ -53,7 +53,6 @@ function stow_dotfiles() {
     bash          \
     pip           \
     vim           \
-    qlmarkdown    \
     tmux
 }
 
