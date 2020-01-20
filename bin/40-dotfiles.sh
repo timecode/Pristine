@@ -24,12 +24,24 @@ function bootstrap_stow() {
 EOF
 }
 
-function backup_zshrc() {
+function setup_zshrc() {
   if [[ -f "${ZDOTDIR:-$HOME}/.zshrc" ]]; then
     echo "... backing-up existing .zshrc ..."
     cp ${ZDOTDIR:-$HOME}/.zshrc ${ZDOTDIR:-$HOME}/.zshrc_bak
     rm -f ${ZDOTDIR:-$HOME}/.zshrc
   fi
+  stow -v --stow  \
+    zsh
+}
+
+function setup_docker() {
+  if [[ -f "${ZDOTDIR:-$HOME}/.docker/config.json" ]]; then
+    echo "... backing-up existing .docker/config.json ..."
+    cp ${ZDOTDIR:-$HOME}/.docker/config.json ${ZDOTDIR:-$HOME}/.docker/config_bak.json
+    rm -f ${ZDOTDIR:-$HOME}/.docker/config.json
+  fi
+  stow -v --stow  \
+    docker
 }
 
 function stow_dotfiles() {
@@ -40,11 +52,9 @@ function stow_dotfiles() {
     stow          \
     bash          \
     pip           \
-    zsh           \
     vim           \
     qlmarkdown    \
-    tmux          \
-    docker
+    tmux
 }
 
 function setup_iterm2() {
@@ -72,7 +82,8 @@ function setup_vscode() {
   setup_dotfiles && \
   bootstrap_stow && \
   setup_iterm2 && \
-  backup_zshrc && \
+  setup_zshrc && \
+  setup_docker && \
   stow_dotfiles && \
   echo "... dotfiles complete"
 } || { # catch
@@ -80,3 +91,4 @@ function setup_vscode() {
   echo "ERROR with dotfiles... see above"
 }
 
+exit 0
