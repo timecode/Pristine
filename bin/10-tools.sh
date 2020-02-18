@@ -142,7 +142,7 @@ declare -a work_bottles=(
   coreos-ct
   openresty/brew/openresty
   aws-sam-cli
-  terraform
+  warrensbox/tap/tfswitch
   mongodb-community
 )
 brew_install_bottles "${work_bottles[@]}"

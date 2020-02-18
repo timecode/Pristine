@@ -110,6 +110,8 @@ alias conflicted="find ~/Dropbox -name \"*conflicted*\" -depth"
 alias rmconflicted="conflicted -exec rm {} \;"
 alias dropboxclean-'find ~/Dropbox -name "*conflicted copy*" -delete'
 
+alias tf="terraform"
+
 # docker-machine - installed with brew
 alias dmm='docker-machine create --driver virtualbox DockerMachine'
 alias dme='eval $(docker-machine env DockerMachine)'
