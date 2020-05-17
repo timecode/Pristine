@@ -235,6 +235,10 @@ fi
 [[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh
 
 ######################################################################
+# GPG mac os fix
+export GPG_TTY=$(tty)
+
+######################################################################
 ######################################################################
 echo
 echo 'Login and run command complete'
