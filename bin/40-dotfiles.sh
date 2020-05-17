@@ -53,7 +53,8 @@ function stow_dotfiles() {
     bash          \
     pip           \
     vim           \
-    tmux
+    tmux          \
+    intelliJ
 }
 
 function setup_iterm2() {

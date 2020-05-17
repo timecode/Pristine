@@ -116,6 +116,8 @@ declare -a language_bottles=(
   go
   yarn
   nodeenv
+  kotlin
+  ktlint
 )
 brew_install_bottles "${language_bottles[@]}"
 
@@ -200,6 +202,7 @@ ensure_latest_node
 
 # list currently installed package versions
 # npm_global_installed_packages_list
+echo "Checking currently installed node packages ..."
 yarn_global_installed_packages_list
 
 declare -a my_essential_node_packages=(
