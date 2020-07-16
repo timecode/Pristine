@@ -104,6 +104,7 @@ alias sourceme='. ~/.zshrc'
 alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
 alias t="tmux attach || tmux"
 alias tls="tmux ls"
+alias nettest='ping 1.1.1.1 | perl -nlE '"'"'use POSIX qw(strftime); $ts = strftime "%a %Y-%m-%d %H:%M:%S", localtime; print "$ts\t$_"'"'"''
 
 # dropbox conflicted
 alias conflicted="find ~/Dropbox -name \"*conflicted*\" -depth"
@@ -222,6 +223,17 @@ export GOPATH=$HOME/go
 echo $PATH | grep -q -s "openssl@1.1"
 if [ $? -eq 1 ] ; then
   export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+fi
+
+######################################################################
+# google-cloud-sdk
+
+if [ -e /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
+  . /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+fi
+
+if [ -e /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ]; then
+  . /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 fi
 
 # tabtab source for serverless package

@@ -126,6 +126,7 @@ declare -a work_casks=(
   vagrant
   ngrok
   docker-toolbox
+  google-cloud-sdk
   pgadmin4
 )
 brew_install_casks "${work_casks[@]}"
