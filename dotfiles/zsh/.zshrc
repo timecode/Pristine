@@ -219,7 +219,6 @@ fi
 
 ######################################################################
 # OPENSSL 1.1
-export GOPATH=$HOME/go
 echo $PATH | grep -q -s "openssl@1.1"
 if [ $? -eq 1 ] ; then
   export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
