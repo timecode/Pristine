@@ -160,7 +160,7 @@ brew cleanup
 # python installs
 
 # echo ""
-# echo "Forcing python3 to be default..."
+echo "Forcing python3 to be default..."
 ln -fs /usr/local/bin/python3 /usr/local/bin/python
 ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
 
