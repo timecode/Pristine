@@ -126,10 +126,10 @@ declare -a work_casks=(
   vagrant
   ngrok
   docker-toolbox
-  google-cloud-sdk
   pgadmin4
 )
 brew_install_casks "${work_casks[@]}"
+# google-cloud-sdk  # not uninstalled, but this insists on reinstalling everything each time, regardless of updates!
 
 declare -a work_bottles=(
   docker-credential-helper
@@ -160,15 +160,9 @@ brew cleanup
 # python installs
 
 # echo ""
-# echo "Forcing python3 to be default..."
-# ln -fs /usr/local/bin/python3 /usr/local/bin/python
-# ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
-
-echo ""
-echo "Forcing python3.8 to be default..."
-ln -fs /usr/local/opt/python@3.8/bin/python3.8 /usr/local/bin/python3.8
-ln -fs /usr/local/bin/python3.8 /usr/local/bin/python
-ln -fs /usr/local/bin/pip3.8 /usr/local/bin/pip
+echo "Forcing python3 to be default..."
+ln -fs /usr/local/bin/python3 /usr/local/bin/python
+ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
 
 echo ""
 echo "Setting up python environment..."
