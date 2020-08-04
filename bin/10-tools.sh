@@ -148,8 +148,8 @@ declare -a work_bottles=(
   warrensbox/tap/tfswitch
   mongodb-community
 )
+brew tap mongodb/brew
 brew_install_bottles "${work_bottles[@]}"
-# brew tap mongodb/brew
 
 # remove unused brew archives
 echo ""
