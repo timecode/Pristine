@@ -60,11 +60,11 @@ function stow_dotfiles() {
 function setup_iterm2() {
   echo "... running stow (iterm2) ..."
   # special settings for iterm2
-  rm -rf ~/.iterm2_profile/com.googlecode.iterm2.plist
+  # rm -rf ~/.iterm2_profile/com.googlecode.iterm2.plist
   stow -v --stow  \
     iterm2 && \
   # specify preferences directory (now under dotfile control)
-  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.iterm2_profile" && \
+  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.iterm2_profile/" && \
   # use custom preferences
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 }
