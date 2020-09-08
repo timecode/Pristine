@@ -100,6 +100,7 @@ declare -a my_essential_bottles=(
   tor
   stow
   openssl@1.1
+  syncthing
 )
 brew_install_bottles "${my_essential_bottles[@]}"
 
