@@ -1,11 +1,11 @@
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 function brew_installed_bottles() {
-  echo $(brew ls -1)
+  echo $(brew list -1)
 }
 
 function brew_installed_casks() {
-  echo $(brew cask ls -1)
+  echo $(brew list --cask -1)
 }
 
 function brew_installed_bottles_list() {
@@ -13,7 +13,7 @@ function brew_installed_bottles_list() {
   if [ ${#installed[@]} -gt 0 ]; then
     echo ""
     echo "Currently installed bottles..."
-    brew ls --versions ${installed}
+    brew list --versions ${installed}
   fi
 }
 
@@ -22,7 +22,7 @@ function brew_installed_casks_list() {
   if [ ${#installed[@]} -gt 0 ]; then
     echo ""
     echo "Currently installed casks..."
-    brew cask ls --versions ${installed}
+    brew list --cask --versions ${installed}
   fi
 }
 
@@ -48,8 +48,8 @@ function brew_install_bottles() {
       echo "... installing ${element}"
       if [[ "${element}" == "yarn" ]]; then
         # special case !
-        brew install ${element} --ignore-dependencies
-        # ln -sf $(which node) /usr/local/Cellar/
+        brew install ${element}
+        # ln -sf $(which node) /usr/local/Cellar
       else
         brew install ${element}
       fi

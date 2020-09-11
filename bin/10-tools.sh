@@ -37,12 +37,11 @@ brew update
 brew --version
 
 # check brew health
-brew doctor
-brew cask doctor
+brew doctor --verbose
 # check for upgrades
 # Homebrew automatically taps and keeps Homebrew-Cask updated. brew update is all that is required.
 brew upgrade
-brew cask upgrade $(brew_installed_casks)
+brew upgrade --cask $(brew_installed_casks)
 
 # list currently installed versions
 brew_installed_bottles_list
@@ -128,9 +127,9 @@ declare -a work_casks=(
   ngrok
   docker-toolbox
   pgadmin4
+  # google-cloud-sdk  # insists on reinstalling everything each time, regardless of updates, so removing for now!
 )
 brew_install_casks "${work_casks[@]}"
-# google-cloud-sdk  # not uninstalled, but this insists on reinstalling everything each time, regardless of updates!
 
 declare -a work_bottles=(
   docker-credential-helper
