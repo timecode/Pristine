@@ -103,10 +103,10 @@ declare -a my_essential_bottles=(
 )
 brew_install_bottles "${my_essential_bottles[@]}"
 
-declare -a language_casks=(
-  java
-)
-brew_install_casks ${language_casks[@]}
+# declare -a language_casks=(
+#   java
+# )
+# brew_install_casks ${language_casks[@]}
 # brew cask upgrade ${language_casks[@]}
 
 declare -a language_bottles=(
@@ -116,6 +116,7 @@ declare -a language_bottles=(
   go
   yarn
   nodeenv
+  openjdk
   kotlin
   ktlint
 )
