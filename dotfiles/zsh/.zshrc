@@ -202,7 +202,14 @@ gpip3() {
 echo "Now using $(python --version 2>&1)"
 
 ######################################################################
+# Java
+export JAVA_HOME=$(/usr/libexec/java_home)
+echo "Now using $(java --version 2>&1)"
+
+######################################################################
 # Source other files
+
+echo ""
 
 # source functions-dev
 if [ -e ~/.functions-dev ]; then
