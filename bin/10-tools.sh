@@ -100,6 +100,7 @@ declare -a my_essential_bottles=(
   stow
   openssl@1.1
   syncthing
+  shellcheck
 )
 brew_install_bottles "${my_essential_bottles[@]}"
 
