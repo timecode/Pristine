@@ -203,7 +203,13 @@ echo "Now using $(python --version 2>&1)"
 
 ######################################################################
 # Java
+echo $PATH | grep -q -s "/usr/local/opt/openjdk/bin"
+if [ $? -eq 1 ] ; then
+  export PATH="/usr/local/opt/openjdk/bin:$PATH"
+fi
+export CPPFLAGS="-I/usr/local/opt/openjdk/include"
 export JAVA_HOME=$(/usr/libexec/java_home)
+
 echo "Now using $(java --version 2>&1)"
 
 ######################################################################
