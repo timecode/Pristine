@@ -1,21 +1,20 @@
-echo "Loading .zshrc"
+#!/bin/sh
 
 #
 # Executes commands at the start of an interactive session.
 #
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
+echo "Loading .zshrc"
 
-# Source Prezto.
+# Source Prezto
 # Force yourself as the system's default user
-DEFAULT_USER="$(whoami)"
+me="$(whoami)"
+export DEFAULT_USER=$me
 
-unsetopt nomatch
+unsetopt NOMATCH
 
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  . "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+zprezto_init="${ZDOTDIR:-${HOME}}/.zprezto/init.zsh"
+# shellcheck source=/dev/null
+[ -e "${zprezto_init}" ] && . "${zprezto_init}"
 
 # Customize to your needs...
 
@@ -41,11 +40,11 @@ if [ -z "$HISTFILE" ]; then
     HISTFILE=$HOME/.zsh_history
 fi
 
-HISTSIZE=10000
-SAVEHIST=10000
+export HISTSIZE=10000
+export SAVEHIST=10000
 
 # Show history
-case $HIST_STAMPS in
+case ${HIST_STAMPS} in
   "mm/dd/yyyy") alias history='fc -fl 1' ;;
   "dd.mm.yyyy") alias history='fc -El 1' ;;
   "yyyy-mm-dd") alias history='fc -il 1' ;;
@@ -61,22 +60,22 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history # share command history data
 
-export LESSOPEN="|/usr/local/bin/lesspipe.sh %s" LESS_ADVANCED_PREPROCESSOR=1
+# export LESSOPEN="|/usr/local/bin/lesspipe.sh %s" LESS_ADVANCED_PREPROCESSOR=1
 
-# set options for less
-export LESS='--raw-control-chars'
-# --ignore-case --status-column --LONG-PROMPT --HILITE-UNREAD --tabs= --quit-if-one-screen --no-init --window=-4
-# or the short version
-# export LESS='-F -i -J -M -R -W -x4 -X -z-4'
+# # set options for less
+# export LESS='--raw-control-chars'
+# # --ignore-case --status-column --LONG-PROMPT --HILITE-UNREAD --tabs= --quit-if-one-screen --no-init --window=-4
+# # or the short version
+# # export LESS='-F -i -J -M -R -W -x4 -X -z-4'
 
-# Set colors for less. Borrowed from https://wiki.archlinux.org/index.php/Color_output_in_console#less .
-export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
-export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
-export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
-export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
-export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+# # Set colors for less. Borrowed from https://wiki.archlinux.org/index.php/Color_output_in_console#less .
+# export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
+# export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
+# export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+# export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+# export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+# export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+# export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 alias h="history"
 alias c="clear"
@@ -86,9 +85,8 @@ alias ..="cd .."
 alias su="sudo su"
 alias root="sudo su"
 
-
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
-alias wifimon="open '/System/Library/CoreServices/Applications/Wireless\ Diagnostics.app'"
+alias wifimon='open "/System/Library/CoreServices/Applications/Wireless Diagnostics.app"'
 alias profile="code ~/.zshrc"
 alias dev="cd ~/Development/"
 
@@ -104,6 +102,7 @@ alias sourceme='. ~/.zshrc'
 alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
 alias t="tmux attach || tmux"
 alias tls="tmux ls"
+# shellcheck disable=SC2154
 alias nettest='ping 1.1.1.1 | perl -nlE '"'"'use POSIX qw(strftime); $ts = strftime "%a %Y-%m-%d %H:%M:%S", localtime; print "$ts\t$_"'"'"''
 
 # dropbox conflicted
@@ -123,7 +122,7 @@ alias drmi='docker rmi $(docker images -q)'
 
 dir=~/Applications/dynamodb_local_latest
 if [ -e ${dir} ]; then
-  alias dynamodb="cd ${dir}; java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb"
+  alias dynamodb'cd "${dir}"; java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb'
 else
   alias dynamodb='echo "first, install dynamodb locally at ${dir}...
   see https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html"'
@@ -143,32 +142,28 @@ RUBY_VERSION=2.7.1
 # rbenv uninstall x.x.x   # uninstall a particular version
 # rbenv rehash            # run after installing a new version
 # rbenv global x.x.x      # set the version to be used globally
-echo $PATH | grep -q -s "$HOME/.rbenv/bin"
-if [ $? -eq 1 ] ; then
-  export PATH="$HOME/.rbenv/bin":$PATH
-fi
-echo $PATH | grep -q -s "$HOME/.rbenv/shims"
-if [ $? -eq 1 ] ; then
-  eval "$(rbenv init -)"
-fi
+echo "${PATH}" | grep -q -s "${HOME}/.rbenv/bin"
+[ $? -eq 1 ] && export PATH="$HOME/.rbenv/bin":$PATH
+
+echo "${PATH}" | grep -q -s "${HOME}/.rbenv/shims"
+[ $? -eq 1 ] && eval "$(rbenv init -)"
+
 # rbenv rehash
-rbenv global ${RUBY_VERSION}
-if [ $? -ne 0 ]; then
+if ! rbenv global "${RUBY_VERSION}"; then
   echo "install required version with:"
   echo "$ rbenv install ${RUBY_VERSION}"
 fi
 
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+openssl_loc=$(brew --prefix openssl@1.1)
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${openssl_loc}"
 
 echo "Now using $(ruby --version)"
 
 ######################################################################
 # GOLANG
 export GOPATH=$HOME/go
-echo $PATH | grep -q -s "$GOPATH/bin"
-if [ $? -eq 1 ] ; then
-  export PATH="$GOPATH/bin":$PATH
-fi
+echo "${PATH}" | grep -q -s "${GOPATH}/bin"
+[ $? -eq 1 ] && export PATH="${GOPATH}/bin":${PATH}
 
 echo "Now using $(go version)"
 
@@ -176,39 +171,37 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 13.5.0
-# nvm uninstall 13.5.0
+# nvm install 14.12.0
+# nvm uninstall 14.12.0
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "13.5.0"
+# nvm alias "default" "14.12.0"
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm_loc="${NVM_DIR}/nvm.sh"
+nvm_shell_completion="${NVM_DIR}/bash_completion"
+# shellcheck source=/dev/null
+[ -e "${nvm_loc}" ] && . "${nvm_loc}"                # This loads nvm
+# shellcheck source=/dev/null
+[ -e "${nvm_shell_completion}" ] && . "${nvm_shell_completion}"
 nvm use stable
 
 ######################################################################
 # Python
+# shortcut for global pip
 gpip() {
     PIP_REQUIRE_VIRTUALENV=false pip "$@"
-}
-
-gpip2() {
-    PIP_REQUIRE_VIRTUALENV=false pip2 "$@"
-}
-
-gpip3() {
-    PIP_REQUIRE_VIRTUALENV=false pip3 "$@"
 }
 echo "Now using $(python --version 2>&1)"
 
 ######################################################################
 # Java
-echo $PATH | grep -q -s "/usr/local/opt/openjdk/bin"
+echo "$PATH" | grep -q -s "/usr/local/opt/openjdk/bin"
 if [ $? -eq 1 ] ; then
   export PATH="/usr/local/opt/openjdk/bin:$PATH"
 fi
 export CPPFLAGS="-I/usr/local/opt/openjdk/include"
-export JAVA_HOME=$(/usr/libexec/java_home)
+java_home=$(/usr/libexec/java_home)
+export JAVA_HOME=${java_home}
 
 echo "Now using $(java --version 2>&1)"
 
@@ -218,51 +211,53 @@ echo "Now using $(java --version 2>&1)"
 echo ""
 
 # source functions-dev
-if [ -e ~/.functions-dev ]; then
-  . ~/.functions-dev
-fi
+# shellcheck source=/dev/null
+[ -e ~/.functions-dev ] &&. ~/.functions-dev
 
 # source functions
-if [ -e ~/.functions ]; then
-  . ~/.functions
-fi
+# shellcheck source=/dev/null
+[ -e ~/.functions ] && . ~/.functions
 
 # keep sensitive / non-repo profile requirements in ~/.zsh_profile
-if [ -e ~/.zsh_profile ]; then
-  . ~/.zsh_profile
-fi
+# shellcheck source=/dev/null
+[ -e ~/.zsh_profile ] && . ~/.zsh_profile
 
 ######################################################################
 # OPENSSL 1.1
-echo $PATH | grep -q -s "openssl@1.1"
-if [ $? -eq 1 ] ; then
-  export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
-fi
+echo "$PATH" | grep -q -s "openssl@1.1"
+[ $? -eq 1 ] && export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 
 ######################################################################
 # google-cloud-sdk
 
-if [ -e /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc ]; then
-  . /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-fi
+gcp_zsh_loc="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+# shellcheck source=/dev/null
+[ -e "${gcp_zsh_loc}" ] && . "${gcp_zsh_loc}"
 
-if [ -e /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ]; then
-  . /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-fi
+gcp_zsh_completion="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+# shellcheck source=/dev/null
+[ -e "${gcp_zsh_completion}" ] && . "${gcp_zsh_completion}"
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
+serverless_completion_loc="${HOME}/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh"
+# shellcheck source=/dev/null
+[ -e "${serverless_completion_loc}" ] && . "${serverless_completion_loc}"
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
+sls_completion_loc="${HOME}/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh"
+# shellcheck source=/dev/null
+[ -e "${sls_completion_loc}" ] && . "${sls_completion_loc}"
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
-[[ -f ~/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh ]] && . ~/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh
+slss_completion_loc="${HOME}/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh"
+# shellcheck source=/dev/null
+[ -e "${slss_completion_loc}" ] && . "${slss_completion_loc}"
 
 ######################################################################
-# GPG mac os fix
-export GPG_TTY=$(tty)
+# GPG macOS fix
+tty_dev=$(tty)
+export GPG_TTY=${tty_dev}
 
 ######################################################################
 ######################################################################
