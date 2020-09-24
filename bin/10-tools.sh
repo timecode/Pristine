@@ -95,16 +95,16 @@ echo ""
 echo "Checking for uninstalled dependencies..."
 
 declare -a my_essential_bottles=(
-  lesspipe
+  # lesspipe
   git
-  gpg-agent
+  # gpg-agent
   tree
   jq
-  ncdu
+  # ncdu
   nmap
-  wget
-  tmux
-  tor
+  # wget
+  # tmux
+  # tor
   stow
 )
 brew_install_bottles "${my_essential_bottles[@]}"
@@ -128,25 +128,25 @@ declare -a language_bottles=(
 brew_install_bottles "${language_bottles[@]}"
 
 declare -a language_casks=(
-  java
+  # java
 )
 brew_install_casks ${language_casks[@]}
 # brew cask upgrade ${language_casks[@]}
 
 declare -a work_bottles=(
   awscli
-  packer
-  gradle
-  jfrog-cli-go
-  coreos-ct
-  openresty
+  # packer
+  # gradle
+  # jfrog-cli-go
+  # coreos-ct
+  # openresty
 )
 brew_install_bottles "${work_bottles[@]}"
 
 declare -a work_casks=(
-  virtualbox
-  vagrant
-  ngrok
+  # virtualbox
+  # vagrant
+  # ngrok
   docker-toolbox
 )
 brew_install_casks "${work_casks[@]}"
