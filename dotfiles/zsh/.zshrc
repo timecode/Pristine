@@ -142,6 +142,10 @@ RUBY_VERSION=2.7.1
 # rbenv uninstall x.x.x   # uninstall a particular version
 # rbenv rehash            # run after installing a new version
 # rbenv global x.x.x      # set the version to be used globally
+
+openssl_loc=$(brew --prefix openssl@1.1)
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${openssl_loc}"
+
 echo "${PATH}" | grep -q -s "${HOME}/.rbenv/bin"
 [ $? -eq 1 ] && export PATH="$HOME/.rbenv/bin":$PATH
 
@@ -153,9 +157,6 @@ if ! rbenv global "${RUBY_VERSION}"; then
   echo "install required version with:"
   echo "$ rbenv install ${RUBY_VERSION}"
 fi
-
-openssl_loc=$(brew --prefix openssl@1.1)
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${openssl_loc}"
 
 echo "Now using $(ruby --version)"
 
