@@ -21,8 +21,9 @@ if type "brew" > /dev/null; then
     sudo chown $(whoami):admin /usr/local/Frameworks
   fi
 else
-  # /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  # /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+  # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
+  # brew remove --force $(brew list)
   echo "Please install Homebrew first..."
   echo "... find it here: https://brew.sh/"
   echo ""
@@ -98,7 +99,7 @@ declare -a my_essential_bottles=(
   tmux
   tor
   stow
-  openssl@1.1
+  openssl
   syncthing
   shellcheck
 )
@@ -112,7 +113,7 @@ brew_install_bottles "${my_essential_bottles[@]}"
 
 declare -a language_bottles=(
   python
-  python@3.8
+  python@3.9
   rbenv
   go
   yarn
@@ -161,10 +162,13 @@ brew cleanup
 ######################################
 # python installs
 
-# echo ""
-echo "Forcing python3 to be default..."
-ln -fs /usr/local/bin/python3 /usr/local/bin/python
-ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
+echo ""
+# echo "Forcing python3 to be default..."
+# ln -fs /usr/local/bin/python3 /usr/local/bin/python
+# ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
+echo "Forcing python3.9 to be default..."
+ln -fs /usr/local/opt/python@3.9/bin/python3 /usr/local/bin/python
+ln -fs /usr/local/opt/python@3.9/bin/pip3 /usr/local/bin/pip
 
 echo ""
 echo "Setting up python environment..."
