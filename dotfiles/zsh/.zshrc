@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 
 #
 # Executes commands at the start of an interactive session.
@@ -60,22 +60,22 @@ setopt hist_verify
 setopt inc_append_history
 setopt share_history # share command history data
 
-# export LESSOPEN="|/usr/local/bin/lesspipe.sh %s" LESS_ADVANCED_PREPROCESSOR=1
+export LESSOPEN="|/usr/local/bin/lesspipe.sh %s" LESS_ADVANCED_PREPROCESSOR=1
 
-# # set options for less
-# export LESS='--raw-control-chars'
-# # --ignore-case --status-column --LONG-PROMPT --HILITE-UNREAD --tabs= --quit-if-one-screen --no-init --window=-4
-# # or the short version
-# # export LESS='-F -i -J -M -R -W -x4 -X -z-4'
+# set options for less
+export LESS='--raw-control-chars'
+# --ignore-case --status-column --LONG-PROMPT --HILITE-UNREAD --tabs= --quit-if-one-screen --no-init --window=-4
+# or the short version
+# export LESS='-F -i -J -M -R -W -x4 -X -z-4'
 
-# # Set colors for less. Borrowed from https://wiki.archlinux.org/index.php/Color_output_in_console#less .
-# export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
-# export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
-# export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-# export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
-# export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-# export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
-# export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+# Set colors for less. Borrowed from https://wiki.archlinux.org/index.php/Color_output_in_console#less .
+export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
+export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
+export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 alias h="history"
 alias c="clear"
@@ -172,11 +172,11 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 14.12.0
-# nvm uninstall 14.12.0
+# nvm install 15.0.1
+# nvm uninstall 15.0.1
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "14.12.0"
+# nvm alias "default" "15.0.1"
 export NVM_DIR="$HOME/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
 nvm_shell_completion="${NVM_DIR}/bash_completion"
@@ -209,7 +209,7 @@ echo "Now using $(java --version 2>&1)"
 ######################################################################
 # Source other files
 
-echo ""
+echo
 
 # source functions-dev
 # shellcheck source=/dev/null

@@ -1,9 +1,9 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 
 ################################################################################
 # Install tmux plugins
 
-# echo ""
+# echo
 # echo "Installing tmux plugins ..."
 # tmux . $HOME/.tmux.conf
 

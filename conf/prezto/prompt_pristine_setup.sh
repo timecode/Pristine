@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # A fork of Paradox
 # A two-line, Powerline-inspired theme that displays contextual information.
 #
@@ -11,24 +13,24 @@ pmodload 'helper'
 # Define variables.
 _prompt_paradox_current_bg='NONE'
 _prompt_paradox_segment_separator=''
-_prompt_paradox_start_time=$SECONDS
+_prompt_paradox_start_time="${SECONDS}"
 
-function prompt_paradox_start_segment {
+prompt_paradox_start_segment() {
   local bg fg
-  [[ -n "$1" ]] && bg="%K{$1}" || bg="%k"
-  [[ -n "$2" ]] && fg="%F{$2}" || fg="%f"
-  if [[ "$_prompt_paradox_current_bg" != 'NONE' && "$1" != "$_prompt_paradox_current_bg" ]]; then
-    print -n " $bg%F{$_prompt_paradox_current_bg}$_prompt_paradox_segment_separator$fg"
+  [[ -n "${1}" ]] && bg="%K{${1}}" || bg="%k"
+  [[ -n "${2}" ]] && fg="%F{${2}}" || fg="%f"
+  if [[ "${_prompt_paradox_current_bg}" != 'NONE' && "${1}" != "${_prompt_paradox_current_bg}" ]]; then
+    print -n " ${bg}%F{$_prompt_paradox_current_bg}${_prompt_paradox_segment_separator}${fg}"
   else
-    print -n "$bg$fg"
+    print -n "${bg}${fg}"
   fi
-  _prompt_paradox_current_bg="$1"
-  [[ -n "$3" ]] && print -n "$3"
+  _prompt_paradox_current_bg="${1}"
+  [[ -n "${3}" ]] && print -n "${3}"
 }
 
-function prompt_paradox_end_segment {
-  if [[ -n "$_prompt_paradox_current_bg" ]]; then
-    print -n " %k%F{$_prompt_paradox_current_bg}$_prompt_paradox_segment_separator"
+prompt_paradox_end_segment() {
+  if [[ -n "${_prompt_paradox_current_bg}" ]]; then
+    print -n " %k%F{${_prompt_paradox_current_bg}}${_prompt_paradox_segment_separator}"
   else
     print -n "%k"
   fi
@@ -36,27 +38,27 @@ function prompt_paradox_end_segment {
   _prompt_paradox_current_bg=''
 }
 
-function prompt_paradox_build_prompt {
+prompt_paradox_build_prompt() {
   # prompt_paradox_start_segment black default '%(?::%F{red}✘ )%(!:%F{yellow}⚡ :)%(1j:%F{cyan}⚙ :)%F{blue}%n%F{red}@%F{green}%m%f'
   prompt_paradox_start_segment black default '%F{blue}# %(?::%F{red}✘)%(!:%F{yellow}⚡ :)%(1j:%F{cyan}⚙ :)'
 
-  if [[ -n "$python_info" ]]; then
+  if [[ -n "${python_info}" ]]; then
     prompt_paradox_start_segment blue black ' ${(e)python_info[virtualenv]}'
   fi
 
-  if [[ "$USER" != "$DEFAULT_USER" ]] ||
-      [[ -n "$SSH_CLIENT" ]] ||
-      [[ -n "$SSH_TTY" ]]; then
-    local shell_identifier=$USER
-    if [[ -n $PROMPT_MACHINE_SHORTNAME ]]; then
-      shell_identifier=$PROMPT_MACHINE_SHORTNAME
+  if [[ "${USER}" != "${DEFAULT_USER}" ]] ||
+      [[ -n "${SSH_CLIENT}" ]] ||
+      [[ -n "${SSH_TTY}" ]]; then
+    local shell_identifier="${USER}"
+    if [[ -n "${PROMPT_MACHINE_SHORTNAME}" ]]; then
+      shell_identifier="${PROMPT_MACHINE_SHORTNAME}"
     fi
-    prompt_paradox_start_segment red black " $shell_identifier"
+    prompt_paradox_start_segment red black " ${shell_identifier}"
   fi
 
   prompt_paradox_start_segment cyan black ' $_prompt_paradox_pwd'
 
-  if [[ -n "$git_info" ]]; then
+  if [[ -n "${git_info}" ]]; then
     prompt_paradox_start_segment yellow black '${(e)git_info[ref]}${(e)git_info[status]}'
   fi
 
@@ -82,12 +84,12 @@ prompt_paradox_print_elapsed_time() {
   fi
 }
 
-function prompt_paradox_precmd {
+prompt_paradox_precmd() {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
 
   # Format PWD.
-  _prompt_paradox_pwd=$(prompt-pwd)
+  _prompt_paradox_pwd="$(prompt-pwd)"
 
   # Get Git repository information.
   if (( $+functions[git-info] )); then
@@ -103,11 +105,11 @@ function prompt_paradox_precmd {
   prompt_paradox_print_elapsed_time
 }
 
-function prompt_paradox_preexec {
-  _prompt_paradox_start_time="$SECONDS"
+prompt_paradox_preexec() {
+  _prompt_paradox_start_time="${SECONDS}"
 }
 
-function prompt_paradox_setup {
+prompt_paradox_setup() {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
   prompt_opts=(cr percent sp subst)

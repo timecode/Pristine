@@ -1,9 +1,13 @@
-#!/bin/zsh
+#!/usr/bin/env bash
+
 set -e
 
-scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/pwd || pwd)
+SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)"
 
-FILES=($(ls ${scriptDirectory}/bin | sort -n))
-for file in ${FILES[@]} ; do
-  ${scriptDirectory}/bin/${file}
+declare -a files=()
+while IFS=$'\n' read -r l; do files+=( "${l}" ); done < <(find "${SCRIPTS_PATH}/bin" -maxdepth 1 -name '*.sh' | sort -n)
+unset IFS
+
+for file in "${files[@]}" ; do
+  "${file}"
 done

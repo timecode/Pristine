@@ -1,9 +1,12 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 
-scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/pwd || pwd)
-. $scriptDirectory/../conf/brew/helpers.sh
-. $scriptDirectory/../conf/python/helpers.sh
-. $scriptDirectory/../conf/node/helpers.sh
+SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
+# shellcheck source=/dev/null
+. "${SCRIPTS_PATH}/conf/brew/helpers.sh"
+# shellcheck source=/dev/null
+. "${SCRIPTS_PATH}/conf/python/helpers.sh"
+# shellcheck source=/dev/null
+. "${SCRIPTS_PATH}/conf/node/helpers.sh"
 
 ################################################################################
 # Install software
@@ -12,13 +15,13 @@ scriptDirectory=$(exec 2>/dev/null; cd -- $(dirname "$0"); /usr/bin/pwd || /bin/
 # mac OS
 #####################################
 
-echo ""
+echo
 if type "brew" > /dev/null; then
   echo "Homebrew already installed :-)"
   if ! [ -d /usr/local/Frameworks ]; then
     echo "... need to add missing dir '/usr/local/Frameworks'"
     sudo mkdir -p /usr/local/Frameworks
-    sudo chown $(whoami):admin /usr/local/Frameworks
+    sudo chown "$(whoami):admin" /usr/local/Frameworks
   fi
 else
   # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -26,34 +29,37 @@ else
   # brew remove --force $(brew list)
   echo "Please install Homebrew first..."
   echo "... find it here: https://brew.sh/"
-  echo ""
+  echo
   exit 1
 fi
 
 # ######################################
 # brew
-echo ""
+echo
 echo "Checking Homebrew state..."
 brew update
 brew --version
 
 # check brew health
 brew doctor --verbose
-# check for upgrades
-# Homebrew automatically taps and keeps Homebrew-Cask updated. brew update is all that is required.
-brew upgrade
-brew upgrade --cask $(brew_installed_casks)
 
 # list currently installed versions
 brew_installed_bottles_list
 brew_installed_casks_list
 
-echo ""
+echo
+echo "Checking for upgrades..."
+brew_upgrade_bottles
+# echo
+# echo "Checking for cask upgrades..."
+# brew_upgrade_casks
+
+echo
 echo "Adding aws/tap..."
 
 brew tap aws/tap
 
-echo ""
+echo
 echo "Checking for uninstalled dependencies..."
 
 declare -a my_essential_casks=(
@@ -72,8 +78,8 @@ declare -a my_essential_casks=(
   qlvideo
   betterzip
 )
-brew_install_casks ${my_essential_casks[@]}
-# brew cask upgrade ${my_essential_casks[@]}
+brew_install_casks "${my_essential_casks[@]}"
+# brew cask upgrade "${my_essential_casks[@]}"
 
 # setup qlcolorcode defaults
 defaults delete org.n8gray.QLColorCode
@@ -87,6 +93,7 @@ defaults write org.n8gray.QLColorCode extraHLFlags "--line-numbers"
 qlmanage -r >/dev/null 2>&1
 
 declare -a my_essential_bottles=(
+  openssl@1.1
   lesspipe
   git
   gnupg
@@ -99,21 +106,20 @@ declare -a my_essential_bottles=(
   tmux
   tor
   stow
-  openssl
   syncthing
   shellcheck
 )
 brew_install_bottles "${my_essential_bottles[@]}"
 
-# declare -a language_casks=(
-#   java
-# )
-# brew_install_casks ${language_casks[@]}
-# brew cask upgrade ${language_casks[@]}
+declare -a language_casks=(
+#   java  # using openjdk now
+)
+brew_install_casks "${language_casks[@]}"
+# brew cask upgrade "${language_casks[@]}"
 
 declare -a language_bottles=(
-  python
-  python@3.9
+  python@3.8
+  # python@3.9
   rbenv
   go
   yarn
@@ -144,37 +150,37 @@ declare -a work_bottles=(
   kubectl
   packer
   gradle
-  jfrog-cli-go
+  jfrog-cli
   coreos-ct
-  openresty/brew/openresty
+  openresty
   aws-sam-cli
-  warrensbox/tap/tfswitch
+  tfswitch
   mongodb-community
 )
 brew tap mongodb/brew
 brew_install_bottles "${work_bottles[@]}"
 
 # remove unused brew archives
-echo ""
+echo
 echo "Tidying brew state..."
 brew cleanup
 
 ######################################
 # python installs
 
-echo ""
-# echo "Forcing python3 to be default..."
-# ln -fs /usr/local/bin/python3 /usr/local/bin/python
-# ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
-echo "Forcing python3.9 to be default..."
-ln -fs /usr/local/opt/python@3.9/bin/python3 /usr/local/bin/python
-ln -fs /usr/local/opt/python@3.9/bin/pip3 /usr/local/bin/pip
+echo
+echo "Forcing python3.8 to be default..."
+ln -fs /usr/local/bin/python3.8 /usr/local/bin/python
+ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
+# echo "Forcing python3.9 to be default..."
+# ln -fs /usr/local/opt/python@3.9/bin/python3 /usr/local/bin/python
+# ln -fs /usr/local/opt/python@3.9/bin/pip3 /usr/local/bin/pip
 
-echo ""
+echo
 echo "Setting up python environment..."
 pip_install pip setuptools
 
-echo ""
+echo
 echo "Installing system python modules..."
 declare -a my_essential_python_modules=(
   pipenv
@@ -189,7 +195,7 @@ pip_install "${my_system_python_modules[@]}"
 
 ######################################
 # nvm and node
-echo ""
+echo
 echo "Checking nvm, node, npm status..."
 
 if [ -f /usr/local/bin/npm ]; then
@@ -202,9 +208,14 @@ ensure_latest_nvm
 ensure_latest_node
 
 # list currently installed package versions
-# npm_global_installed_packages_list
 echo "Checking currently installed node packages ..."
+# npm_global_installed_packages_list
 yarn_global_installed_packages_list
+
+echo
+echo "Upgrading global node packages ..."
+# npm -g upgrade
+yarn global upgrade --silent
 
 declare -a my_essential_node_packages=(
   node-gyp
@@ -220,22 +231,25 @@ declare -a work_node_packages=(
   surge
   create-react-app
   react-static
-  @aws-amplify/cli
+  amplify
   jest
   serverless
-  graphql-cli
+  graphql
   prisma
 )
-# node_global_install_packages "${work_node_packages[@]}"
+# npm_global_install_packages "${work_node_packages[@]}"
 yarn_global_install_packages "${work_node_packages[@]}"
 
-yarn_upgrade_global_outdated
+echo
+echo "Checking outdated global node packages ..."
+# npm_outdated_global_installed_packages_list
+yarn_outdated_global_installed_packages_list
 
-echo ""
+echo
 echo "Tidying yarn cache..."
 yarn cache clean
 
-echo ""
+echo
 echo "Tidying nvm cache..."
 nvm cache clear
 
