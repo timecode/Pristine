@@ -147,7 +147,7 @@ declare -a work_bottles=(
   qrencode
   awscli
   minikube
-  kubectl
+  kubernetes-cli
   packer
   gradle
   jfrog-cli
