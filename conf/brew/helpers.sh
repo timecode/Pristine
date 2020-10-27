@@ -3,7 +3,7 @@
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 brew_installed_bottles() {
-  brew list -1
+  brew list --formula -1
 }
 
 brew_installed_casks() {
@@ -17,7 +17,7 @@ brew_installed_bottles_list() {
   if [ "${#installed[*]}" -gt 0 ]; then
     echo
     echo "Currently installed bottles..."
-    brew list --versions "${installed[@]}"
+    brew list --formula --versions "${installed[@]}"
   fi
 }
 

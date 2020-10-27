@@ -26,7 +26,8 @@ if type "brew" > /dev/null; then
 else
   # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
-  # brew remove --force $(brew list)
+  # brew remove --force $(brew list --formula)
+  # brew remove --force $(brew list --cask)
   echo "Please install Homebrew first..."
   echo "... find it here: https://brew.sh/"
   echo
