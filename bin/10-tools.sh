@@ -146,17 +146,16 @@ declare -a work_bottles=(
   kite
   wireguard-tools
   qrencode
+  # zbar
   awscli
   minikube
   kubernetes-cli
   packer
   gradle
   jfrog-cli
-  coreos-ct
   openresty
   aws-sam-cli
   tfswitch
-  mongodb-community
 )
 brew tap mongodb/brew
 brew_install_bottles "${work_bottles[@]}"
