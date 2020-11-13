@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # A fork of Paradox
 # A two-line, Powerline-inspired theme that displays contextual information.

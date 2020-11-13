@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 ##############################################################################
 ### nvm ######################################################################
@@ -25,8 +25,8 @@ ensure_latest_nvm() {
 
   if [ "${install_nvm}" -eq 1 ]; then
     # https://github.com/nvm-sh/nvm
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-    # wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | zsh
+    # wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | zsh
   fi
 
   export NVM_DIR="${HOME}/.nvm"
