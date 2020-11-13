@@ -153,9 +153,9 @@ declare -a work_bottles=(
   packer
   gradle
   jfrog-cli
-  openresty
+  openresty/brew/openresty
   aws-sam-cli
-  tfswitch
+  warrensbox/tap/tfswitch
 )
 brew tap mongodb/brew
 brew_install_bottles "${work_bottles[@]}"
