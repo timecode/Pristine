@@ -153,12 +153,25 @@ declare -a work_bottles=(
   packer
   gradle
   jfrog-cli
-  openresty/brew/openresty
   aws-sam-cli
-  warrensbox/tap/tfswitch
 )
 brew tap mongodb/brew
 brew_install_bottles "${work_bottles[@]}"
+
+required="openresty"
+install_check=$(command -v ${required})
+if [ $? -ne 0 ]; then
+  echo
+  echo "... initial manual install required for '${required}' ..."
+  echo "$ brew install openresty/brew/openresty"
+fi
+required="tfswitch"
+install_check=$(command -v ${required})
+if [ $? -ne 0 ]; then
+  echo
+  echo "... initial manual install required for '${required}' ..."
+  echo "$ brew install warrensbox/tap/tfswitch"
+fi
 
 # remove unused brew archives
 echo
