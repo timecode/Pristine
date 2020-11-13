@@ -19,7 +19,7 @@ if [ -f "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]; then
   # $ git pull && git submodule update --init --recursive
 else
   [ -d "${ZDOTDIR:-$HOME}/.zprezto" ] && rm -rf "${ZDOTDIR:-$HOME}/.zprezto"
-  [ -f" ${ZDOTDIR:-$HOME}/.zpreztorc" ]] && rm -f "${ZDOTDIR:-$HOME}/.zpreztorc"
+  [ -f "${ZDOTDIR:-$HOME}/.zpreztorc" ] && rm -f "${ZDOTDIR:-$HOME}/.zpreztorc"
   git clone --recursive "https://github.com/sorin-ionescu/prezto.git" "${ZDOTDIR:-$HOME}/.zprezto"
   # Configure prezto
   setopt EXTENDED_GLOB
