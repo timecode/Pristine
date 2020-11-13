@@ -196,13 +196,12 @@ echo "Now using $(python --version 2>&1)"
 
 ######################################################################
 # Java
-echo "$PATH" | grep -q -s "/usr/local/opt/openjdk/bin"
+export JAVA_HOME="/usr/local/opt/openjdk"
+export CPPFLAGS="-I${JAVA_HOME}/include"
+echo "$PATH" | grep -q -s "${JAVA_HOME}/bin"
 if [ $? -eq 1 ] ; then
-  export PATH="/usr/local/opt/openjdk/bin:$PATH"
+  export PATH="${JAVA_HOME}/bin:$PATH"
 fi
-export CPPFLAGS="-I/usr/local/opt/openjdk/include"
-java_home=$(/usr/libexec/java_home)
-export JAVA_HOME=${java_home}
 
 echo "Now using $(java --version 2>&1)"
 
