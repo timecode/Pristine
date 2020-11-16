@@ -147,7 +147,7 @@ openssl_loc=$(brew --prefix openssl@1.1)
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${openssl_loc}"
 
 echo "${PATH}" | grep -q -s "${HOME}/.rbenv/bin"
-[ $? -eq 1 ] && export PATH="$HOME/.rbenv/bin":$PATH
+[ $? -eq 1 ] && export PATH="${HOME}/.rbenv/bin":${PATH}
 
 echo "${PATH}" | grep -q -s "${HOME}/.rbenv/shims"
 [ $? -eq 1 ] && eval "$(rbenv init -)"
@@ -162,7 +162,7 @@ echo "Now using $(ruby --version)"
 
 ######################################################################
 # GOLANG
-export GOPATH=$HOME/go
+export GOPATH="${HOME}/go"
 echo "${PATH}" | grep -q -s "${GOPATH}/bin"
 [ $? -eq 1 ] && export PATH="${GOPATH}/bin":${PATH}
 
@@ -172,12 +172,12 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 15.0.1
-# nvm uninstall 15.0.1
+# nvm install 15.2.1
+# nvm uninstall 15.2.1
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "15.0.1"
-export NVM_DIR="$HOME/.nvm"
+# nvm alias "default" "15.2.1"
+export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
 nvm_shell_completion="${NVM_DIR}/bash_completion"
 # shellcheck source=/dev/null
@@ -198,9 +198,9 @@ echo "Now using $(python --version 2>&1)"
 # Java
 export JAVA_HOME="/usr/local/opt/openjdk"
 export CPPFLAGS="-I${JAVA_HOME}/include"
-echo "$PATH" | grep -q -s "${JAVA_HOME}/bin"
+echo "${PATH}" | grep -q -s "${JAVA_HOME}/bin"
 if [ $? -eq 1 ] ; then
-  export PATH="${JAVA_HOME}/bin:$PATH"
+  export PATH="${JAVA_HOME}/bin:${PATH}"
 fi
 
 echo "Now using $(java --version 2>&1)"
@@ -224,8 +224,8 @@ echo
 
 ######################################################################
 # OPENSSL 1.1
-echo "$PATH" | grep -q -s "openssl@1.1"
-[ $? -eq 1 ] && export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+echo "${PATH}" | grep -q -s "openssl@1.1"
+[ $? -eq 1 ] && export PATH="/usr/local/opt/openssl@1.1/bin:${PATH}"
 
 ######################################################################
 # google-cloud-sdk

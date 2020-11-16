@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-export HOMEBREW_NO_AUTO_UPDATE=1
+# export HOMEBREW_NO_AUTO_UPDATE=1
 
 brew_installed_bottles() {
   brew list --formula -1
@@ -11,7 +11,7 @@ brew_installed_casks() {
 }
 
 brew_installed_bottles_list() {
-  local -a installed=()
+  local installed=()
   while IFS=$'\n' read -r l; do installed+=( "${l}" ); done < <(echo "$(brew_installed_bottles) ")
   unset IFS
   if [ "${#installed[*]}" -gt 0 ]; then
@@ -22,7 +22,7 @@ brew_installed_bottles_list() {
 }
 
 brew_installed_casks_list() {
-  local -a installed
+  local installed=()
   while IFS=$'\n' read -r l; do installed+=( "${l}" ); done < <(brew_installed_casks)
   unset IFS
   if [ "${#installed[@]}" -gt 0 ]; then
@@ -34,22 +34,23 @@ brew_installed_casks_list() {
 
 brew_install_bottles() {
   local install=("${@}")
-  local -a to_install
-  local -a installed
+  local to_install=()
+  local installed=()
+  local i=0
   while read -r -d $'\n' l; do installed+=( "${l}" ); done < <(echo "$(brew_installed_bottles) ")
 
   len="${#install[@]}"
   if [ "${len}" -gt 0 ]; then
     local marker='INSTALLED'
     for target in "${installed[@]}"; do
-      for (( i=0; i<len; i++ )); do
+      for (( i=1; i<=len; i++ )); do
         if [[ "${install[${i}]}" = "${target}" ]]; then
           install[i]="${marker}"
           break
         fi
       done
     done
-    for (( i=0; i<len; i++ )); do
+    for (( i=1; i<=len; i++ )); do
       if [[ "${install[${i}]}" != "${marker}" ]]; then
         to_install+=("${install[${i}]}")
       fi
@@ -57,7 +58,7 @@ brew_install_bottles() {
   fi
 
   if [ "${#to_install[@]}" -gt 0 ]; then
-    local -a sorted_install=()
+    local sorted_install=()
     IFS=$'\n' sorted_install=("$(sort <<<"${to_install[*]}")")
     unset IFS
     to_install=()
@@ -79,22 +80,23 @@ brew_install_bottles() {
 
 brew_install_casks() {
   local install=("${@}")
-  local -a to_install
-  local -a installed
+  local to_install=()
+  local installed=()
+  local i=0
   while read -r -d $'\n' l; do installed+=( "${l}" ); done < <(echo "$(brew_installed_casks) ")
 
   len="${#install[@]}"
   if [ "${len}" -gt 0 ]; then
     local marker='INSTALLED'
     for target in "${installed[@]}"; do
-      for (( i=0; i<len; i++ )); do
+      for (( i=1; i<=len; i++ )); do
         if [[ "${install[${i}]}" = "${target}" ]]; then
           install[i]="${marker}"
           break
         fi
       done
     done
-    for (( i=0; i<len; i++ )); do
+    for (( i=1; i<=len; i++ )); do
       if [[ "${install[${i}]}" != "${marker}" ]]; then
         to_install+=("${install[${i}]}")
       fi
@@ -102,7 +104,7 @@ brew_install_casks() {
   fi
 
   if [ "${#to_install[@]}" -gt 0 ]; then
-    local -a sorted_install=()
+    local sorted_install=()
     IFS=$'\n' sorted_install=("$(sort <<<"${to_install[*]}")")
     unset IFS
     to_install=()
@@ -121,7 +123,7 @@ brew_upgrade_bottles() {
 }
 
 brew_upgrade_casks() {
-  local -a installed
+  local installed=()
   while read -r -d $'\n' l; do installed+=( "${l}" ); done < <(echo "$(brew_installed_casks) ")
   brew upgrade --quiet --casks "${installed[@]}"
 }

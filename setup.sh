@@ -4,7 +4,7 @@ set -e
 
 SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)"
 
-declare -a files=()
+declare files=()
 while IFS=$'\n' read -r l; do files+=( "${l}" ); done < <(find "${SCRIPTS_PATH}/bin" -maxdepth 1 -name '*.sh' | sort -n)
 unset IFS
 

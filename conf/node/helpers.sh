@@ -5,33 +5,26 @@
 ##############################################################################
 
 ensure_latest_nvm() {
-  install_nvm=0
+  unset latest
+  current="unknown"
   if [ -d "${HOME}/.nvm" ]; then
     echo "... a version of nvm is already installed"
-
     # check it's up-to-date
     current=$(grep -hnr '"version":' "${HOME}/.nvm/package.json" | sed -E 's/.*: "(.*)".*/\1/')
     latest=$(git ls-remote --tags git://github.com/creationix/nvm.git | cut -d/ -f3- | sort -t. -nk1,2 -k2 | awk '/^[^{]*$/{version=$1}END{print version}' | sed s/v//g)
-    if [[ "${current}" != "${latest}" ]]; then
-      echo "... updating nvm"
-      echo
-      install_nvm=1
-    fi
-  else
-    echo "... installing nvm"
-    echo
-    install_nvm=1
   fi
 
-  if [ "${install_nvm}" -eq 1 ]; then
+  if [ "${current}" != "${latest}" ]; then
+    echo "... installing nvm"
+    echo
     # https://github.com/nvm-sh/nvm
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | zsh
     # wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | zsh
   fi
 
-  export NVM_DIR="${HOME}/.nvm"
+  nvm_dir="${HOME}/.nvm"
   # shellcheck source=/dev/null
-  [ -e "${NVM_DIR}/nvm.sh" ] && . "${NVM_DIR}/nvm.sh"  # This loads nvm
+  [ -e "${nvm_dir}/nvm.sh" ] && . "${nvm_dir}/nvm.sh"  # This loads nvm
 }
 
 ##############################################################################
@@ -85,7 +78,7 @@ remove_npm() {
 }
 
 npm_global_installed_packages() {
-  local -a installed
+  local installed=()
   IFS=' '; while read -r l; do installed+=( "${l}" ); done < <(npm list -g --depth=0 --json | jq ".dependencies" | jq -r 'keys[]')
   unset IFS
   local gloably_installed=()
@@ -96,7 +89,7 @@ npm_global_installed_packages() {
 }
 
 npm_global_installed_packages_list() {
-  local -a installed
+  local installed=()
   while read -r -d $' ' l; do installed+=( "${l}" ); done < <(echo "$(npm_global_installed_packages) ")
   if [ ${#installed[@]} -gt 0 ]; then
     echo
@@ -118,22 +111,23 @@ npm_outdated_global_installed_packages() {
 
 npm_global_install_packages() {
   local install=("${@}")
-  local -a to_install
-  local -a installed
+  local to_install=()
+  local installed=()
+  local i=0
   while read -r -d $' ' l; do installed+=( "${l}" ); done < <(echo "$(npm_global_installed_packages) ")
 
   len="${#install[@]}"
   if [ "${len}" -gt 0 ]; then
     local marker='INSTALLED'
     for target in "${installed[@]}"; do
-      for (( i=0; i<len; i++ )); do
+      for (( i=1; i<=len; i++ )); do
         if [[ "${install[${i}]}" = "${target}" ]]; then
           install[i]="${marker}"
           break
         fi
       done
     done
-    for (( i=0; i<len; i++ )); do
+    for (( i=1; i<=len; i++ )); do
       if [[ "${install[${i}]}" != "${marker}" ]]; then
         to_install+=("${install[${i}]}")
       fi
@@ -141,7 +135,7 @@ npm_global_install_packages() {
   fi
 
   if [ "${#to_install[@]}" -gt 0 ]; then
-    local -a sorted_install=()
+    local sorted_install=()
     IFS=$'\n' sorted_install=("$(sort <<<"${to_install[*]}")")
     unset IFS
     to_install=()
@@ -156,7 +150,7 @@ npm_global_install_packages() {
 }
 
 npm_outdated_global_installed_packages_list() {
-  local -a arr
+  local arr=()
   while read -r -d $' ' l; do arr+=( "${l}" ); done < <(echo "$(npm_outdated_global_installed_packages) ")
   echo "npm outdated ..."
   for element in "${arr[@]}"; do
@@ -169,10 +163,10 @@ npm_outdated_global_installed_packages_list() {
 ##############################################################################
 
 yarn_global_installed_packages() {
-  local -a installed
+  local installed=()
   while read -r l; do installed+=( "${l}" ); done < <(yarn global list --no-progress)
   unset IFS
-  local -a gloably_installed
+  local gloably_installed=()
   regex="^- \w*"
   for element in "${installed[@]}"; do
     if [[ "${element}" =~ ${regex} ]]; then
@@ -183,7 +177,7 @@ yarn_global_installed_packages() {
 }
 
 yarn_global_installed_packages_list() {
-  local -a installed
+  local installed=()
   while read -r -d $' ' l; do installed+=( "${l}" ); done < <(echo "$(yarn_global_installed_packages) ")
   if [ ${#installed[@]} -gt 0 ]; then
     echo
@@ -196,22 +190,23 @@ yarn_global_installed_packages_list() {
 
 yarn_global_install_packages() {
   local install=("${@}")
-  local -a to_install
-  local -a installed
+  local to_install=()
+  local installed=()
+  local i=0
   while read -r -d $' ' l; do installed+=( "${l}" ); done < <(echo "$(yarn_global_installed_packages) ")
 
   len="${#install[@]}"
   if [ "${len}" -gt 0 ]; then
     local marker='INSTALLED'
     for target in "${installed[@]}"; do
-      for (( i=0; i<len; i++ )); do
+      for (( i=1; i<=len; i++ )); do
         if [[ "${install[${i}]}" = "${target}" ]]; then
           install[i]="${marker}"
           break
         fi
       done
     done
-    for (( i=0; i<len; i++ )); do
+    for (( i=1; i<=len; i++ )); do
       if [[ "${install[${i}]}" != "${marker}" ]]; then
         to_install+=("${install[${i}]}")
       fi
@@ -219,7 +214,7 @@ yarn_global_install_packages() {
   fi
 
   if [ "${#to_install[@]}" -gt 0 ]; then
-    local -a sorted_install=()
+    local sorted_install=()
     IFS=$'\n' sorted_install=("$(sort <<<"${to_install[*]}")")
     unset IFS
     to_install=()

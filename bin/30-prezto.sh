@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 
@@ -47,7 +47,3 @@ sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto
 # sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' 'node' \\\/g" ${ZDOTDIR:-$HOME}/.zpreztorc
 # removing node module due to prezto-grunt-cache.502.zsh:37: command not found: compdef
 sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' \\\/g" "${ZDOTDIR:-$HOME}/.zpreztorc"
-
-#####################################
-echo "... ensuring zsh dir is secure ..."
-chmod -R 755 /usr/local/share/zsh

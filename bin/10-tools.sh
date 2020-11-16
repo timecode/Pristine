@@ -8,6 +8,10 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 # shellcheck source=/dev/null
 . "${SCRIPTS_PATH}/conf/node/helpers.sh"
 
+#####################################
+# ensure zsh dir is secure!
+[ -e /usr/local/share/zsh ] && chmod -R 755 /usr/local/share/zsh
+
 ################################################################################
 # Install software
 
@@ -63,7 +67,7 @@ brew tap aws/tap
 echo
 echo "Checking for uninstalled dependencies..."
 
-declare -a my_essential_casks=(
+declare my_essential_casks=(
   1password-cli
   iterm2
   visual-studio-code
@@ -93,7 +97,7 @@ defaults write org.n8gray.QLColorCode hlTheme zenburn
 defaults write org.n8gray.QLColorCode extraHLFlags "--line-numbers"
 qlmanage -r >/dev/null 2>&1
 
-declare -a my_essential_bottles=(
+declare my_essential_bottles=(
   openssl@1.1
   lesspipe
   git
@@ -112,13 +116,13 @@ declare -a my_essential_bottles=(
 )
 brew_install_bottles "${my_essential_bottles[@]}"
 
-declare -a language_casks=(
+declare language_casks=(
 #   java  # using openjdk now
 )
 brew_install_casks "${language_casks[@]}"
 # brew cask upgrade "${language_casks[@]}"
 
-declare -a language_bottles=(
+declare language_bottles=(
   # python@3.8
   python@3.9
   rbenv
@@ -131,7 +135,7 @@ declare -a language_bottles=(
 )
 brew_install_bottles "${language_bottles[@]}"
 
-declare -a work_casks=(
+declare work_casks=(
   virtualbox
   vagrant
   ngrok
@@ -141,7 +145,7 @@ declare -a work_casks=(
 )
 brew_install_casks "${work_casks[@]}"
 
-declare -a work_bottles=(
+declare work_bottles=(
   docker-credential-helper
   kite
   wireguard-tools
@@ -195,13 +199,13 @@ pip_install pip setuptools
 
 echo
 echo "Installing system python modules..."
-declare -a my_essential_python_modules=(
+declare my_essential_python_modules=(
   pipenv
   autopep8
 )
 pip_install "${my_essential_python_modules[@]}"
 
-declare -a my_system_python_modules=(
+declare my_system_python_modules=(
   speedtest-cli
 )
 pip_install "${my_system_python_modules[@]}"
@@ -230,7 +234,7 @@ echo "Upgrading global node packages ..."
 # npm -g upgrade
 yarn global upgrade --silent
 
-declare -a my_essential_node_packages=(
+declare my_essential_node_packages=(
   node-gyp
   spoof
   nodemon
@@ -238,7 +242,7 @@ declare -a my_essential_node_packages=(
 # npm_global_install_packages "${my_essential_node_packages[@]}"
 yarn_global_install_packages "${my_essential_node_packages[@]}"
 
-declare -a work_node_packages=(
+declare work_node_packages=(
   http-server
   serve
   surge
