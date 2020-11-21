@@ -98,7 +98,6 @@ defaults write org.n8gray.QLColorCode extraHLFlags "--line-numbers"
 qlmanage -r >/dev/null 2>&1
 
 declare my_essential_bottles=(
-  cloudflared
   openssl@1.1
   lesspipe
   git
@@ -163,6 +162,13 @@ declare work_bottles=(
 brew tap mongodb/brew
 brew_install_bottles "${work_bottles[@]}"
 
+required="cloudflared"
+install_check=$(command -v ${required})
+if [ $? -ne 0 ]; then
+  echo
+  echo "... initial manual install required for '${required}' ..."
+  echo "$ brew install cloudflare/cloudflare/cloudflared"
+fi
 required="openresty"
 install_check=$(command -v ${required})
 if [ $? -ne 0 ]; then
