@@ -165,23 +165,26 @@ brew_install_bottles "${work_bottles[@]}"
 required="cloudflared"
 install_check=$(command -v ${required})
 if [ $? -ne 0 ]; then
-  echo
-  echo "... initial manual install required for '${required}' ..."
-  echo "$ brew install cloudflare/cloudflare/cloudflared"
+  >&2 echo "\e[33m"
+  >&2 echo "... initial manual install required for '${required}' ..."
+  >&2 echo "$ brew install cloudflare/cloudflare/cloudflared"
+  >&2 echo "\e[39m"
 fi
 required="openresty"
 install_check=$(command -v ${required})
 if [ $? -ne 0 ]; then
-  echo
-  echo "... initial manual install required for '${required}' ..."
-  echo "$ brew install openresty/brew/openresty"
+  >&2 echo "\e[33m"
+  >&2 echo "... initial manual install required for '${required}' ..."
+  >&2 echo "$ brew install openresty/brew/openresty"
+  >&2 echo "\e[39m"
 fi
 required="tfswitch"
 install_check=$(command -v ${required})
 if [ $? -ne 0 ]; then
-  echo
-  echo "... initial manual install required for '${required}' ..."
-  echo "$ brew install warrensbox/tap/tfswitch"
+  >&2 echo "\e[33m"
+  >&2 echo "... initial manual install required for '${required}' ..."
+  >&2 echo "$ brew install warrensbox/tap/tfswitch"
+  >&2 echo "\e[39m"
 fi
 
 # remove unused brew archives
