@@ -3,10 +3,6 @@
 SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 # shellcheck source=/dev/null
 . "${SCRIPTS_PATH}/conf/brew/helpers.sh"
-# shellcheck source=/dev/null
-. "${SCRIPTS_PATH}/conf/python/helpers.sh"
-# shellcheck source=/dev/null
-. "${SCRIPTS_PATH}/conf/node/helpers.sh"
 
 #####################################
 # ensure zsh dir is secure!
@@ -191,96 +187,6 @@ fi
 echo
 echo "Tidying brew state..."
 brew cleanup
-
-######################################
-# python installs
-
-echo
-# echo "Forcing python3.8 to be default..."
-# ln -fs /usr/local/bin/python3.8 /usr/local/bin/python
-# ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
-echo "Forcing python3.9 to be default..."
-ln -fs /usr/local/opt/python@3.9/bin/python3 /usr/local/bin/python
-ln -fs /usr/local/opt/python@3.9/bin/pip3 /usr/local/bin/pip
-
-echo
-echo "Setting up python environment..."
-pip_install pip setuptools
-
-echo
-echo "Installing system python modules..."
-declare my_essential_python_modules=(
-  pipenv
-  autopep8
-)
-pip_install "${my_essential_python_modules[@]}"
-
-declare my_system_python_modules=(
-  speedtest-cli
-)
-pip_install "${my_system_python_modules[@]}"
-
-######################################
-# nvm and node
-echo
-echo "Checking nvm, node, npm status..."
-
-if [ -f /usr/local/bin/npm ]; then
-  echo "... removing non-nvm installed npm..."
-  rm -f /usr/local/bin/npm
-fi
-
-ensure_latest_nvm
-
-ensure_latest_node
-
-# list currently installed package versions
-echo "Checking currently installed node packages ..."
-# npm_global_installed_packages_list
-yarn_global_installed_packages_list
-
-echo
-echo "Upgrading global node packages ..."
-# npm -g upgrade
-yarn global upgrade --silent
-
-declare my_essential_node_packages=(
-  node-gyp
-  spoof
-  nodemon
-)
-# npm_global_install_packages "${my_essential_node_packages[@]}"
-yarn_global_install_packages "${my_essential_node_packages[@]}"
-
-declare work_node_packages=(
-  http-server
-  serve
-  surge
-  create-react-app
-  react-static
-  amplify
-  jest
-  serverless
-  graphql
-  prisma
-)
-# npm_global_install_packages "${work_node_packages[@]}"
-yarn_global_install_packages "${work_node_packages[@]}"
-
-echo
-echo "Checking outdated global node packages ..."
-# npm_outdated_global_installed_packages_list
-yarn_outdated_global_installed_packages_list
-
-echo
-echo "Tidying yarn cache..."
-yarn cache clean
-
-echo
-echo "Tidying nvm cache..."
-nvm cache clear
-
-remove_npm
 
 #####################################
 # Linux
