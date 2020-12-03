@@ -15,9 +15,9 @@ set shell=/bin/zsh
 set guifont="Meslo LG M Regular for Powerline":h14
 " set nocompatible
 " set modelines=0
-" set tabstop=4
+set tabstop=4
 " set shiftwidth=4
-" set softtabstop=4
+set softtabstop=4
 " set expandtab
 set encoding=utf-8
 " set scrolloff=3
