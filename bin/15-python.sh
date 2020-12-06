@@ -8,12 +8,29 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 # python installs
 
 echo
+LOCAL_BIN=/usr/local/bin
 # echo "Forcing python3.8 to be default..."
-# ln -fs /usr/local/bin/python3.8 /usr/local/bin/python
-# ln -fs /usr/local/bin/pip3 /usr/local/bin/pip
+# ln -fs ${LOCAL_BIN}/python3.8 ${LOCAL_BIN}/python
+# ln -fs ${LOCAL_BIN}/pip3 ${LOCAL_BIN}/pip
+
 echo "Forcing python3.9 to be default..."
-ln -fs /usr/local/opt/python@3.9/bin/python3 /usr/local/bin/python
-ln -fs /usr/local/opt/python@3.9/bin/pip3 /usr/local/bin/pip
+BREW_PYTHON_BIN=/usr/local/opt/python@3.9/bin
+
+install_check=$(${BREW_PYTHON_BIN}/python3 --version >/dev/null 2>&1)
+if [ $? -eq 0 ]; then
+  ln -fs ${BREW_PYTHON_BIN}/python3 ${LOCAL_BIN}/python
+fi
+
+# includes fix for brew issues when python version changes!
+install_check=$(${BREW_PYTHON_BIN}/pip3 --version >/dev/null 2>&1)
+if [ $? -eq 0 ]; then
+  ln -fs ${BREW_PYTHON_BIN}/pip3 ${LOCAL_BIN}/pip
+else
+  install_check=$(${LOCAL_BIN}/pip3 --version >/dev/null 2>&1)
+  if [ $? -eq 0 ]; then
+    ln -fs ${LOCAL_BIN}/pip3 ${LOCAL_BIN}/pip
+  fi
+fi
 
 echo
 echo "Setting up python environment..."
