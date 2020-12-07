@@ -263,7 +263,10 @@ export GPG_TTY=${tty_dev}
 # Brew completions
 # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  echo "${FPATH}" | grep -q -s "$(brew --prefix)/share/zsh/site-functions"
+  if [ $? -eq 1 ] ; then
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  fi
   autoload -Uz compinit
   compinit
 fi
