@@ -260,6 +260,15 @@ tty_dev=$(tty)
 export GPG_TTY=${tty_dev}
 
 ######################################################################
+# Brew completions
+# https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  autoload -Uz compinit
+  compinit
+fi
+
+######################################################################
 ######################################################################
 echo
 echo 'Login and run command complete'
