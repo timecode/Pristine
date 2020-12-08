@@ -15,9 +15,9 @@ set shell=/bin/zsh
 set guifont="Meslo LG M Regular for Powerline":h14
 " set nocompatible
 " set modelines=0
-set tabstop=4
+" set tabstop=4
 " set shiftwidth=4
-set softtabstop=4
+" set softtabstop=4
 " set expandtab
 set encoding=utf-8
 " set scrolloff=3
@@ -87,3 +87,32 @@ inoremap jk <ESC>
 " nnoremap <C-j> <C-w>j
 " nnoremap <C-k> <C-w>k
 " nnoremap <C-l> <C-w>l
+
+" NOTE: additions for Golang in vim
+" install https://github.com/junegunn/vim-plug
+" then invoke the following
+" vim +PlugInstall +qa
+" vim +GoInstallBinaries +qa
+" We then modify this file with the following
+call plug#begin('~/.vim/plugged')
+
+Plug 'fatih/vim-go'
+
+call plug#end()
+
+filetype off
+filetype plugin indent on
+
+set number
+set noswapfile
+set noshowmode
+set ts=2 sw=2 sts=2 et
+set backspace=indent,eol,start
+
+" Map <leader> to comma
+let mapleader=","
+let g:go_version_warning = 0
+
+if has("autocmd")
+  autocmd FileType go set ts=4 sw=4 sts=4 noet nolist autowrite
+endif
