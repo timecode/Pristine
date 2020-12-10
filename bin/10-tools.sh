@@ -38,6 +38,21 @@ fi
 # brew
 echo
 echo "Checking Homebrew state..."
+# To `brew update` first run:
+#   git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask" fetch --unshallow
+# This restriction has been made on GitHub's request because updating shallow
+# clones is an extremely expensive operation due to the tree layout and traffic of
+# Homebrew/homebrew-cask. We don't do this for you automatically to avoid
+# repeatedly performing an expensive unshallow operation in CI systems (which
+# should instead be fixed to not use shallow clones). Sorry for the inconvenience!
+shallow_clone=$(git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core" rev-parse --is-shallow-repository)
+if [ "${shallow_clone}" = "true" ]; then
+  >&2 echo "\e[33m"
+  >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-cask ..."
+  git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core" fetch --unshallow
+  >&2 echo "... unshallow fetch complete ..."
+  >&2 echo "\e[39m"
+fi
 brew update
 brew --version
 
@@ -113,8 +128,8 @@ declare my_essential_bottles=(
 brew_install_bottles "${my_essential_bottles[@]}"
 
 declare language_casks=(
-#   java  # using openjdk now
 )
+#   java  # using openjdk now
 brew_install_casks "${language_casks[@]}"
 # brew cask upgrade "${language_casks[@]}"
 
@@ -137,8 +152,8 @@ declare work_casks=(
   ngrok
   docker-toolbox
   pgadmin4
-  # google-cloud-sdk  # insists on reinstalling everything each time, regardless of updates, so removing for now!
 )
+# google-cloud-sdk  # insists on reinstalling everything each time, regardless of updates, so removing for now!
 brew_install_casks "${work_casks[@]}"
 
 declare work_bottles=(
