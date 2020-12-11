@@ -9,6 +9,9 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 echo
 echo "Checking nvm, node, npm status..."
 
+# comment out the next line to enable nvm and node setup
+>&2 echo "\e[33m... DISABLED\e[39m"; return
+
 if [ -f /usr/local/bin/npm ]; then
   echo "... removing non-nvm installed npm..."
   rm -f /usr/local/bin/npm
