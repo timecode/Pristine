@@ -134,15 +134,14 @@ brew_install_casks "${language_casks[@]}"
 # brew cask upgrade "${language_casks[@]}"
 
 declare language_bottles=(
-  # python@3.8
   python@3.9
   rbenv
   go
   yarn
   nodeenv
   openjdk
-  kotlin
-  ktlint
+  # kotlin
+  # ktlint
 )
 brew_install_bottles "${language_bottles[@]}"
 
@@ -151,7 +150,7 @@ declare work_casks=(
   vagrant
   ngrok
   docker-toolbox
-  pgadmin4
+  # pgadmin4
 )
 # google-cloud-sdk  # insists on reinstalling everything each time, regardless of updates, so removing for now!
 brew_install_casks "${work_casks[@]}"
@@ -163,12 +162,12 @@ declare work_bottles=(
   qrencode
   # zbar
   awscli
+  # aws-sam-cli
   minikube
   kubernetes-cli
-  packer
-  gradle
-  jfrog-cli
-  aws-sam-cli
+  # packer
+  # gradle
+  # jfrog-cli
 )
 brew tap mongodb/brew
 brew_install_bottles "${work_bottles[@]}"
