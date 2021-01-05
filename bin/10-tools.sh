@@ -39,20 +39,31 @@ fi
 echo
 echo "Checking Homebrew state..."
 # To `brew update` first run:
+#   git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core" fetch --unshallow
 #   git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask" fetch --unshallow
 # This restriction has been made on GitHub's request because updating shallow
 # clones is an extremely expensive operation due to the tree layout and traffic of
-# Homebrew/homebrew-cask. We don't do this for you automatically to avoid
-# repeatedly performing an expensive unshallow operation in CI systems (which
-# should instead be fixed to not use shallow clones). Sorry for the inconvenience!
+# Homebrew/homebrew-core and Homebrew/homebrew-cask. We don't do this for you
+# automatically to avoid repeatedly performing an expensive unshallow operation in
+# CI systems (which should instead be fixed to not use shallow clones).
+# Sorry for the inconvenience!
 shallow_clone=$(git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core" rev-parse --is-shallow-repository)
 if [ "${shallow_clone}" = "true" ]; then
   >&2 echo "\e[33m"
-  >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-cask ..."
+  >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-core ..."
   git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core" fetch --unshallow
-  >&2 echo "... unshallow fetch complete ..."
+  >&2 echo "... unshallow fetch of Homebrew/homebrew-core complete ..."
   >&2 echo "\e[39m"
 fi
+shallow_clone=$(git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask" rev-parse --is-shallow-repository)
+if [ "${shallow_clone}" = "true" ]; then
+  >&2 echo "\e[33m"
+  >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-cask ..."
+  git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask" fetch --unshallow
+  >&2 echo "... unshallow fetch of Homebrew/homebrew-cask complete ..."
+  >&2 echo "\e[39m"
+fi
+
 brew update
 brew --version
 
