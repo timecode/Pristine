@@ -172,11 +172,11 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 15.2.1
-# nvm uninstall 15.2.1
+# nvm install 15.5.1
+# nvm uninstall 15.5.1
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "15.2.1"
+# nvm alias "default" "15.5.1"
 export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
 nvm_shell_completion="${NVM_DIR}/bash_completion"
