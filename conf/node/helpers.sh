@@ -232,4 +232,10 @@ yarn_outdated_global_installed_packages_list() {
   yarn_global_dir="$(yarn global dir)"
   cd "${yarn_global_dir}" || 0
   yarn outdated
+  if [ $? -ne 0 ]; then
+    >&2 echo "\e[33m"
+    >&2 echo "... manually update global packages using ..."
+    >&2 echo "$ yarn global upgrade"
+    >&2 echo "\e[39m"
+  fi
 }
