@@ -168,7 +168,6 @@ brew_install_casks "${work_casks[@]}"
 
 declare work_bottles=(
   docker-credential-helper
-  kite
   wireguard-tools
   qrencode
   # zbar
