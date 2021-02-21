@@ -134,7 +134,7 @@ brew_upgrade_casks() {
     for target in "${cask_upgrade_skip_list[@]}"; do
       for (( i=1; i<=len; i++ )); do
         if [[ "${installed[${i}]}" = "${target}" ]]; then
-          echo "... skipping '${target}'"
+          >&2 echo "\e[33m ... skipping '${target}'\e[39m"
           installed[i]="${marker}"
           break
         fi
