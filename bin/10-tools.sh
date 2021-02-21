@@ -79,6 +79,12 @@ echo "Checking for upgrades..."
 brew_upgrade_bottles
 echo
 echo "Checking for cask upgrades..."
+declare cask_upgrade_skip_list=(
+  # add casks that, for whatever reason, require updates to be skipped
+  ngrok               # pinned to 'latest'
+  qlcolorcode         # crequires OS upgrade
+  quicklook-json      # pinned to 'latest'
+)
 brew_upgrade_casks
 
 echo

@@ -124,7 +124,29 @@ brew_upgrade_bottles() {
 
 brew_upgrade_casks() {
   local installed=()
+  local to_update=()
   while read -r -d $'\n' l; do installed+=( "${l}" ); done < <(echo "$(brew_installed_casks) ")
-  brew upgrade --quiet --casks "${installed[@]}"
+
+  # remove ignored updates
+  len="${#installed[@]}"
+  if [ "${len}" -gt 0 ]; then
+    local marker='SKIP'
+    for target in "${cask_upgrade_skip_list[@]}"; do
+      for (( i=1; i<=len; i++ )); do
+        if [[ "${installed[${i}]}" = "${target}" ]]; then
+          echo "... skipping '${target}'"
+          installed[i]="${marker}"
+          break
+        fi
+      done
+    done
+    for (( i=1; i<=len; i++ )); do
+      if [[ "${installed[${i}]}" != "${marker}" ]]; then
+        to_update+=("${installed[${i}]}")
+      fi
+    done
+  fi
+
+  brew upgrade --quiet --casks "${to_update[@]}"
 }
 
