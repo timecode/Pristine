@@ -119,7 +119,32 @@ brew_install_casks() {
 }
 
 brew_upgrade_bottles() {
-  brew upgrade
+  local installed=()
+  local to_update=()
+  while read -r -d $'\n' l; do installed+=( "${l}" ); done < <(echo "$(brew_installed_bottles) ")
+
+  # remove skipped updates
+  len="${#installed[@]}"
+  if [ "${len}" -gt 0 ]; then
+    local marker='SKIP'
+    for target in "${brew_upgrade_skip_list[@]}"; do
+      for (( i=1; i<=len; i++ )); do
+        if [[ "${installed[${i}]}" = "${target}" ]]; then
+          >&2 echo "\e[33m ... skipping '${target}'\e[39m"
+          installed[i]="${marker}"
+          break
+        fi
+      done
+    done
+    for (( i=1; i<=len; i++ )); do
+      if [[ "${installed[${i}]}" != "${marker}" ]]; then
+        to_update+=("${installed[${i}]}")
+      fi
+    done
+  fi
+
+  # this currently lists Warnings for each formulae (which is a bug in brew)
+  brew upgrade --quiet --formulae "${to_update[@]}"
 }
 
 brew_upgrade_casks() {
@@ -127,11 +152,11 @@ brew_upgrade_casks() {
   local to_update=()
   while read -r -d $'\n' l; do installed+=( "${l}" ); done < <(echo "$(brew_installed_casks) ")
 
-  # remove ignored updates
+  # remove skipped updates
   len="${#installed[@]}"
   if [ "${len}" -gt 0 ]; then
     local marker='SKIP'
-    for target in "${cask_upgrade_skip_list[@]}"; do
+    for target in "${brew_upgrade_skip_list[@]}"; do
       for (( i=1; i<=len; i++ )); do
         if [[ "${installed[${i}]}" = "${target}" ]]; then
           >&2 echo "\e[33m ... skipping '${target}'\e[39m"
