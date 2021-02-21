@@ -77,9 +77,9 @@ brew_installed_casks_list
 echo
 echo "Checking for upgrades..."
 brew_upgrade_bottles
-# echo
-# echo "Checking for cask upgrades..."
-# brew_upgrade_casks
+echo
+echo "Checking for cask upgrades..."
+brew_upgrade_casks
 
 echo
 echo "Adding aws/tap..."
