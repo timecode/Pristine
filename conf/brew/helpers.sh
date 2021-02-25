@@ -144,11 +144,17 @@ brew_upgrade_bottles() {
   fi
 
   # brew insists on a "Warning" for each formulae to be 'upgraded'
-  # stating "already installed" (and therefore, no need to upgrade)
-  # rather than something like "up to date"
+  # stating that it's "already installed"
+  # We know it's "already installed", we want to upgrade it!
+  # At the very least it could say something like "up to date"
   # In any event, it would ideally be hush-able with --quiet (but no!)
-  # so sending all that to /dev/null :-/
-  brew upgrade --quiet --formulae "${to_update[@]}" >/dev/null 2>&1
+  # see https://github.com/Homebrew/brew/issues/10666
+  # so... sending all that noise to /dev/null :-/
+  # brew upgrade --quiet --formulae "${to_update[@]}" >/dev/null 2>&1
+
+  # Hmmm, so when there ARE updates, ^ we end up running blind so, until
+  # --quiet does what's expected, maybe live with the Warnings noise :-(
+  brew upgrade --quiet --formulae "${to_update[@]}"
 }
 
 brew_upgrade_casks() {
