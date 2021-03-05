@@ -91,8 +91,12 @@ alias profile="code ~/.zshrc"
 alias dev="cd ~/Development/"
 
 # dev stuff
-alias update='~/Pristine/setup.sh'
 alias pris='code ~/Pristine'
+alias update='~/Pristine/setup.sh'
+# ENABLE / DISNABLE NVM updates by Pristine from the command line:
+alias nvmyes="sed -E -i '' 's/^# (unset DISABLE_NVM)/\1/g' ${HOME}/Pristine/bin/16-node.sh"
+alias nvmno="sed -E -i '' 's/^(unset DISABLE_NVM)/# \1/g' ${HOME}/Pristine/bin/16-node.sh"
+
 alias g='bundle exec guard'
 alias subl='code'
 alias st='code'
@@ -119,6 +123,7 @@ alias dma='docker-machine start DockerMachine && dme'
 alias dmz='docker-machine stop DockerMachine'
 alias drmc='docker rm -f $(docker ps -a -q)'
 alias drmi='docker rmi $(docker images -q)'
+
 
 dir=~/Applications/dynamodb_local_latest
 if [ -e ${dir} ]; then
