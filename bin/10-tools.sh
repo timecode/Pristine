@@ -64,7 +64,7 @@ if [ "${shallow_clone}" = "true" ]; then
   >&2 echo "\e[39m"
 fi
 
-brew update
+brew update 1>/dev/null
 brew --version
 
 # check brew health
