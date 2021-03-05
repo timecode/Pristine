@@ -11,7 +11,7 @@ echo "Checking nvm, node, npm status..."
 
 DISABLE_NVM=true
 # uncomment the next line to allow nvm and node setup
-unset DISABLE_NVM
+# unset DISABLE_NVM
 if [ ! -z ${DISABLE_NVM} ]; then
   >&2 echo "\e[33m... DISABLED\e[39m"; return
 fi
