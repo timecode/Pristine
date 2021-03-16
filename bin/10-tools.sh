@@ -140,7 +140,8 @@ declare my_essential_bottles=(
   tor
   stow
   syncthing
-  shellcheck
+  # shellcheck
+  watch
 )
 brew_install_bottles "${my_essential_bottles[@]}"
 
@@ -179,8 +180,8 @@ declare work_bottles=(
   # zbar
   awscli
   # aws-sam-cli
-  minikube
-  kubernetes-cli
+  # minikube
+  # kubernetes-cli
   # packer
   # gradle
   # jfrog-cli
