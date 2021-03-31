@@ -124,6 +124,7 @@ alias dmz='docker-machine stop DockerMachine'
 alias drmc='docker rm -f $(docker ps -a -q)'
 alias drmi='docker rmi $(docker images -q)'
 
+alias curl='/usr/local/opt/curl/bin/curl'
 
 dir=~/Applications/dynamodb_local_latest
 if [ -e ${dir} ]; then
