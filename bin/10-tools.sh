@@ -178,7 +178,7 @@ declare work_bottles=(
   wireguard-tools
   qrencode
   # zbar
-  awscli
+  # awscli
   # aws-sam-cli
   # minikube
   # kubernetes-cli

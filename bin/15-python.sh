@@ -46,5 +46,6 @@ pip_install "${my_essential_python_modules[@]}"
 
 declare my_system_python_modules=(
   speedtest-cli
+  awscli-plugin-endpoint
 )
 pip_install "${my_system_python_modules[@]}"
