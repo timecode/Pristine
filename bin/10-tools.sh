@@ -74,6 +74,13 @@ brew doctor --verbose
 brew_installed_bottles_list
 brew_installed_casks_list
 
+# show known outdated components
+echo
+echo "Checking for outdated components..."
+>&2 echo -n "\e[34m"
+brew outdated
+>&2 echo -n "\e[39m"
+
 declare brew_upgrade_skip_list=(
   # add bottles or casks that, for whatever reason, require updates to be skipped
   ngrok               # pinned to 'latest'
@@ -89,7 +96,6 @@ brew_upgrade_casks
 
 echo
 echo "Adding aws/tap..."
-
 brew tap aws/tap
 
 echo
