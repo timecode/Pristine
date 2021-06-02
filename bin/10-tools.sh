@@ -152,8 +152,9 @@ declare my_essential_bottles=(
 brew_install_bottles "${my_essential_bottles[@]}"
 
 declare language_casks=(
+  adoptopenjdk
+  # java  # using openjdk now
 )
-#   java  # using openjdk now
 brew_install_casks "${language_casks[@]}"
 # brew cask upgrade "${language_casks[@]}"
 
@@ -163,7 +164,7 @@ declare language_bottles=(
   go
   yarn
   nodeenv
-  openjdk
+  # openjdk # using cask adoptopenjdk now
   # kotlin
   # ktlint
 )
