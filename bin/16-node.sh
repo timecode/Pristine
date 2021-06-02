@@ -53,7 +53,7 @@ declare work_node_packages=(
   jest
   serverless
   graphql
-  @prisma/cli
+  prisma
 )
 # npm_global_install_packages "${work_node_packages[@]}"
 yarn_global_install_packages "${work_node_packages[@]}"
