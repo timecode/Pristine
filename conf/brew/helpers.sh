@@ -113,7 +113,7 @@ brew_install_casks() {
     # install uninstalled
     for e in "${to_install[@]}"; do
       echo "... installing '${e}'"
-      brew cask install "${e}"
+      brew install --cask "${e}"
     done
   fi
 }
