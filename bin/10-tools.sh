@@ -70,6 +70,13 @@ brew --version
 # check brew health
 brew doctor --verbose
 
+# remove unneeded formulae
+echo
+echo "Checking required formulae state..."
+brew autoremove
+# NOTE: list all formulae and any dependencies with:
+# brew list | while read cask; do echo -n "\e[1;34m$cask ->\e[0m"; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
+
 # list currently installed versions
 brew_installed_bottles_list
 brew_installed_casks_list
@@ -220,13 +227,6 @@ if [ $? -ne 0 ]; then
   >&2 echo "$ brew install warrensbox/tap/tfswitch"
   >&2 echo "\e[39m"
 fi
-
-# remove unneeded formulae
-echo
-echo "Checking required formulae state..."
-brew autoremove
-# NOTE: list all formulae and any dependencies with:
-# brew list | while read cask; do echo -n "\e[1;34m$cask ->\e[0m"; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
 
 # remove unused brew archives
 echo
