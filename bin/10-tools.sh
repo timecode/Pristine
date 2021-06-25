@@ -221,6 +221,13 @@ if [ $? -ne 0 ]; then
   >&2 echo "\e[39m"
 fi
 
+# remove unneeded formulae
+echo
+echo "Checking required formulae state..."
+brew autoremove
+# NOTE: list all formulae and any dependencies with:
+# brew list | while read cask; do echo -n "\e[1;34m$cask ->\e[0m"; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
+
 # remove unused brew archives
 echo
 echo "Tidying brew state..."
