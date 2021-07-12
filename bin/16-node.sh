@@ -54,6 +54,7 @@ declare work_node_packages=(
   serverless
   graphql
   prisma
+  prettier
 )
 # npm_global_install_packages "${work_node_packages[@]}"
 yarn_global_install_packages "${work_node_packages[@]}"
