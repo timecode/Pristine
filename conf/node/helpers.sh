@@ -39,8 +39,8 @@ ensure_latest_node() {
   fi
 
   echo
-  echo "Ensuring latest lts/erbium (v12.x) node..."
-  nvm install --lts=erbium
+  echo "Ensuring latest lts/fermium (v14.x) node..."
+  nvm install --lts=fermium
 
   echo
   echo "Ensuring latest node..."
