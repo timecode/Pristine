@@ -140,7 +140,7 @@ fi
 
 ######################################################################
 # RBENV
-RUBY_VERSION=3.0.1
+RUBY_VERSION=3.0.2
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
@@ -178,11 +178,11 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 15.8.0
-# nvm uninstall 15.8.0
+# nvm install 16.5.0
+# nvm uninstall 16.5.0
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "15.8.0"
+# nvm alias "default" "16.5.0"
 export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
 nvm_shell_completion="${NVM_DIR}/bash_completion"
