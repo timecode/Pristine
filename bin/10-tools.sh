@@ -112,7 +112,6 @@ declare my_essential_casks=(
   1password-cli
   iterm2
   visual-studio-code
-  atom
   github
   macdown
   shiftit
@@ -122,7 +121,6 @@ declare my_essential_casks=(
   qlcolorcode
   quicklook-json
   qlvideo
-  betterzip
 )
 brew_install_casks "${my_essential_casks[@]}"
 # brew cask upgrade "${my_essential_casks[@]}"
