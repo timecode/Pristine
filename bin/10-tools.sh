@@ -227,10 +227,12 @@ if [ $? -ne 0 ]; then
   >&2 echo "\e[39m"
 fi
 
-# remove unused brew archives
+# remove unused brew archives (older than 5 days)
 echo
 echo "Tidying brew state..."
-brew cleanup
+brew cleanup --prune=5
+# Note: the cache can be blown away entirely with:
+# rm -rf $(brew --cache)
 
 #####################################
 # Linux
