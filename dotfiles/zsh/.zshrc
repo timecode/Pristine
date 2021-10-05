@@ -244,22 +244,6 @@ gcp_zsh_completion="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
 # shellcheck source=/dev/null
 [ -e "${gcp_zsh_completion}" ] && . "${gcp_zsh_completion}"
 
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-serverless_completion_loc="${HOME}/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh"
-# shellcheck source=/dev/null
-[ -e "${serverless_completion_loc}" ] && . "${serverless_completion_loc}"
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-sls_completion_loc="${HOME}/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh"
-# shellcheck source=/dev/null
-[ -e "${sls_completion_loc}" ] && . "${sls_completion_loc}"
-# tabtab source for slss package
-# uninstall by removing these lines or running `tabtab uninstall slss`
-slss_completion_loc="${HOME}/.config/yarn/global/node_modules/tabtab/.completions/slss.zsh"
-# shellcheck source=/dev/null
-[ -e "${slss_completion_loc}" ] && . "${slss_completion_loc}"
-
 ######################################################################
 # GPG macOS fix
 tty_dev=$(tty)

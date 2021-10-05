@@ -51,10 +51,10 @@ declare work_node_packages=(
   react-static
   amplify
   jest
-  serverless
   graphql
   prisma
   prettier
+  @cloudflare/wrangler
 )
 # npm_global_install_packages "${work_node_packages[@]}"
 yarn_global_install_packages "${work_node_packages[@]}"
