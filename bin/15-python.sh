@@ -9,12 +9,12 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 
 echo
 LOCAL_BIN=/usr/local/bin
-# echo "Forcing python3.8 to be default..."
-# ln -fs ${LOCAL_BIN}/python3.8 ${LOCAL_BIN}/python
+# echo "Forcing python3.10 to be default..."
+# ln -fs ${LOCAL_BIN}/python3.10 ${LOCAL_BIN}/python
 # ln -fs ${LOCAL_BIN}/pip3 ${LOCAL_BIN}/pip
 
-echo "Forcing python3.9 to be default..."
-BREW_PYTHON_BIN=/usr/local/opt/python@3.9/bin
+echo "Forcing python3.10 to be default..."
+BREW_PYTHON_BIN=/usr/local/opt/python@3.10/bin
 
 install_check=$(${BREW_PYTHON_BIN}/python3 --version >/dev/null 2>&1)
 if [ $? -eq 0 ]; then
