@@ -48,8 +48,7 @@ declare work_node_packages=(
   serve
   surge
   create-react-app
-  react-static
-  amplify
+  react
   jest
   graphql
   prisma
