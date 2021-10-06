@@ -164,7 +164,7 @@ brew_install_casks "${language_casks[@]}"
 # brew cask upgrade "${language_casks[@]}"
 
 declare language_bottles=(
-  python@3.9
+  python@3.10
   rbenv
   go
   yarn
