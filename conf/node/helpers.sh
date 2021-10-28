@@ -39,8 +39,8 @@ ensure_latest_node() {
   fi
 
   echo
-  echo "Ensuring latest lts/fermium (v14.x) node..."
-  nvm install --lts=fermium
+  echo "Ensuring latest lts/gallium (v16.x) node..."
+  nvm install --lts=gallium
 
   echo
   echo "Ensuring latest node..."
