@@ -147,6 +147,7 @@ defaults write org.n8gray.QLColorCode extraHLFlags "--line-numbers"
 qlmanage -r >/dev/null 2>&1
 
 declare my_essential_bottles=(
+  mas
   openssl@1.1
   lesspipe
   git
