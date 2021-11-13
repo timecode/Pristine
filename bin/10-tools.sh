@@ -15,13 +15,23 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 # mac OS
 #####################################
 
+BREW_DIR_INTEL=/usr/local/Homebrew
+BREW_DIR_ARM=/opt/homebrew
+
+[ -d $BREW_DIR_ARM ] && \
+  BREW_DIR=$BREW_DIR_ARM 
+[ -z $BREW_DIR ] && [ -d $BREW_DIR_INTEL ] && \
+  BREW_DIR=$BREW_DIR_INTEL
+
+[ -z $BREW_DIR ] && echo "Unable to find the brew installation." && exit
+
 echo
 if type "brew" > /dev/null; then
   echo "Homebrew already installed :-)"
-  if ! [ -d /usr/local/Frameworks ]; then
-    echo "... need to add missing dir '/usr/local/Frameworks'"
-    sudo mkdir -p /usr/local/Frameworks
-    sudo chown "$(whoami):admin" /usr/local/Frameworks
+  if ! [ -d $BREW_DIR/Frameworks ]; then
+    echo "... need to add missing dir '$BREW_DIR/Frameworks'"
+    sudo mkdir -p $BREW_DIR/Frameworks
+    sudo chown "$(whoami):admin" $BREW_DIR/Frameworks
   fi
 else
   # /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -47,19 +57,19 @@ echo "Checking Homebrew state..."
 # automatically to avoid repeatedly performing an expensive unshallow operation in
 # CI systems (which should instead be fixed to not use shallow clones).
 # Sorry for the inconvenience!
-shallow_clone=$(git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core" rev-parse --is-shallow-repository)
+shallow_clone=$(git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-core" rev-parse --is-shallow-repository)
 if [ "${shallow_clone}" = "true" ]; then
   >&2 echo "\e[33m"
   >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-core ..."
-  git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core" fetch --unshallow
+  git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-core" fetch --unshallow
   >&2 echo "... unshallow fetch of Homebrew/homebrew-core complete ..."
   >&2 echo "\e[39m"
 fi
-shallow_clone=$(git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask" rev-parse --is-shallow-repository)
+shallow_clone=$(git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-cask" rev-parse --is-shallow-repository)
 if [ "${shallow_clone}" = "true" ]; then
   >&2 echo "\e[33m"
   >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-cask ..."
-  git -C "/usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask" fetch --unshallow
+  git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-cask" fetch --unshallow
   >&2 echo "... unshallow fetch of Homebrew/homebrew-cask complete ..."
   >&2 echo "\e[39m"
 fi
@@ -146,6 +156,7 @@ declare my_essential_bottles=(
   yq
   ncdu
   nmap
+  curl
   wget
   tmux
   tor
@@ -176,10 +187,10 @@ declare language_bottles=(
 brew_install_bottles "${language_bottles[@]}"
 
 declare work_casks=(
-  virtualbox
+  # virtualbox
   vagrant
   ngrok
-  docker-toolbox
+  # docker-toolbox
   # pgadmin4
 )
 # google-cloud-sdk  # insists on reinstalling everything each time, regardless of updates, so removing for now!

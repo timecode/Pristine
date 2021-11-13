@@ -5,6 +5,13 @@
 #
 echo "Loading .zshrc"
 
+######################################################################
+# brew
+BREW_DIR_ARM=/opt/homebrew
+[ -d $BREW_DIR_ARM ] && BREW_DIR=$BREW_DIR_ARM
+echo "${PATH}" | grep -q -s "homebrew"
+[ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="$BREW_DIR/bin:${PATH}"
+
 # Source Prezto
 # Force yourself as the system's default user
 me="$(whoami)"
@@ -124,7 +131,7 @@ alias dmz='docker-machine stop DockerMachine'
 alias drmc='docker rm -f $(docker ps -a -q)'
 alias drmi='docker rmi $(docker images -q)'
 
-alias curl='/usr/local/opt/curl/bin/curl'
+alias curl='$(brew --prefix)/opt/curl/bin/curl'
 
 dir=~/Applications/dynamodb_local_latest
 if [ -e ${dir} ]; then
@@ -231,16 +238,16 @@ echo
 ######################################################################
 # OPENSSL 1.1
 echo "${PATH}" | grep -q -s "openssl@1.1"
-[ $? -eq 1 ] && export PATH="/usr/local/opt/openssl@1.1/bin:${PATH}"
+[ $? -eq 1 ] && export PATH="$(brew --prefix)/opt/openssl@1.1/bin:${PATH}"
 
 ######################################################################
 # google-cloud-sdk
 
-gcp_zsh_loc="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+gcp_zsh_loc="$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 # shellcheck source=/dev/null
 [ -e "${gcp_zsh_loc}" ] && . "${gcp_zsh_loc}"
 
-gcp_zsh_completion="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+gcp_zsh_completion="$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 # shellcheck source=/dev/null
 [ -e "${gcp_zsh_completion}" ] && . "${gcp_zsh_completion}"
 

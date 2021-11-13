@@ -7,14 +7,26 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 ######################################
 # python installs
 
+PYTHON_VERSION=python@3.10
+
+LOCAL_BIN_INTEL=/usr/local/bin
+LOCAL_BIN_ARM=/opt/homebrew/bin
+BREW_PYTHON_BIN_INTEL=/usr/local/opt/$PYTHON_VERSION/bin
+BREW_PYTHON_BIN_ARM=/opt/homebrew/opt/$PYTHON_VERSION/bin
+
+[ -d $BREW_PYTHON_BIN_ARM ] && \
+  BREW_PYTHON_BIN=$BREW_PYTHON_BIN_ARM && \
+  LOCAL_BIN=$LOCAL_BIN_ARM
+[ -z $BREW_PYTHON_BIN ] && [ -d $BREW_PYTHON_BIN_INTEL ] && \
+  BREW_PYTHON_BIN=$BREW_PYTHON_BIN_INTEL && \
+  LOCAL_BIN=$LOCAL_BIN_INTEL
+
+[ -z $BREW_PYTHON_BIN ] && echo "Unable to find ${PYTHON_VERSION} ..." && exit
+
 echo
-LOCAL_BIN=/usr/local/bin
-# echo "Forcing python3.10 to be default..."
+echo "Forcing ${PYTHON_VERSION} to be default..."
 # ln -fs ${LOCAL_BIN}/python3.10 ${LOCAL_BIN}/python
 # ln -fs ${LOCAL_BIN}/pip3 ${LOCAL_BIN}/pip
-
-echo "Forcing python3.10 to be default..."
-BREW_PYTHON_BIN=/usr/local/opt/python@3.10/bin
 
 install_check=$(${BREW_PYTHON_BIN}/python3 --version >/dev/null 2>&1)
 if [ $? -eq 0 ]; then
