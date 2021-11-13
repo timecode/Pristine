@@ -1,7 +1,4 @@
 .DS_Store
 bin-off
 .zsh_profile
-dotfiles/vim/.vim/pack
-dotfiles/vim/.vim/autoload
-dotfiles/vim/.vim/plugged
 *.bak
