@@ -6,8 +6,7 @@
 echo
 echo "Checking for Apple Store updates ..."
 
-install_check=$(mas version >/dev/null 2>&1)
-if [ $? -eq 0 ]; then
+if mas version >/dev/null 2>&1; then
   mas upgrade
 fi
 
