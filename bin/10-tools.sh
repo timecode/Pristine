@@ -19,7 +19,7 @@ BREW_DIR_INTEL=/usr/local/Homebrew
 BREW_DIR_ARM=/opt/homebrew
 
 [ -d $BREW_DIR_ARM ] && \
-  BREW_DIR=$BREW_DIR_ARM 
+  BREW_DIR=$BREW_DIR_ARM
 [ -z $BREW_DIR ] && [ -d $BREW_DIR_INTEL ] && \
   BREW_DIR=$BREW_DIR_INTEL
 
@@ -101,8 +101,8 @@ brew outdated
 declare brew_upgrade_skip_list=(
   # add bottles or casks that, for whatever reason, require updates to be skipped
   ngrok               # pinned to 'latest'
-  qlcolorcode         # crequires OS upgrade
   quicklook-json      # pinned to 'latest'
+  qlcolorcode         # requires OS upgrade
 )
 echo
 echo "Checking for upgrades..."
