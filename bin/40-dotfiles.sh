@@ -58,6 +58,7 @@ stow_dotfiles() {
     pip           \
     vim           \
     tmux          \
+    hammerspoon   \
     intelliJ
 }
 

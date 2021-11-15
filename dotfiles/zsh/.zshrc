@@ -41,7 +41,7 @@ bindkey "^F" history-incremental-search-forward
 # Aliases
 alias vim="/usr/bin/vim"
 alias vi="/usr/bin/vim"
-alias bt="wget --report-speed=bits http://cachefly.cachefly.net/100mb.test > /dev/null"
+alias bt="wget --report-speed=bits http://cachefly.cachefly.net/100mb.test -O /dev/null"
 alias fd="dscacheutil -flushcache"
 
 ## Command history configuration

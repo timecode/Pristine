@@ -124,7 +124,7 @@ declare my_essential_casks=(
   visual-studio-code
   github
   macdown
-  shiftit
+  hammerspoon   # shiftit replacement https://github.com/peterklijn/hammerspoon-shiftit
   insomnia
   qlmarkdown
   qlstephen
