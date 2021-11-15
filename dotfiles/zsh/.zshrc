@@ -7,10 +7,13 @@ echo "Loading .zshrc"
 
 ######################################################################
 # brew
-BREW_DIR_ARM=/opt/homebrew
-[ -d $BREW_DIR_ARM ] && BREW_DIR=$BREW_DIR_ARM
-echo "${PATH}" | grep -q -s "homebrew"
+BREW_DIR=/usr/local
+BREW_DIR_APPLE=/opt/homebrew
+[ -d $BREW_DIR_APPLE ] && BREW_DIR=$BREW_DIR_APPLE
+echo "${PATH}" | grep -q -s "${BREW_DIR}/bin"
 [ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="$BREW_DIR/bin:${PATH}"
+echo "${PATH}" | grep -q -s "${BREW_DIR}/sbin"
+[ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="$BREW_DIR/sbin:${PATH}"
 
 # Source Prezto
 # Force yourself as the system's default user
