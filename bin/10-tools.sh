@@ -102,8 +102,14 @@ declare brew_upgrade_skip_list=(
   # add bottles or casks that, for whatever reason, require updates to be skipped
   ngrok               # pinned to 'latest'
   quicklook-json      # pinned to 'latest'
-  qlcolorcode         # requires OS upgrade
 )
+if ((MAC_OS_VER < 11)); then
+  requiresOSupgrade=(
+    qlcolorcode
+    qlmarkdown
+  )
+  brew_upgrade_skip_list=(${brew_upgrade_skip_list[@]} ${requiresOSupgrade[@]})
+fi
 echo
 echo "Checking for upgrades..."
 brew_upgrade_bottles
@@ -126,12 +132,17 @@ declare my_essential_casks=(
   macdown
   hammerspoon   # shiftit replacement https://github.com/peterklijn/hammerspoon-shiftit
   insomnia
-  qlmarkdown
   qlstephen
-  qlcolorcode
   quicklook-json
   qlvideo
 )
+if ((MAC_OS_VER >= 11)); then
+  requiresOSupgrade=(
+    qlcolorcode
+    qlmarkdown
+  )
+  brew_install_casks=(${brew_install_casks[@]} ${requiresOSupgrade[@]})
+fi
 brew_install_casks "${my_essential_casks[@]}"
 # brew cask upgrade "${my_essential_casks[@]}"
 
@@ -147,7 +158,6 @@ defaults write org.n8gray.QLColorCode extraHLFlags "--line-numbers"
 qlmanage -r >/dev/null 2>&1
 
 declare my_essential_bottles=(
-  mas
   openssl@1.1
   lesspipe
   git
@@ -155,7 +165,6 @@ declare my_essential_bottles=(
   tree
   jq
   yq
-  ncdu
   nmap
   curl
   wget
@@ -166,6 +175,13 @@ declare my_essential_bottles=(
   # shellcheck
   watch
 )
+if ((MAC_OS_VER >= 11)); then
+  requiresOSupgrade=(
+    ncdu
+    mas
+  )
+  my_essential_bottles=(${my_essential_bottles[@]} ${requiresOSupgrade[@]})
+fi
 brew_install_bottles "${my_essential_bottles[@]}"
 
 declare language_casks=(

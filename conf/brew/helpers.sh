@@ -2,6 +2,8 @@
 
 # export HOMEBREW_NO_AUTO_UPDATE=1
 
+export MAC_OS_VER=$(sw_vers -productVersion | sed -E 's/^([0-9]+)\.*.*$/\1/')
+
 brew_installed_bottles() {
   brew list --formula -1
 }
