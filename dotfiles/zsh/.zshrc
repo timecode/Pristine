@@ -118,6 +118,7 @@ alias t="tmux attach || tmux"
 alias tls="tmux ls"
 # shellcheck disable=SC2154
 alias nettest='ping 1.1.1.1 | perl -nlE '"'"'use POSIX qw(strftime); $ts = strftime "%a %Y-%m-%d %H:%M:%S", localtime; print "$ts\t$_"'"'"''
+alias nettestamazon='ping access-alexa-na.amazon.com | perl -nlE '"'"'use POSIX qw(strftime); $ts = strftime "%a %Y-%m-%d %H:%M:%S", localtime; print "$ts\t$_"'"'"''
 
 # dropbox conflicted
 alias conflicted="find ~/Dropbox -name \"*conflicted*\" -depth"
