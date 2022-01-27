@@ -141,7 +141,7 @@ if ((MAC_OS_VER >= 11)); then
     qlcolorcode
     qlmarkdown
   )
-  brew_install_casks=(${brew_install_casks[@]} ${requiresOSupgrade[@]})
+  my_essential_casks=(${my_essential_casks[@]} ${requiresOSupgrade[@]})
 fi
 brew_install_casks "${my_essential_casks[@]}"
 # brew cask upgrade "${my_essential_casks[@]}"
