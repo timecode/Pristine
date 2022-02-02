@@ -57,7 +57,7 @@ mkdir -p $python_base_path
 ln -fs "$python_base_path" "$(dirname $python_base_path)/Current"
 
 python_library_bin="$(dirname $python_base_path)/Current/bin"
-PATH="$python_library_bin:$PATH"
+PATH="${HOME}/.local/bin:$python_library_bin:$PATH"
 pipx_bin_path="$python_library_bin"
 
 # install pipx
