@@ -2,7 +2,10 @@
 
 SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 # shellcheck source=/dev/null
+. "${SCRIPTS_PATH}/conf/brew/helpers.sh"
 . "${SCRIPTS_PATH}/conf/python/helpers.sh"
+
+ensure_brew_bin
 
 ######################################
 # python installs
@@ -48,16 +51,29 @@ echo
 echo "Setting up python environment..."
 pip_install pip setuptools
 
+# ensure python -m site --user-base is setup
+python_base_path="$(python -m site --user-base)"
+mkdir -p $python_base_path
+ln -fs "$python_base_path" "$(dirname $python_base_path)/Current"
+
+python_library_bin="$(dirname $python_base_path)/Current/bin"
+PATH="$python_library_bin:$PATH"
+pipx_bin_path="$python_library_bin"
+
+# install pipx
+pip install --user -U pipx --no-warn-script-location
+# pipx ensurepath --force
+
 echo
-echo "Installing system python modules..."
+echo "Installing user python modules..."
 declare my_essential_python_modules=(
   pipenv
   autopep8
 )
-pip_install "${my_essential_python_modules[@]}"
+pipx_install "${my_essential_python_modules[@]}"
 
-declare my_system_python_modules=(
+declare my_other_python_modules=(
   speedtest-cli
   awscli-plugin-endpoint
 )
-pip_install "${my_system_python_modules[@]}"
+pipx_install "${my_other_python_modules[@]}"

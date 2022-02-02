@@ -15,15 +15,9 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 # mac OS
 #####################################
 
-BREW_DIR_INTEL=/usr/local/Homebrew
-BREW_DIR_ARM=/opt/homebrew
-
-[ -d $BREW_DIR_ARM ] && \
-  BREW_DIR=$BREW_DIR_ARM
-[ -z $BREW_DIR ] && [ -d $BREW_DIR_INTEL ] && \
-  BREW_DIR=$BREW_DIR_INTEL
-
 [ -z $BREW_DIR ] && echo "Unable to find the brew installation." && exit
+
+ensure_brew_bin
 
 echo
 if type "brew" > /dev/null; then

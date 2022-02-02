@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 
 SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 
@@ -8,6 +8,9 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 setup_dotfiles() {
   echo
   echo "Setting up dotfiles ..."
+  # shellcheck source=/dev/null
+  . "${SCRIPTS_PATH}/conf/brew/helpers.sh"
+  ensure_brew_bin
   if ! type "stow" > /dev/null; then
     echo "... installing stow"
     brew install stow
@@ -30,7 +33,7 @@ setup_zshrc() {
     cp \
       "${ZDOTDIR:-$HOME}/.zshrc" \
       "${ZDOTDIR:-$HOME}/.zshrc_bak"
-    rm -f "${ZDOTDIR:-$HOME}/.zshrc"
+    # rm -f "${ZDOTDIR:-$HOME}/.zshrc"
   fi
   stow -v --stow  \
     zsh

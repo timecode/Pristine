@@ -8,12 +8,15 @@ echo "Loading .zshrc"
 ######################################################################
 # brew
 BREW_DIR=/usr/local
-BREW_DIR_APPLE=/opt/homebrew
-[ -d $BREW_DIR_APPLE ] && BREW_DIR=$BREW_DIR_APPLE
+BREW_DIR_ARM=/opt/homebrew
+[ -d $BREW_DIR_ARM ] && BREW_DIR=$BREW_DIR_ARM
+
 echo "${PATH}" | grep -q -s "${BREW_DIR}/bin"
 [ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="$BREW_DIR/bin:${PATH}"
 echo "${PATH}" | grep -q -s "${BREW_DIR}/sbin"
 [ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="$BREW_DIR/sbin:${PATH}"
+
+export PYTHONUSERBASE="$(dirname $(python -m site --user-base))/Current"
 
 # Source Prezto
 # Force yourself as the system's default user
@@ -27,6 +30,17 @@ zprezto_init="${ZDOTDIR:-${HOME}}/.zprezto/init.zsh"
 [ -e "${zprezto_init}" ] && . "${zprezto_init}"
 
 # Customize to your needs...
+
+echo "${PATH}" | grep -q -s "${PYTHONUSERBASE}"
+if [ $? -eq 1 ] ; then
+  export PATH="${PYTHONUSERBASE}/bin:${PATH}"
+fi
+
+pipx_bin="${HOME}/.local/bin"
+echo "${PATH}" | grep -q -s "${pipx_bin}"
+if [ $? -eq 1 ] ; then
+  export PATH="${pipx_bin}:${PATH}"
+fi
 
 # Editor
 export EDITOR="/usr/bin/vim"
@@ -151,7 +165,7 @@ fi
 
 ######################################################################
 # RBENV
-RUBY_VERSION=3.0.2
+RUBY_VERSION=3.1.0
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
@@ -164,7 +178,7 @@ openssl_loc=$(brew --prefix openssl@1.1)
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${openssl_loc}"
 
 echo "${PATH}" | grep -q -s "${HOME}/.rbenv/bin"
-[ $? -eq 1 ] && export PATH="${HOME}/.rbenv/bin":${PATH}
+[ $? -eq 1 ] && export PATH="${HOME}/.rbenv/bin:${PATH}"
 
 echo "${PATH}" | grep -q -s "${HOME}/.rbenv/shims"
 [ $? -eq 1 ] && eval "$(rbenv init -)"
@@ -181,7 +195,7 @@ echo "Now using $(ruby --version)"
 # GOLANG
 export GOPATH="${HOME}/go"
 echo "${PATH}" | grep -q -s "${GOPATH}/bin"
-[ $? -eq 1 ] && export PATH="${GOPATH}/bin":${PATH}
+[ $? -eq 1 ] && export PATH="${GOPATH}/bin:${PATH}"
 
 echo "Now using $(go version)"
 

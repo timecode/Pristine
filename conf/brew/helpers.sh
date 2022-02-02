@@ -2,7 +2,12 @@
 
 # export HOMEBREW_NO_AUTO_UPDATE=1
 
-export MAC_OS_VER=$(sw_vers -productVersion | sed -E 's/^([0-9]+)\.*.*$/\1/')
+ensure_brew_bin() {
+  echo "${PATH}" | grep -q -s "${BREW_DIR}/bin"
+  [ $? -eq 1 ] && [ ! -z $BREW_DIR ] && PATH="$BREW_DIR/bin:${PATH}"
+  echo "${PATH}" | grep -q -s "${BREW_DIR}/sbin"
+  [ $? -eq 1 ] && [ ! -z $BREW_DIR ] && PATH="$BREW_DIR/sbin:${PATH}"
+}
 
 brew_installed_bottles() {
   brew list --formula -1
