@@ -3,6 +3,8 @@
 # export HOMEBREW_NO_AUTO_UPDATE=1
 
 ensure_brew_bin() {
+  [ -z $BREW_DIR ] && echo "Unable to find the brew installation." && exit
+
   echo "${PATH}" | grep -q -s "${BREW_DIR}/bin"
   [ $? -eq 1 ] && [ ! -z $BREW_DIR ] && PATH="$BREW_DIR/bin:${PATH}"
   echo "${PATH}" | grep -q -s "${BREW_DIR}/sbin"

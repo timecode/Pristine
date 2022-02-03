@@ -15,8 +15,6 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 # mac OS
 #####################################
 
-[ -z $BREW_DIR ] && echo "Unable to find the brew installation." && exit
-
 ensure_brew_bin
 
 echo

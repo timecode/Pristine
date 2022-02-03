@@ -7,9 +7,11 @@ echo "Loading .zshrc"
 
 ######################################################################
 # brew
-BREW_DIR=/usr/local
+unset BREW_DIR
+BREW_DIR_INTEL=/usr/local/Homebrew
 BREW_DIR_ARM=/opt/homebrew
 [ -d $BREW_DIR_ARM ] && BREW_DIR=$BREW_DIR_ARM
+[ -z $BREW_DIR ] && [ -d $BREW_DIR_INTEL ] && BREW_DIR=$BREW_DIR_INTEL
 
 echo "${PATH}" | grep -q -s "${BREW_DIR}/bin"
 [ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="$BREW_DIR/bin:${PATH}"

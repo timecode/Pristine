@@ -5,6 +5,7 @@ set -e
 SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)"
 
 export MAC_OS_VER=$(sw_vers -productVersion | sed -E 's/^([0-9]+)\.*.*$/\1/')
+unset BREW_DIR
 export BREW_DIR_INTEL=/usr/local/Homebrew
 export BREW_DIR_ARM=/opt/homebrew
 
