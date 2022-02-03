@@ -9,10 +9,7 @@ pip_install() {
 pipx_install() {
   local arr=("$@")
   for e in "${arr[@]}"; do
-    if [ -e "${HOME}/.local/pipx/venvs/${e}" ]; then
-      echo "... upgrade '${e}' ?"
-      pipx upgrade "${e}"
-    else
+    if [ ! -e "${HOME}/.local/pipx/venvs/${e}" ]; then
       echo "... installing '${e}'"
       pipx install --include-deps "${e}"
     fi

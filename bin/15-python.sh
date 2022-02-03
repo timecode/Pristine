@@ -65,7 +65,11 @@ pip install --user -U pipx --no-warn-script-location
 # pipx ensurepath --force
 
 echo
-echo "Installing user python modules..."
+echo "Checking for upgrades..."
+pipx upgrade-all
+
+echo
+echo "Checking for uninstalled dependencies..."
 declare my_essential_python_modules=(
   pipenv
   autopep8
