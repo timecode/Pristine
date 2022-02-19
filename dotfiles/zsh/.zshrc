@@ -199,6 +199,8 @@ export GOPATH="${HOME}/go"
 echo "${PATH}" | grep -q -s "${GOPATH}/bin"
 [ $? -eq 1 ] && export PATH="${GOPATH}/bin:${PATH}"
 
+export CGO_CFLAGS_ALLOW="-Xpreprocessor"
+
 echo "Now using $(go version)"
 
 ######################################################################
