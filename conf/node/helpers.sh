@@ -32,6 +32,10 @@ ensure_latest_nvm() {
 ##############################################################################
 
 ensure_latest_node() {
+
+  NODE_LTS_VERSION=16
+  NODE_STABLE=stable
+
   echo
   echo "Updating node..."
   if brew uninstall --ignore-dependencies node >/dev/null 2>&1 ; then
@@ -40,26 +44,31 @@ ensure_latest_node() {
   fi
 
   echo
-  echo "Ensuring latest lts/gallium (v16.x) node..."
-  nvm install --lts=gallium
+  echo "Ensuring latest lts node ..."
+  nvm use ${NODE_LTS_VERSION} >/dev/null 2>&1
+  previous_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+  nvm install ${NODE_LTS_VERSION}
+  current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
 
   echo
   echo "Ensuring latest node..."
-  nvm install node
-  # nvm install-latest-npm
-  # npm config delete prefix
-  nvm use stable >/dev/null 2>&1
+  nvm use ${NODE_STABLE} >/dev/null 2>&1
+  previous_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+  nvm install ${NODE_STABLE}
+  current_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
 
-  show_current_installs
-}
-
-show_current_installs() {
   echo
   echo "Currently installed node versions..."
   nvm ls
   echo
   echo "To remove previous node versions..."
   echo "$ nvm uninstall <version>"
+  if [[ "${previous_node_lts}" != "${current_node_lts}" ]]; then
+      echo "\e[33mnvm uninstall ${previous_node_lts}\e[39m"
+  fi
+  if [[ "${previous_node}" != "${current_node}" ]]; then
+      echo "\e[33mnvm uninstall ${previous_node}\e[39m"
+  fi
   echo
 }
 
