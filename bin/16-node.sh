@@ -9,19 +9,26 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 echo
 echo "Checking nvm, node, npm status..."
 
-DISABLE_NVM=true
-# uncomment the next line to allow nvm and node setup
-# unset DISABLE_NVM
-if [ ! -z ${DISABLE_NVM} ]; then
-  >&2 echo "\e[33m... DISABLED\e[39m"; return
-fi
-
-if [ -f /usr/local/bin/npm ]; then
-  echo "... removing non-nvm installed npm..."
-  rm -f /usr/local/bin/npm
-fi
-
 ensure_latest_nvm
+remove_non_nvm_installed_npm
+
+DISABLE_NVM_NODE_UPDATES=true
+# uncomment the next line to ENABLE nvm node updates
+# unset DISABLE_NVM_NODE_UPDATES
+if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
+  echo
+  echo "Checking latest available node version ..."
+  current_node=$(nvm current)
+  latest_node=$(nvm ls-remote | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+
+  if [[ "${current_node}" != "${latest_node}" ]]; then
+      echo "\e[33mNew node version available (${latest_node} > ${current_node}) ...\e[39m"
+      >&2 echo "\e[33m... UPDATING CURRENTLY DISABLED\e[39m"
+  fi
+
+  return
+
+fi
 
 ensure_latest_node
 

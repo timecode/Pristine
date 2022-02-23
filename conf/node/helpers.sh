@@ -15,7 +15,7 @@ ensure_latest_nvm() {
   fi
 
   if [ "${current}" != "${latest}" ]; then
-    echo "... installing nvm"
+    echo "... installing latest nvm"
     echo
     # https://github.com/nvm-sh/nvm
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | zsh
@@ -35,6 +35,7 @@ ensure_latest_node() {
   echo
   echo "Updating node..."
   if brew uninstall --ignore-dependencies node >/dev/null 2>&1 ; then
+    rm -rf $BREW_DIR/lib/node_modules/
     echo "Removed brew's install of node!"
   fi
 
@@ -49,12 +50,15 @@ ensure_latest_node() {
   # npm config delete prefix
   nvm use stable >/dev/null 2>&1
 
+  show_current_installs
+}
+
+show_current_installs() {
   echo
   echo "Currently installed node versions..."
   nvm ls
   echo
   echo "To remove previous node versions..."
-  # echo "$ nvm ls"
   echo "$ nvm uninstall <version>"
   echo
 }
@@ -62,6 +66,18 @@ ensure_latest_node() {
 ##############################################################################
 ### npm ######################################################################
 ##############################################################################
+
+remove_non_nvm_installed_npm() {
+  if [ -f /usr/local/bin/npm ]; then
+    echo "... removing non-nvm installed npm..."
+    echo $(which npm)
+    rm -f /usr/local/bin/npm
+  fi
+  if [ -f $BREW_DIR/bin/npm ]; then
+    echo "... removing non-nvm installed npm..."
+    rm -f $BREW_DIR/bin/npm
+  fi
+}
 
 remove_npm() {
   echo

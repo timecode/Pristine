@@ -120,8 +120,8 @@ alias dev="cd ~/Development/"
 alias pris='code ~/Pristine'
 alias update='~/Pristine/setup.sh'
 # ENABLE / DISNABLE NVM updates by Pristine from the command line:
-alias nvmyes="sed -E -i '' 's/^# (unset DISABLE_NVM)/\1/g' ${HOME}/Pristine/bin/16-node.sh"
-alias nvmno="sed -E -i '' 's/^(unset DISABLE_NVM)/# \1/g' ${HOME}/Pristine/bin/16-node.sh"
+alias nvmyes="sed -E -i '' 's/^# (unset DISABLE_NVM_NODE_UPDATES)/\1/g' ${HOME}/Pristine/bin/16-node.sh"
+alias nvmno="sed -E -i '' 's/^(unset DISABLE_NVM_NODE_UPDATES)/# \1/g' ${HOME}/Pristine/bin/16-node.sh"
 
 alias g='bundle exec guard'
 alias subl='code'
@@ -137,9 +137,9 @@ alias nettest='ping 1.1.1.1 | perl -nlE '"'"'use POSIX qw(strftime); $ts = strft
 alias nettestamazon='ping access-alexa-na.amazon.com | perl -nlE '"'"'use POSIX qw(strftime); $ts = strftime "%a %Y-%m-%d %H:%M:%S", localtime; print "$ts\t$_"'"'"''
 
 # dropbox conflicted
-alias conflicted="find ~/Dropbox -name \"*conflicted*\" -depth"
+alias conflicted="find ~/Library/CloudStorage/Dropbox -name \"*conflicted*\" -depth"
 alias rmconflicted="conflicted -exec rm {} \;"
-alias dropboxclean-'find ~/Dropbox -name "*conflicted copy*" -delete'
+alias dropboxclean-'find ~/Library/CloudStorage/Dropbox -name "*conflicted copy*" -delete'
 
 alias tf="terraform"
 
@@ -167,7 +167,7 @@ fi
 
 ######################################################################
 # RBENV
-RUBY_VERSION=3.1.0
+RUBY_VERSION=3.1.1
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
@@ -207,11 +207,11 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 16.5.0
-# nvm uninstall 16.5.0
+# nvm install 17.6.0
+# nvm uninstall 17.5.0
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "16.5.0"
+# nvm alias "default" "17.6.0"
 export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
 nvm_shell_completion="${NVM_DIR}/bash_completion"
