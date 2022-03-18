@@ -11,7 +11,7 @@ ensure_latest_nvm() {
     echo "... a version of nvm is already installed"
     # check it's up-to-date
     current=$(grep -hnr '"version":' "${HOME}/.nvm/package.json" | sed -E 's/.*: "(.*)".*/\1/')
-    latest=$(git ls-remote --tags git://github.com/creationix/nvm.git | cut -d/ -f3- | sort -t. -nk1,2 -k2 | awk '/^[^{]*$/{version=$1}END{print version}' | sed s/v//g)
+    latest=$(git ls-remote --tags https://github.com/nvm-sh/nvm.git | cut -d/ -f3- | sort -t. -nk1,2 -k2 | awk '/^[^{]*$/{version=$1}END{print version}' | sed s/v//g)
   fi
 
   if [ "${current}" != "${latest}" ]; then
