@@ -60,7 +60,7 @@ declare work_node_packages=(
   graphql
   prisma
   prettier
-  @cloudflare/wrangler
+  wrangler@beta
 )
 # npm_global_install_packages "${work_node_packages[@]}"
 yarn_global_install_packages "${work_node_packages[@]}"
