@@ -18,8 +18,8 @@ ensure_latest_nvm() {
     echo "... installing latest nvm"
     echo
     # https://github.com/nvm-sh/nvm
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | zsh
-    # wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | zsh
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+    # wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
   fi
 
   nvm_dir="${HOME}/.nvm"
