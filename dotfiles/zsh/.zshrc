@@ -212,14 +212,16 @@ echo "Now using $(go version)"
 # nvm ls
 # nvm unalias default
 # nvm alias "default" "17.6.0"
+
 export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
-nvm_shell_completion="${NVM_DIR}/bash_completion"
 # shellcheck source=/dev/null
 [ -e "${nvm_loc}" ] && . "${nvm_loc}"                # This loads nvm
-# shellcheck source=/dev/null
-[ -e "${nvm_shell_completion}" ] && . "${nvm_shell_completion}"
 nvm use stable
+
+# nvm_shell_completion="${NVM_DIR}/bash_completion"
+# # shellcheck source=/dev/null
+# [ -e "${nvm_shell_completion}" ] && . "${nvm_shell_completion}"
 
 ######################################################################
 # Python
