@@ -117,7 +117,6 @@ echo
 echo "Checking for uninstalled dependencies..."
 
 declare my_essential_casks=(
-  1password-cli
   iterm2
   visual-studio-code
   github
