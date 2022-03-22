@@ -161,7 +161,7 @@ declare my_essential_bottles=(
   wget
   tmux
   tor
-  obsf4proxy
+  obfs4proxy
   stow
   syncthing
   # shellcheck
