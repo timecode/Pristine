@@ -169,6 +169,7 @@ declare my_essential_bottles=(
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
+    hammerspoon
     ncdu
     mas
   )
