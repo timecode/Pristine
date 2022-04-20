@@ -97,6 +97,7 @@ declare brew_upgrade_skip_list=(
 )
 if ((MAC_OS_VER < 11)); then
   requiresOSupgrade=(
+    hammerspoon
     qlcolorcode
     qlmarkdown
   )
