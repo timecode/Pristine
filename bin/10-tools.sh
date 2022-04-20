@@ -121,7 +121,6 @@ declare my_essential_casks=(
   visual-studio-code
   github
   macdown
-  hammerspoon   # shiftit replacement https://github.com/peterklijn/hammerspoon-shiftit
   insomnia
   qlstephen
   quicklook-json
@@ -129,6 +128,7 @@ declare my_essential_casks=(
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
+    hammerspoon   # shiftit replacement https://github.com/peterklijn/hammerspoon-shiftit
     qlcolorcode
     qlmarkdown
   )
@@ -169,7 +169,6 @@ declare my_essential_bottles=(
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
-    hammerspoon
     ncdu
     mas
   )
