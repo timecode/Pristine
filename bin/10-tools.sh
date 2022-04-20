@@ -92,8 +92,8 @@ brew outdated
 
 declare brew_upgrade_skip_list=(
   # add bottles or casks that, for whatever reason, require updates to be skipped
-  ngrok               # pinned to 'latest'
-  quicklook-json      # pinned to 'latest'
+  # ngrok               # pinned to 'latest'
+  # quicklook-json      # pinned to 'latest'
 )
 if ((MAC_OS_VER < 11)); then
   requiresOSupgrade=(
