@@ -178,8 +178,8 @@ fi
 brew_install_bottles "${my_essential_bottles[@]}"
 
 declare language_casks=(
-  adoptopenjdk
-  # java  # using openjdk now
+  temurin
+  # java  # using temurin now
 )
 brew_install_casks "${language_casks[@]}"
 # brew cask upgrade "${language_casks[@]}"
@@ -190,7 +190,7 @@ declare language_bottles=(
   go
   yarn
   nodeenv
-  # openjdk # using cask adoptopenjdk now
+  # openjdk # using cask temurin now
   # kotlin
   # ktlint
 )
