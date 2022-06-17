@@ -49,6 +49,7 @@ ensure_latest_node() {
   previous_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   nvm install ${NODE_LTS_VERSION}
   current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+  corepack enable
 
   echo
   echo "Ensuring latest node..."
@@ -56,6 +57,7 @@ ensure_latest_node() {
   previous_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   nvm install ${NODE_STABLE}
   current_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+  corepack enable
 
   echo
   echo "Currently installed node versions..."
@@ -189,7 +191,7 @@ npm_outdated_global_installed_packages_list() {
 
 yarn_global_installed_packages() {
   local installed=()
-  while read -r l; do installed+=( "${l}" ); done < <(yarn global list --no-progress)
+  while read -r l; do installed+=( "${l}" ); done < <(pushd "$(yarn_global_dir)" && yarn global list --no-progress && popd >/dev/null 2>&1)
   unset IFS
   local gloably_installed=()
   regex="^- \w*"
@@ -249,18 +251,36 @@ yarn_global_install_packages() {
     echo
     echo "Installing global node packages..."
     echo "${to_install[@]}"
+    pushd "$(yarn_global_dir)"
     yarn global add "${to_install[@]}"
+    popd >/dev/null 2>&1
   fi
 }
 
+yarn_global_dir() {
+  pushd $HOME && yarn global dir && popd >/dev/null 2>&1
+}
+
+yarn_global_upgrade_packages() {
+  pushd "$(yarn_global_dir)"
+  yarn global upgrade --silent
+  popd >/dev/null 2>&1
+}
+
 yarn_outdated_global_installed_packages_list() {
-  yarn_global_dir="$(yarn global dir)"
-  cd "${yarn_global_dir}" || 0
+  pushd "$(yarn_global_dir)"
   yarn outdated
   if [ $? -ne 0 ]; then
     >&2 echo "\e[33m"
     >&2 echo "... manually update global packages using ..."
-    >&2 echo "$ yarn global upgrade"
+    >&2 echo "$ pushd \$HOME && yarn global upgrade && popd >/dev/null 2>&1"
     >&2 echo "\e[39m"
   fi
+  popd >/dev/null 2>&1
+}
+
+yarn_cache_clean_global() {
+  pushd "$(yarn_global_dir)"
+  yarn cache clean
+  popd >/dev/null 2>&1
 }

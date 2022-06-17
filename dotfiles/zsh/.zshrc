@@ -11,12 +11,19 @@ unset BREW_DIR
 BREW_DIR_INTEL=/usr/local/Homebrew
 BREW_DIR_ARM=/opt/homebrew
 [ -d $BREW_DIR_ARM ] && BREW_DIR=$BREW_DIR_ARM
-[ -z $BREW_DIR ] && [ -d $BREW_DIR_INTEL ] && BREW_DIR=$BREW_DIR_INTEL
+[ -z $BREW_DIR ] && [ -d $BREW_DIR_INTEL ] && BREW_DIR=/usr/local
 
 echo "${PATH}" | grep -q -s "${BREW_DIR}/bin"
-[ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="$BREW_DIR/bin:${PATH}"
+[ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="${BREW_DIR}/bin:${PATH}"
 echo "${PATH}" | grep -q -s "${BREW_DIR}/sbin"
-[ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="$BREW_DIR/sbin:${PATH}"
+[ $? -eq 1 ] && [ ! -z $BREW_DIR ] && export PATH="${BREW_DIR}/sbin:${PATH}"
+
+# if using the x86_64 brew install hack
+# [ -d $BREW_DIR_INTEL ] && alias ibrew="arch -x86_64 /usr/local/bin/brew"
+# [ -d $BREW_DIR_INTEL ] && echo "${PATH}" | grep -q -s "/usr/local/bin"
+# [ $? -eq 1 ] && export PATH="/usr/local/bin:${PATH}"
+# [ -d $BREW_DIR_INTEL ] && echo "${PATH}" | grep -q -s "/usr/local/sbin"
+# [ $? -eq 1 ] && export PATH="/usr/local/sbin:${PATH}"
 
 export PYTHONUSERBASE="$(dirname $(python -m site --user-base))/Current"
 
@@ -207,11 +214,23 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 17.6.0
-# nvm uninstall 17.5.0
+# nvm install 18.4.0
+# nvm uninstall 18.3.0
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "17.6.0"
+# nvm alias "default" "18.4.0"
+
+# add global node_modules to the PATH
+echo "${PATH}" | grep -q -s "yarn/global/node_modules/.bin"
+if [ $? -eq 1 ] ; then
+  export PATH="${HOME}/.config/yarn/global/node_modules/.bin:${PATH}"
+fi
+
+# add local node_modules to the PATH
+echo "${PATH}" | grep -q -s "\./node_modules/.bin"
+if [ $? -eq 1 ] ; then
+  export PATH="./node_modules/.bin:${PATH}"
+fi
 
 export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"

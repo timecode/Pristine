@@ -30,6 +30,9 @@ else
   # /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall.sh)"
   # brew remove --force $(brew list --formula)
   # brew remove --force $(brew list --cask)
+  # hack to install x86_64 version of brew...
+  # arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  # alias ibrew='arch -x86_64 /usr/local/Homebrew/bin/brew'
   echo "Please install Homebrew first..."
   echo "... find it here: https://brew.sh/"
   echo
@@ -188,7 +191,7 @@ declare language_bottles=(
   python@3.10
   rbenv
   go
-  yarn
+  # yarn # use corepack enabled version
   nodeenv
   # openjdk # using cask temurin now
   # kotlin
@@ -202,6 +205,7 @@ declare work_casks=(
   ngrok
   # docker-toolbox
   # pgadmin4
+  ganache # this is the GUI version
 )
 # google-cloud-sdk  # insists on reinstalling everything each time, regardless of updates, so removing for now!
 brew_install_casks "${work_casks[@]}"

@@ -14,7 +14,7 @@ remove_non_nvm_installed_npm
 
 DISABLE_NVM_NODE_UPDATES=true
 # uncomment the next line to ENABLE nvm node updates
-# unset DISABLE_NVM_NODE_UPDATES
+unset DISABLE_NVM_NODE_UPDATES
 if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
   echo
   echo "Checking latest available node version ..."
@@ -40,7 +40,7 @@ yarn_global_installed_packages_list
 echo
 echo "Upgrading global node packages ..."
 # npm -g upgrade
-yarn global upgrade --silent
+yarn_global_upgrade_packages
 
 declare my_essential_node_packages=(
   node-gyp
@@ -60,7 +60,9 @@ declare work_node_packages=(
   graphql
   prisma
   prettier
-  wrangler@beta
+  wrangler
+  # ganache
+  # truffle
 )
 # npm_global_install_packages "${work_node_packages[@]}"
 yarn_global_install_packages "${work_node_packages[@]}"
@@ -72,10 +74,11 @@ yarn_outdated_global_installed_packages_list
 
 echo
 echo "Tidying yarn cache..."
-yarn cache clean
+yarn_cache_clean_global
+# pushd $HOME && yarn cache clean && popd >/dev/null 2>&1
 
 echo
 echo "Tidying nvm cache..."
 nvm cache clear
 
-remove_npm
+# remove_npm
