@@ -15,26 +15,12 @@ remove_non_nvm_installed_npm
 DISABLE_NVM_NODE_UPDATES=true
 # uncomment the next line to ENABLE nvm node updates
 # unset DISABLE_NVM_NODE_UPDATES
-if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
-  echo
-  echo "Checking latest available node version ..."
-  current_node=$(nvm current)
-  latest_node=$(nvm ls-remote | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-
-  if [[ "${current_node}" != "${latest_node}" ]]; then
-    if ((MAC_OS_VER < 11)); then
-      echo "\e[33mCheck node version available with 'nvm ls-remote' ...\e[39m"
-    else
-      echo "\e[33mNew node version available (${latest_node} > ${current_node}) ...\e[39m"
-    fi
-    >&2 echo "\e[33m... UPDATING CURRENTLY DISABLED\e[39m"
-  fi
-
-  return
-
-fi
 
 ensure_latest_node
+
+if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
+  return
+fi
 
 # list currently installed package versions
 echo "Checking currently installed node packages ..."

@@ -34,15 +34,31 @@ ensure_latest_nvm() {
 ensure_latest_node() {
 
   NODE_LTS_VERSION=16
-  NODE_STABLE=stable
+  NODE_STABLE=18
   if ((MAC_OS_VER < 11)); then
     NODE_STABLE=17
   fi
 
-  echo
-  echo "Updating node..."
+  if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
+    echo
+    echo "Checking latest available node version ..."
+    current_node=$(nvm current)
+    latest_node=$(nvm ls-remote "${NODE_STABLE}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+
+    if [[ "${current_node}" != "${latest_node}" ]]; then
+      echo "\e[33mNew node version available (${latest_node} > ${current_node}) ...\e[39m"
+    else
+      echo "node up-to-date :-)"
+    fi
+    >&2 echo "\e[33m... UPDATING CURRENTLY DISABLED\e[39m"
+
+    return
+
+  fi
+
   if brew uninstall --ignore-dependencies node >/dev/null 2>&1 ; then
     rm -rf $BREW_DIR/lib/node_modules/
+    echo
     echo "Removed brew's install of node!"
   fi
 
