@@ -35,6 +35,9 @@ ensure_latest_node() {
 
   NODE_LTS_VERSION=16
   NODE_STABLE=stable
+  if ((MAC_OS_VER < 11)); then
+    NODE_STABLE=17
+  fi
 
   echo
   echo "Updating node..."

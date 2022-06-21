@@ -212,7 +212,7 @@ brew_install_casks "${work_casks[@]}"
 
 declare work_bottles=(
   docker-credential-helper
-  wireguard-tools
+  # wireguard-tools
   qrencode
   # zbar
   # awscli

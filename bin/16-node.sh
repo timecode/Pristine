@@ -14,7 +14,7 @@ remove_non_nvm_installed_npm
 
 DISABLE_NVM_NODE_UPDATES=true
 # uncomment the next line to ENABLE nvm node updates
-unset DISABLE_NVM_NODE_UPDATES
+# unset DISABLE_NVM_NODE_UPDATES
 if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
   echo
   echo "Checking latest available node version ..."
@@ -61,6 +61,7 @@ declare work_node_packages=(
   prisma
   prettier
   wrangler
+  snyk
   # ganache
   # truffle
 )
