@@ -22,8 +22,12 @@ if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
   latest_node=$(nvm ls-remote | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
 
   if [[ "${current_node}" != "${latest_node}" ]]; then
+    if ((MAC_OS_VER < 11)); then
+      echo "\e[33mCheck node version available with 'nvm ls-remote' ...\e[39m"
+    else
       echo "\e[33mNew node version available (${latest_node} > ${current_node}) ...\e[39m"
-      >&2 echo "\e[33m... UPDATING CURRENTLY DISABLED\e[39m"
+    fi
+    >&2 echo "\e[33m... UPDATING CURRENTLY DISABLED\e[39m"
   fi
 
   return
