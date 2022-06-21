@@ -129,6 +129,7 @@ alias update='~/Pristine/setup.sh'
 # ENABLE / DISNABLE NVM updates by Pristine from the command line:
 alias nvmyes="sed -E -i '' 's/^# (unset DISABLE_NVM_NODE_UPDATES)/\1/g' ${HOME}/Pristine/bin/16-node.sh"
 alias nvmno="sed -E -i '' 's/^(unset DISABLE_NVM_NODE_UPDATES)/# \1/g' ${HOME}/Pristine/bin/16-node.sh"
+alias brew1st='brew leaves | xargs brew deps --installed --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 
 alias g='bundle exec guard'
 alias subl='code'
