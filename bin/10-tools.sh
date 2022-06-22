@@ -169,7 +169,7 @@ declare my_essential_bottles=(
   obfs4proxy
   stow
   syncthing
-  shellcheck
+  # shellcheck
   watch
   cloudflared
 )
