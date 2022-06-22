@@ -47,10 +47,10 @@ ensure_latest_node() {
 
     if [[ "${current_node}" != "${latest_node}" ]]; then
       echo "\e[33mNew node version available (${latest_node} > ${current_node}) ...\e[39m"
+      >&2 echo "\e[33m... 🚨 UPDATING CURRENTLY DISABLED\e[39m"
     else
-      echo "node up-to-date :-)"
+      echo "node up-to-date 😀"
     fi
-    >&2 echo "\e[33m... UPDATING CURRENTLY DISABLED\e[39m"
 
     return
 
