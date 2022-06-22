@@ -42,6 +42,7 @@ brew_installed_casks_list() {
 }
 
 brew_install_bottles() {
+  INSTALLED_BY_THIS_REPO+=("${@}")
   local install=("${@}")
   local to_install=()
   local installed=()
@@ -88,6 +89,7 @@ brew_install_bottles() {
 }
 
 brew_install_casks() {
+  INSTALLED_BY_THIS_REPO+=("${@}")
   local install=("${@}")
   local to_install=()
   local installed=()
@@ -194,3 +196,31 @@ brew_upgrade_casks() {
   brew upgrade --quiet --casks "${to_update[@]}"
 }
 
+show_brew_installs_not_installed_by_this_repo() {
+  local leaves=()
+  local installed=()
+  len="${#INSTALLED_BY_THIS_REPO[@]}"
+  while read -r -d $'\n' l; do leaves+=( "${l}" ); done < <(echo "$(brew leaves) ")
+
+  for leaf in "${leaves[@]}"; do
+    for (( i=1; i<=len; i++ )); do
+      if [[ "${INSTALLED_BY_THIS_REPO[${i}]}" = "${leaf}" ]]; then
+        installed+=("${leaf}")
+        break
+      fi
+    done
+  done
+
+  local extras=()
+  difference=$(echo ${installed[@]} ${leaves[@]} | tr ' ' '\n' | sort | uniq -u)
+  while read -r -d $'\n' l; do extras+=( "${l}" ); done < <(echo "${difference}")
+
+  if [ "${#extras[@]}" -gt 0 ]; then
+    echo
+    echo "Just so you know... "
+    echo "Found the following ${#extras[@]} brew installs, not installed by this repo..."
+    for extra in "${extras[@]}"; do
+      echo " - \e[33m${extra}\e[39m"
+    done
+  fi
+}

@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 
+INSTALLED_BY_THIS_REPO=()
 SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 # shellcheck source=/dev/null
 . "${SCRIPTS_PATH}/conf/brew/helpers.sh"
@@ -168,8 +169,9 @@ declare my_essential_bottles=(
   obfs4proxy
   stow
   syncthing
-  # shellcheck
+  shellcheck
   watch
+  cloudflared
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
@@ -228,6 +230,7 @@ brew_install_bottles "${work_bottles[@]}"
 
 # disabled - trying our "Cloudflare for Teams"
 # required="cloudflared"
+# INSTALLED_BY_THIS_REPO+=("cloudflared")
 # install_check=$(command -v ${required})
 # if [ $? -ne 0 ]; then
 #   >&2 echo "\e[33m"
@@ -236,6 +239,7 @@ brew_install_bottles "${work_bottles[@]}"
 #   >&2 echo "\e[39m"
 # fi
 required="openresty"
+INSTALLED_BY_THIS_REPO+=("openresty/brew/openresty")
 install_check=$(command -v ${required})
 if [ $? -ne 0 ]; then
   >&2 echo "\e[33m"
@@ -244,6 +248,7 @@ if [ $? -ne 0 ]; then
   >&2 echo "\e[39m"
 fi
 required="tfswitch"
+INSTALLED_BY_THIS_REPO+=("warrensbox/tap/tfswitch")
 install_check=$(command -v ${required})
 if [ $? -ne 0 ]; then
   >&2 echo "\e[33m"
@@ -258,6 +263,8 @@ echo "Tidying brew state..."
 brew cleanup --prune=5
 # Note: the cache can be blown away entirely with:
 # rm -rf $(brew --cache)
+
+show_brew_installs_not_installed_by_this_repo
 
 #####################################
 # Linux
