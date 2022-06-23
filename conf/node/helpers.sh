@@ -53,15 +53,49 @@ ensure_latest_node() {
   if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
     echo
     echo "Checking latest available node version ..."
-    nvm use "${NODE_LATEST}"
-    current_node=$(nvm current)
-    latest_node=$(nvm ls-remote "${NODE_LATEST}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-
-    if [[ "${current_node}" != "${latest_node}" ]]; then
-      echo "\e[33mNew node version available (${latest_node} > ${current_node}) ...\e[39m"
-      >&2 echo "\e[33m... 🚨 UPDATING CURRENTLY DISABLED\e[39m"
+    nvm use "${NODE_LTS_VERSION}" >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      current_node_lts=0
     else
-      echo "node up-to-date 😀"
+      current_node_lts=$(nvm current)
+    fi
+    latest_node_lts=$(nvm ls-remote "${NODE_LTS_VERSION}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+
+    nvm use "${NODE_STABLE}" >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      current_node_stable=0
+    else
+      current_node_stable=$(nvm current)
+    fi
+    latest_node_stable=$(nvm ls-remote "${NODE_STABLE}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+
+    if ((MAC_OS_VER >= 11)); then
+      nvm use "${NODE_NEXT_GEN}" >/dev/null 2>&1
+      if [ $? -ne 0 ]; then
+        current_node_next_gen=0
+      else
+        current_node_next_gen=$(nvm current)
+      fi
+      latest_node_next_gen=$(nvm ls-remote "${NODE_NEXT_GEN}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+    fi
+
+    if [[ "${current_node_lts}" != "${latest_node_lts}" ]]; then
+      echo "\e[33mNew LTS node version available (${latest_node_lts} > ${current_node_lts}) ...\e[39m"
+      UPDATES=true
+    fi
+    if [[ "${current_node_stable}" != "${latest_node_stable}" ]]; then
+      echo "\e[33mNew STABLE node version available (${latest_node_stable} > ${current_node_stable}) ...\e[39m"
+      UPDATES=true
+    fi
+    if [[ "${current_node_next_gen}" != "${latest_node_next_gen}" ]]; then
+      echo "\e[33mNew NEXT GEN node version available (${latest_node_next_gen} > ${current_node_next_gen}) ...\e[39m"
+      UPDATES=true
+    fi
+
+    if [ -z $UPDATES ]; then
+      echo "... node up-to-date 🎉"
+    else
+      >&2 echo "\e[33m... 🚨 UPDATING CURRENTLY DISABLED\e[39m"
     fi
 
     return
