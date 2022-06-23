@@ -6,7 +6,7 @@
 
 ensure_latest_nvm() {
   # to blow away nvm et al and start afresh
-  # rm -rf ~/.nvm ~/.node ~/node_modules .yarn* .npm* ~/.config/yarn ~/package.json ~/package-lock.json
+  # rm -rf ~/.nvm ~/.nvmrc ~/.node ~/node_modules .yarn* .npm* ~/.config/yarn ~/package.json ~/package-lock.json
   unset latest
   current="unknown"
   if [ -d "${HOME}/.nvm" ]; then
@@ -36,17 +36,25 @@ ensure_latest_nvm() {
 ensure_latest_node() {
 
   NODE_LTS_VERSION=16
-  NODE_STABLE=18
-  if ((MAC_OS_VER < 11)); then
-    NODE_STABLE=17
+  NODE_STABLE=17
+  NODE_LATEST=NODE_STABLE
+  if ((MAC_OS_VER >= 11)); then
+    NODE_NEXT_GEN=18
+    NODE_LATEST=NODE_NEXT_GEN
   fi
-  echo "${NODE_STABLE}" > ~/.nvmrc
+
+
+  if brew uninstall --ignore-dependencies node >/dev/null 2>&1 ; then
+    rm -rf $BREW_DIR/lib/node_modules/
+    echo
+    echo "Removed brew's install of node!"
+  fi
 
   if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
     echo
     echo "Checking latest available node version ..."
     current_node=$(nvm current)
-    latest_node=$(nvm ls-remote "${NODE_STABLE}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+    latest_node=$(nvm ls-remote "${NODE_LATEST}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
 
     if [[ "${current_node}" != "${latest_node}" ]]; then
       echo "\e[33mNew node version available (${latest_node} > ${current_node}) ...\e[39m"
@@ -57,12 +65,6 @@ ensure_latest_node() {
 
     return
 
-  fi
-
-  if brew uninstall --ignore-dependencies node >/dev/null 2>&1 ; then
-    rm -rf $BREW_DIR/lib/node_modules/
-    echo
-    echo "Removed brew's install of node!"
   fi
 
   echo
@@ -83,10 +85,25 @@ ensure_latest_node() {
   corepack enable
   yarn policies set-version >/dev/null 2>&1
 
+  if ((MAC_OS_VER >= 11)); then
+    echo
+    NODE_STABLE=NODE_NEXT_GEN
+    echo "Ensuring latest next-gen node..."
+    nvm use ${NODE_NEXT_GEN} >/dev/null 2>&1
+    previous_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+    nvm install ${NODE_NEXT_GEN}
+    current_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+    corepack enable
+    yarn policies set-version >/dev/null 2>&1
+  fi
+
+  echo "${NODE_STABLE}" > ~/.nvmrc
+
+  echo
+  echo "Ensuring global node directory setup..."
   mkdir -p $(yarn_global_dir)
   pushd "$(yarn_global_dir)"
-  yarn init --yes >/dev/null 2>&1
-  yarn # generates lock file
+  yarn && yarn init --yes >/dev/null 2>&1
   popd >/dev/null 2>&1
 
   echo
@@ -100,6 +117,9 @@ ensure_latest_node() {
   fi
   if [[ "${previous_node}" != "${current_node}" ]]; then
       echo "\e[33mnvm uninstall ${previous_node}\e[39m"
+  fi
+  if [[ "${previous_node_next_gen}" != "${current_node_next_gen}" ]]; then
+      echo "\e[33mnvm uninstall ${previous_node_next_gen}\e[39m"
   fi
   echo
 }
