@@ -237,7 +237,7 @@ export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
 # shellcheck source=/dev/null
 [ -e "${nvm_loc}" ] && . "${nvm_loc}"                # This loads nvm
-nvm use stable
+nvm use # uses version from .nvmrc
 
 # nvm_shell_completion="${NVM_DIR}/bash_completion"
 # # shellcheck source=/dev/null
@@ -319,7 +319,7 @@ fi
 ######################################################################
 # "No" to NVM Bash completion
 # grep -v "This loads nvm bash_completion" .zshrc > tmpfile && mv tmpfile .zshrc
-sed -i '' '/^\[ -s "$NVM_DIR\/bash_completion" \]/d' $(readlink -f .zshrc)
+sed -i '' '/^\[ -s "$NVM_DIR\/bash_completion" \]/d' ~/$(readlink ~/.zshrc)
 
 ######################################################################
 ######################################################################

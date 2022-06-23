@@ -40,6 +40,7 @@ ensure_latest_node() {
   if ((MAC_OS_VER < 11)); then
     NODE_STABLE=17
   fi
+  echo "${NODE_STABLE}" > ~/.nvmrc
 
   if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
     echo
