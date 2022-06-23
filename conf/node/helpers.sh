@@ -84,8 +84,7 @@ ensure_latest_node() {
 
   mkdir -p $(yarn_global_dir)
   pushd "$(yarn_global_dir)"
-  # yarn init --yes --private >/dev/null 2>&1
-  yarn init --yes
+  yarn init --yes >/dev/null 2>&1
   yarn # generates lock file
   popd >/dev/null 2>&1
 
