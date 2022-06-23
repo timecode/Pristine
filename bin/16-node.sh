@@ -32,16 +32,15 @@ echo "Upgrading global node packages ..."
 # npm -g upgrade
 yarn_global_upgrade_packages
 
-declare my_essential_node_packages=(
+declare node_packages=(
+
+  ### essential packages
   node-gyp
   spoof
   nodemon
   fast-run
-)
-# npm_global_install_packages "${my_essential_node_packages[@]}"
-yarn_global_install_packages "${my_essential_node_packages[@]}"
 
-declare work_node_packages=(
+  ### work packages
   http-server
   serve
   surge
@@ -55,9 +54,10 @@ declare work_node_packages=(
   snyk
   # ganache
   # truffle
+
 )
-# npm_global_install_packages "${work_node_packages[@]}"
-yarn_global_install_packages "${work_node_packages[@]}"
+# npm_global_install_packages "${node_packages[@]}"
+yarn_global_install_packages "${node_packages[@]}"
 
 echo
 echo "Checking outdated global node packages ..."
