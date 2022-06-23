@@ -36,6 +36,7 @@ declare my_essential_node_packages=(
   node-gyp
   spoof
   nodemon
+  fast-run
 )
 # npm_global_install_packages "${my_essential_node_packages[@]}"
 yarn_global_install_packages "${my_essential_node_packages[@]}"
