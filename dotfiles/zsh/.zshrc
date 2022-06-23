@@ -237,7 +237,8 @@ export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
 # shellcheck source=/dev/null
 [ -e "${nvm_loc}" ] && . "${nvm_loc}"                # This loads nvm
-nvm use # uses version from .nvmrc
+nvm use >/dev/null 2>&1                              # use version from .nvmrc
+echo "Now using node $(nvm current) [npm v$(npm --version)] [yarn v$(yarn --version)]"
 
 # nvm_shell_completion="${NVM_DIR}/bash_completion"
 # # shellcheck source=/dev/null

@@ -37,12 +37,12 @@ ensure_latest_node() {
 
   NODE_LTS_VERSION=16
   NODE_STABLE=17
-  NODE_LATEST=$NODE_STABLE
-  if ((MAC_OS_VER >= 11)); then
-    NODE_NEXT_GEN=18
-    NODE_LATEST=$NODE_NEXT_GEN
-  fi
+  NODE_NEXT_GEN=18
 
+  NODE_LATEST="${NODE_STABLE}"
+  if ((MAC_OS_VER >= 11)); then
+    NODE_LATEST="${NODE_NEXT_GEN}"
+  fi
 
   if brew uninstall --ignore-dependencies node >/dev/null 2>&1 ; then
     rm -rf $BREW_DIR/lib/node_modules/
@@ -53,6 +53,7 @@ ensure_latest_node() {
   if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
     echo
     echo "Checking latest available node version ..."
+    nvm use "${NODE_LATEST}"
     current_node=$(nvm current)
     latest_node=$(nvm ls-remote "${NODE_LATEST}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
 
@@ -69,35 +70,36 @@ ensure_latest_node() {
 
   echo
   echo "Ensuring latest lts node ..."
-  nvm use ${NODE_LTS_VERSION} >/dev/null 2>&1
+  nvm use "${NODE_LTS_VERSION}" >/dev/null 2>&1
   previous_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  nvm install ${NODE_LTS_VERSION}
+  nvm install "${NODE_LTS_VERSION}"
   current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   corepack enable
   yarn policies set-version >/dev/null 2>&1
 
   echo
   echo "Ensuring latest node..."
-  nvm use ${NODE_STABLE} >/dev/null 2>&1
+  nvm use "${NODE_STABLE}" >/dev/null 2>&1
   previous_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  nvm install ${NODE_STABLE}
+  nvm install "${NODE_STABLE}"
   current_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   corepack enable
   yarn policies set-version >/dev/null 2>&1
 
   if ((MAC_OS_VER >= 11)); then
     echo
-    NODE_STABLE=NODE_NEXT_GEN
     echo "Ensuring latest next-gen node..."
-    nvm use ${NODE_NEXT_GEN} >/dev/null 2>&1
+    nvm use "${NODE_NEXT_GEN}" >/dev/null 2>&1
     previous_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-    nvm install ${NODE_NEXT_GEN}
+    nvm install "${NODE_NEXT_GEN}"
     current_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
     corepack enable
     yarn policies set-version >/dev/null 2>&1
   fi
 
-  echo "${NODE_STABLE}" > ~/.nvmrc
+  echo
+  echo "Creating ~/.nvmrc ..."
+  echo "${NODE_LATEST}" > ${HOME}/.nvmrc
 
   echo
   echo "Ensuring global node directory setup..."
