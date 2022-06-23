@@ -317,6 +317,11 @@ fi
 [ -s "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"  # This loads cargo
 
 ######################################################################
+# "No" to NVM Bash completion
+# grep -v "This loads nvm bash_completion" .zshrc > tmpfile && mv tmpfile .zshrc
+sed -i '' '/^\[ -s "$NVM_DIR\/bash_completion" \]/d' $(readlink -f .zshrc)
+
+######################################################################
 ######################################################################
 echo
 echo 'Login and run command complete'
