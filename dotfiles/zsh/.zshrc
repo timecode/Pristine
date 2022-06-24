@@ -62,10 +62,10 @@ bindkey "^R" history-incremental-search-backward
 bindkey "^F" history-incremental-search-forward
 
 # Aliases
-alias vim="/usr/bin/vim"
-alias vi="/usr/bin/vim"
-alias bt="wget --report-speed=bits http://cachefly.cachefly.net/100mb.test -O /dev/null"
-alias fd="dscacheutil -flushcache"
+alias vim='/usr/bin/vim'
+alias vi='/usr/bin/vim'
+alias bt='wget --report-speed=bits http://cachefly.cachefly.net/100mb.test -O /dev/null'
+alias fd='dscacheutil -flushcache'
 
 ## Command history configuration
 
@@ -110,18 +110,18 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
-alias h="history"
-alias c="clear"
-alias l="ls -al"
-alias ll="ls -al | less"
-alias ..="cd .."
-alias su="sudo su"
-alias root="sudo su"
+alias h='history'
+alias c='clear'
+alias l='ls -al'
+alias ll='ls -al | less'
+alias ..='cd ..'
+alias su='sudo su'
+alias root='sudo su'
 
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
 alias wifimon='open "/System/Library/CoreServices/Applications/Wireless Diagnostics.app"'
-alias profile="code ~/.zshrc"
-alias dev="cd ~/Development/"
+alias profile='code ~/.zshrc'
+alias dev='cd ~/Development/'
 
 # dev stuff
 alias pris='code ~/Pristine'
@@ -137,19 +137,20 @@ alias st='code'
 alias mate='code'
 alias a='code .'
 alias sourceme='. ~/.zshrc'
-alias spoofme="sudo spoof randomize en1" # see https://github.com/feross/spoof
-alias t="tmux attach || tmux"
-alias tls="tmux ls"
+alias spoofme='sudo spoof randomize en1' # see https://github.com/feross/spoo
+alias t='tmux attach || tmux'
+alias tls='tmux ls'
 # shellcheck disable=SC2154
 alias nettest='ping 1.1.1.1 | perl -nlE '"'"'use POSIX qw(strftime); $ts = strftime "%a %Y-%m-%d %H:%M:%S", localtime; print "$ts\t$_"'"'"''
 alias nettestamazon='ping access-alexa-na.amazon.com | perl -nlE '"'"'use POSIX qw(strftime); $ts = strftime "%a %Y-%m-%d %H:%M:%S", localtime; print "$ts\t$_"'"'"''
+alias iploc='curl -s -L https://ipinfo.io/ | jq'
 
 # dropbox conflicted
-alias conflicted="find ~/Library/CloudStorage/Dropbox -name \"*conflicted*\" -depth"
-alias rmconflicted="conflicted -exec rm {} \;"
-alias dropboxclean-'find ~/Library/CloudStorage/Dropbox -name "*conflicted copy*" -delete'
+alias conflicted='find ~/Library/CloudStorage/Dropbox -name "*conflicted*" -depth'
+alias rmconflicted='conflicted -exec rm {} \;'
+alias dropboxclean='find ~/Library/CloudStorage/Dropbox -name "*conflicted copy*" -delete'
 
-alias tf="terraform"
+alias tf='terraform'
 
 # docker-machine - installed with brew
 alias dmm='docker-machine create --driver virtualbox DockerMachine'
