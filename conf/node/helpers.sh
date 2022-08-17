@@ -95,6 +95,7 @@ ensure_latest_node() {
     if [ -z $UPDATES ]; then
       echo "... node up-to-date 🎉"
     else
+      NVM_NODE_UPDATES_AVAILABLE=true
       >&2 echo "\e[33m... 🚨 UPDATING CURRENTLY DISABLED\e[39m"
     fi
 

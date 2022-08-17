@@ -13,10 +13,22 @@ ensure_latest_nvm
 remove_non_nvm_installed_npm
 
 DISABLE_NVM_NODE_UPDATES=true
-# uncomment the next line to ENABLE nvm node updates
+# uncomment the next line to ENABLE nvm node updates, or just use the following conditional
 # unset DISABLE_NVM_NODE_UPDATES
 
 ensure_latest_node
+
+# conditional for node updates
+if [ ! -z ${NVM_NODE_UPDATES_AVAILABLE} ]; then
+  echo "\e[33m"
+  read -q "REPLY?... update now? (y/N) "
+  echo "\e[39m"
+  if [ $REPLY = "y" ]; then
+    # echo "\n... yay, updating ..."
+    unset DISABLE_NVM_NODE_UPDATES
+    ensure_latest_node
+  fi
+fi
 
 if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
   return
