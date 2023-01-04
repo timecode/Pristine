@@ -35,14 +35,20 @@ ensure_latest_nvm() {
 
 ensure_latest_node() {
 
-  NODE_LTS_VERSION=16
+  # https://nodejs.org/en/blog/announcements/v19-release-announce/
+  NODE_LTS_LEGACY=16
+  NODE_LTS=18
+  NODE_STABLE_LEGACY=17
   NODE_STABLE=17
-  NODE_NEXT_GEN=18
+  NODE_NEXT_GEN=19
 
-  NODE_LATEST="${NODE_STABLE}"
   if ((MAC_OS_VER >= 11)); then
-    NODE_LATEST="${NODE_NEXT_GEN}"
+    NODE_STABLE="${NODE_NEXT_GEN}"
+  else
+    NODE_STABLE="${NODE_STABLE_LEGACY}"
+    NODE_LTS="${NODE_LTS_LEGACY}"
   fi
+  NODE_LATEST="${NODE_STABLE}"
 
   if brew uninstall --ignore-dependencies node >/dev/null 2>&1 ; then
     rm -rf $BREW_DIR/lib/node_modules/
@@ -53,13 +59,13 @@ ensure_latest_node() {
   if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
     echo
     echo "Checking latest available node version ..."
-    nvm use "${NODE_LTS_VERSION}" >/dev/null 2>&1
+    nvm use "${NODE_LTS}" >/dev/null 2>&1
     if [ $? -ne 0 ]; then
       current_node_lts=0
     else
       current_node_lts=$(nvm current)
     fi
-    latest_node_lts=$(nvm ls-remote "${NODE_LTS_VERSION}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
+    latest_node_lts=$(nvm ls-remote "${NODE_LTS}" | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
 
     nvm use "${NODE_STABLE}" >/dev/null 2>&1
     if [ $? -ne 0 ]; then
@@ -105,9 +111,9 @@ ensure_latest_node() {
 
   echo
   echo "Ensuring latest lts node ..."
-  nvm use "${NODE_LTS_VERSION}" >/dev/null 2>&1
+  nvm use "${NODE_LTS}" >/dev/null 2>&1
   previous_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  nvm install "${NODE_LTS_VERSION}"
+  nvm install "${NODE_LTS}"
   current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   corepack enable
   yarn policies set-version >/dev/null 2>&1
