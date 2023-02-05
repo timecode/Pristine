@@ -193,12 +193,14 @@ declare language_bottles=(
   python@3.10
   rbenv
   go
+  tinygo
   # yarn # use corepack enabled version
   nodeenv
   # openjdk # using cask temurin now
   # kotlin
   # ktlint
 )
+brew tap tinygo-org/tools
 brew_install_bottles "${language_bottles[@]}"
 
 declare work_casks=(
