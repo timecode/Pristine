@@ -225,7 +225,7 @@ declare work_bottles=(
   # kubernetes-cli
   # packer
   # gradle
-  # jfrog-cli
+  jfrog-cli
 )
 brew tap mongodb/brew
 brew_install_bottles "${work_bottles[@]}"
