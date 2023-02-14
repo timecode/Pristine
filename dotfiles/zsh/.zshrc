@@ -176,7 +176,7 @@ fi
 
 ######################################################################
 # RBENV
-RUBY_VERSION=3.2.0
+RUBY_VERSION=3.2.1
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
