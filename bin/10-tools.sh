@@ -193,13 +193,18 @@ declare language_bottles=(
   python@3.11 # also, update PYTHON_VERSION in `15-python.sh` to match
   rbenv
   go
-  tinygo
   # yarn # use corepack enabled version
   nodeenv
   # openjdk # using cask temurin now
   # kotlin
   # ktlint
 )
+if ((MAC_OS_VER >= 11)); then
+  requiresOSupgrade=(
+      tinygo
+  )
+  language_bottles=(${language_bottles[@]} ${requiresOSupgrade[@]})
+fi
 brew tap tinygo-org/tools
 brew_install_bottles "${language_bottles[@]}"
 
