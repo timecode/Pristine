@@ -190,7 +190,7 @@ brew_install_casks "${language_casks[@]}"
 # brew cask upgrade "${language_casks[@]}"
 
 declare language_bottles=(
-  python3
+  python@3.11 # also, update PYTHON_VERSION in `15-python.sh` to match
   rbenv
   go
   tinygo
