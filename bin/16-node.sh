@@ -55,9 +55,6 @@ declare node_packages=(
   ### work packages
   http-server
   serve
-  surge
-  create-react-app
-  react
   jest
   graphql
   prisma
