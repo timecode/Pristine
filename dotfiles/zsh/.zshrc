@@ -185,7 +185,7 @@ RUBY_VERSION=3.2.2
 # rbenv rehash            # run after installing a new version
 # rbenv global x.x.x      # set the version to be used globally
 
-openssl_loc=$(brew --prefix openssl@1.1)
+openssl_loc=$(brew --prefix openssl@3)
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${openssl_loc}"
 
 echo "${PATH}" | grep -q -s "${HOME}/.rbenv/bin"
@@ -282,9 +282,9 @@ echo
 [ -e ~/.zsh_profile ] && . ~/.zsh_profile
 
 ######################################################################
-# OPENSSL 1.1
-echo "${PATH}" | grep -q -s "openssl@1.1"
-[ $? -eq 1 ] && export PATH="$(brew --prefix)/opt/openssl@1.1/bin:${PATH}"
+# OPENSSL 3.x
+echo "${PATH}" | grep -q -s "openssl@3"
+[ $? -eq 1 ] && export PATH="$(brew --prefix)/opt/openssl@3/bin:${PATH}"
 
 ######################################################################
 # google-cloud-sdk
