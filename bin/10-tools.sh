@@ -53,22 +53,28 @@ echo "Checking Homebrew state..."
 # automatically to avoid repeatedly performing an expensive unshallow operation in
 # CI systems (which should instead be fixed to not use shallow clones).
 # Sorry for the inconvenience!
-shallow_clone=$(git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-core" rev-parse --is-shallow-repository)
-if [ "${shallow_clone}" = "true" ]; then
-  >&2 echo "\e[33m"
-  >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-core ..."
-  git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-core" fetch --unshallow
-  >&2 echo "... unshallow fetch of Homebrew/homebrew-core complete ..."
-  >&2 echo "\e[39m"
+
+# Since brew 4.0 Default Tap Cloning has changed and these may no longer be required
+if [ -d "$BREW_DIR/Library/Taps/homebrew/" ]; then
+  shallow_clone=$(git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-core" rev-parse --is-shallow-repository)
+  if [ "${shallow_clone}" = "true" ]; then
+    >&2 echo "\e[33m"
+    >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-core ..."
+    git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-core" fetch --unshallow
+    >&2 echo "... unshallow fetch of Homebrew/homebrew-core complete ..."
+    >&2 echo "\e[39m"
+  fi
+  shallow_clone=$(git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-cask" rev-parse --is-shallow-repository)
+  if [ "${shallow_clone}" = "true" ]; then
+    >&2 echo "\e[33m"
+    >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-cask ..."
+    git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-cask" fetch --unshallow
+    >&2 echo "... unshallow fetch of Homebrew/homebrew-cask complete ..."
+    >&2 echo "\e[39m"
+  fi
 fi
-shallow_clone=$(git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-cask" rev-parse --is-shallow-repository)
-if [ "${shallow_clone}" = "true" ]; then
-  >&2 echo "\e[33m"
-  >&2 echo "... need to fetch unshallow copy of Homebrew/homebrew-cask ..."
-  git -C "$BREW_DIR/Library/Taps/homebrew/homebrew-cask" fetch --unshallow
-  >&2 echo "... unshallow fetch of Homebrew/homebrew-cask complete ..."
-  >&2 echo "\e[39m"
-fi
+
+# shellcheck source=path/to/file
 
 brew update 1>/dev/null
 brew --version
