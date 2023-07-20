@@ -35,12 +35,12 @@ ensure_latest_nvm() {
 
 ensure_latest_node() {
 
-  # https://nodejs.org/en/blog/announcements/v19-release-announce/
   NODE_LTS_LEGACY=16
   NODE_LTS=18
   NODE_STABLE_LEGACY=17
-  NODE_STABLE=17
-  NODE_NEXT_GEN=19
+  NODE_STABLE=18
+  # https://nodejs.org/en/blog/announcements/v20-release-announce
+  NODE_NEXT_GEN=20
 
   if ((MAC_OS_VER >= 11)); then
     NODE_STABLE="${NODE_NEXT_GEN}"
@@ -146,7 +146,7 @@ ensure_latest_node() {
   echo "Ensuring global node directory setup..."
   mkdir -p $(yarn_global_dir)
   pushd "$(yarn_global_dir)"
-  yarn && yarn init --yes >/dev/null 2>&1
+  yarn && yarn init --yes --ignore-engines >/dev/null 2>&1
   popd >/dev/null 2>&1
 
   echo
@@ -356,7 +356,7 @@ yarn_global_dir() {
 
 yarn_global_upgrade_packages() {
   pushd "$(yarn_global_dir)"
-  yarn upgrade --silent
+  yarn upgrade --ignore-engines --silent
   popd >/dev/null 2>&1
 }
 
