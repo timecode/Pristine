@@ -2,9 +2,10 @@
 
 # export HOMEBREW_NO_AUTO_UPDATE=1
 
-if ((MAC_OS_VER < 11)); then
-  export HOMEBREW_NO_INSTALL_FROM_API=1
-fi
+# brew now works differently and 'may' no longer require this ...
+# if ((MAC_OS_VER < 11)); then
+#   export HOMEBREW_NO_INSTALL_FROM_API=1
+# fi
 
 ensure_brew_bin() {
   [ -z $BREW_DIR ] && echo "Unable to find the brew installation." && exit
