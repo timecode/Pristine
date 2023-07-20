@@ -263,7 +263,7 @@ npm_global_install_packages() {
 
     # install uninstalled
     echo
-    echo "Installing global node packages..."
+    echo "Installing global node packages (npm)..."
     echo "${to_install[@]}"
     npm -g install "${to_install[@]}"
   fi
@@ -342,10 +342,10 @@ yarn_global_install_packages() {
 
     # install uninstalled
     echo
-    echo "Installing global node packages..."
+    echo "Installing global node packages (yarn)..."
     echo "${to_install[@]}"
     pushd "$(yarn_global_dir)"
-    yarn add "${to_install[@]}"
+    yarn add "${to_install[@]}" --ignore-engines
     popd >/dev/null 2>&1
   fi
 }
