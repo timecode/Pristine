@@ -196,7 +196,7 @@ brew_install_casks "${language_casks[@]}"
 # brew cask upgrade "${language_casks[@]}"
 
 declare language_bottles=(
-  python@3.12 # also, update PYTHON_VERSION in `15-python.sh` to match
+  python@3.11 # also, update PYTHON_VERSION in `15-python.sh` to match
   rbenv
   go
   # yarn # use corepack enabled version

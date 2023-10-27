@@ -32,7 +32,7 @@ BREW_PYTHON_BIN_ARM=/opt/homebrew/opt/python3/bin
 # OPTIONAL: To set a fixed version of python
 # if installed with, for example, brew install python@3.11
 
-PYTHON_VERSION=3.12
+PYTHON_VERSION=3.11
 
 BREW_PYTHON_BIN_INTEL=/usr/local/opt/python@$PYTHON_VERSION/bin
 BREW_PYTHON_BIN_ARM=/opt/homebrew/opt/python@$PYTHON_VERSION/bin
@@ -51,16 +51,19 @@ echo "Forcing ${PYTHON_VERSION} to be default..."
 
 install_check=$(${BREW_PYTHON_BIN}/python${PYTHON_VERSION} --version >/dev/null 2>&1)
 if [ $? -eq 0 ]; then
+  echo "linking ${LOCAL_BIN}/python -> ${BREW_PYTHON_BIN}/python${PYTHON_VERSION}"
   ln -fs ${BREW_PYTHON_BIN}/python${PYTHON_VERSION} ${LOCAL_BIN}/python
 fi
 
 # includes fix for brew issues when python version changes!
 install_check=$(${BREW_PYTHON_BIN}/pip${PYTHON_VERSION} --version >/dev/null 2>&1)
 if [ $? -eq 0 ]; then
+  echo "linking ${LOCAL_BIN}/pip -> ${BREW_PYTHON_BIN}/pip${PYTHON_VERSION}"
   ln -fs ${BREW_PYTHON_BIN}/pip${PYTHON_VERSION} ${LOCAL_BIN}/pip
 else
   install_check=$(${LOCAL_BIN}/pip${PYTHON_VERSION} --version >/dev/null 2>&1)
   if [ $? -eq 0 ]; then
+    echo "linking ${LOCAL_BIN}/pip -> ${LOCAL_BIN}/pip${PYTHON_VERSION}"
     ln -fs ${LOCAL_BIN}/pip${PYTHON_VERSION} ${LOCAL_BIN}/pip
   fi
 fi
