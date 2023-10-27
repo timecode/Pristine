@@ -36,11 +36,11 @@ ensure_latest_nvm() {
 ensure_latest_node() {
 
   NODE_LTS_LEGACY=16
-  NODE_LTS=18
+  NODE_LTS=20
   NODE_STABLE_LEGACY=17
-  NODE_STABLE=18
-  # https://nodejs.org/en/blog/announcements/v20-release-announce
-  NODE_NEXT_GEN=20
+  NODE_STABLE=20
+  # https://nodejs.org/en/blog/announcements/v21-release-announce
+  NODE_NEXT_GEN=21
 
   if ((MAC_OS_VER >= 11)); then
     NODE_STABLE="${NODE_NEXT_GEN}"

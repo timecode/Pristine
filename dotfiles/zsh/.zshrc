@@ -216,11 +216,11 @@ echo "Now using $(go version)"
 # NVM
 # nvm install-latest-npm
 # nvm ls-remote
-# nvm install 18.4.0
-# nvm uninstall 18.3.0
+# nvm install 21.1.0
+# nvm uninstall 20.9.0
 # nvm ls
 # nvm unalias default
-# nvm alias "default" "18.4.0"
+# nvm alias "default" "21.1.0"
 
 # add global node_modules to the PATH
 echo "${PATH}" | grep -q -s "yarn/global/node_modules/.bin"
