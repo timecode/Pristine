@@ -61,8 +61,6 @@ declare node_packages=(
   prettier
   wrangler
   snyk
-  # ganache
-  # truffle
 
 )
 # npm_global_install_packages "${node_packages[@]}"

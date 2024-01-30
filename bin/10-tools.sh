@@ -220,7 +220,6 @@ declare work_casks=(
   ngrok
   # docker-toolbox
   # pgadmin4
-  ganache # this is the GUI version
 )
 # google-cloud-sdk  # insists on reinstalling everything each time, regardless of updates, so removing for now!
 brew_install_casks "${work_casks[@]}"
