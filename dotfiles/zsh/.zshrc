@@ -175,6 +175,14 @@ fi
 # Setup Language Environment helpers
 
 ######################################################################
+# Cargo / Rust
+[ -s "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"  # This loads cargo
+echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
+[ $? -eq 0 ] &&
+  echo "Now using $(cargo --version)" &&
+  echo "Now using $(rustc --version)"
+
+######################################################################
 # RBENV
 RUBY_VERSION=3.3.0
 # https://github.com/rbenv/rbenv
@@ -265,23 +273,6 @@ fi
 echo "Now using $(java --version 2>&1)"
 
 ######################################################################
-# Source other files
-
-echo
-
-# source functions-dev
-# shellcheck source=/dev/null
-[ -e ~/.functions-dev ] &&. ~/.functions-dev
-
-# source functions
-# shellcheck source=/dev/null
-[ -e ~/.functions ] && . ~/.functions
-
-# keep sensitive / non-repo profile requirements in ~/.zsh_profile
-# shellcheck source=/dev/null
-[ -e ~/.zsh_profile ] && . ~/.zsh_profile
-
-######################################################################
 # OPENSSL 3.x
 echo "${PATH}" | grep -q -s "openssl@3"
 [ $? -eq 1 ] && export PATH="$(brew --prefix)/opt/openssl@3/bin:${PATH}"
@@ -315,10 +306,6 @@ if type brew &>/dev/null; then
 fi
 
 ######################################################################
-# Cargo
-[ -s "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"  # This loads cargo
-
-######################################################################
 # Local bin
 echo "${PATH}" | grep -q -s "\./bin"
 [ $? -eq 1 ] && export PATH="./bin:${PATH}"
@@ -327,6 +314,23 @@ echo "${PATH}" | grep -q -s "\./bin"
 # "No" to NVM Bash completion
 # grep -v "This loads nvm bash_completion" .zshrc > tmpfile && mv tmpfile .zshrc
 sed -i '' '/^\[ -s "$NVM_DIR\/bash_completion" \]/d' ~/$(readlink ~/.zshrc)
+
+######################################################################
+# Source other files
+
+echo
+
+# source functions-dev
+# shellcheck source=/dev/null
+[ -e ~/.functions-dev ] &&. ~/.functions-dev
+
+# source functions
+# shellcheck source=/dev/null
+[ -e ~/.functions ] && . ~/.functions
+
+# keep sensitive / non-repo profile requirements in ~/.zsh_profile
+# shellcheck source=/dev/null
+[ -e ~/.zsh_profile ] && . ~/.zsh_profile
 
 ######################################################################
 ######################################################################
