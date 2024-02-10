@@ -11,7 +11,7 @@ ensure_cargo() {
     echo "... a version of cargo is already installed"
   else
     echo "... installing cargo"
-    rustup-init
+    rustup-init -y
   fi
 }
 

@@ -5,6 +5,10 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 . "${SCRIPTS_PATH}/conf/rust/helpers.sh"
 . "${SCRIPTS_PATH}/conf/brew/helpers.sh"
 
+if ((MAC_OS_VER < 11)); then
+  exit 0
+fi
+
 ######################################
 # rust
 echo
@@ -16,12 +20,12 @@ ensure_latest_rust
 ######################################
 # rust crates
 
-echo "Checking for uninstalled crates..."
+echo "Checking for uninstalled Rust companions..."
 
-declare crates=(
+declare rust_companions=(
 
   sccache
   bacon
 
 )
-brew_install_bottles "${crates[@]}"
+brew_install_bottles "${rust_companions[@]}"
