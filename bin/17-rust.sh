@@ -5,10 +5,6 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 . "${SCRIPTS_PATH}/conf/rust/helpers.sh"
 . "${SCRIPTS_PATH}/conf/brew/helpers.sh"
 
-if ((MAC_OS_VER < 11)); then
-  exit 0
-fi
-
 ######################################
 # rust
 echo
