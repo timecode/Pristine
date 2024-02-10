@@ -28,6 +28,7 @@ EOF
 }
 
 setup_zshrc() {
+  echo "... running stow (zshrc) ..."
   if [ -f "${ZDOTDIR:-$HOME}/.zshrc" ]; then
     echo "... backing-up existing .zshrc ..."
     cp \
@@ -40,15 +41,18 @@ setup_zshrc() {
 }
 
 setup_docker() {
-  if [ -f "${ZDOTDIR:-$HOME}/.docker/config.json" ]; then
-    echo "... backing-up existing .docker/config.json ..."
-    cp \
-      "${ZDOTDIR:-$HOME}/.docker/config.json" \
-      "${ZDOTDIR:-$HOME}/.docker/config_bak.json"
-    rm -f "${ZDOTDIR:-$HOME}/.docker/config.json"
+  if ((MAC_OS_VER >= 11)); then
+    echo "... running stow (docker) ..."
+    if [ -f "${ZDOTDIR:-$HOME}/.docker/config.json" ]; then
+      echo "... backing-up existing .docker/config.json ..."
+      cp \
+        "${ZDOTDIR:-$HOME}/.docker/config.json" \
+        "${ZDOTDIR:-$HOME}/.docker/config_bak.json"
+      rm -f "${ZDOTDIR:-$HOME}/.docker/config.json"
+    fi
+    stow -v --stow  \
+      docker
   fi
-  stow -v --stow  \
-    docker
 }
 
 stow_dotfiles() {
