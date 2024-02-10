@@ -204,6 +204,7 @@ declare language_bottles=(
   # openjdk # using cask temurin now
   # kotlin
   # ktlint
+  rustup-init
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
