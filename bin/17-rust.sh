@@ -19,9 +19,15 @@ ensure_latest_rust
 echo "Checking for uninstalled Rust companions..."
 
 declare rust_companions=(
-
-  sccache
-  bacon
-
+  #
 )
+
+if ((MAC_OS_VER >= 11)); then
+  requiresOSupgrade=(
+      sccache
+      bacon
+  )
+  rust_companions=(${rust_companions[@]} ${requiresOSupgrade[@]})
+fi
+
 brew_install_bottles "${rust_companions[@]}"
