@@ -129,8 +129,6 @@ echo "Checking for uninstalled dependencies..."
 
 declare my_essential_casks=(
   iterm2
-  visual-studio-code
-  github
   macdown
   insomnia
   qlstephen
@@ -139,6 +137,8 @@ declare my_essential_casks=(
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
+    visual-studio-code
+    github
     hammerspoon   # shiftit replacement https://github.com/peterklijn/hammerspoon-shiftit
     qlcolorcode
     qlmarkdown
