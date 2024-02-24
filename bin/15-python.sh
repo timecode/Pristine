@@ -97,6 +97,7 @@ pipx upgrade-all
 echo
 echo "Checking for uninstalled dependencies..."
 declare my_essential_python_modules=(
+  xattr
   pip
   # setuptools
   pipenv

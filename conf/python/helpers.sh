@@ -9,7 +9,7 @@ pip_install() {
 pipx_install() {
   local arr=("$@")
   for e in "${arr[@]}"; do
-    if [ ! -e "${HOME}/.local/bin/${e}" ]; then
+    if [ ! -e "${HOME}/Library/Application Support/pipx/venvs/${e}" ]; then
       echo "... installing '${e}'"
       pipx install --include-deps "${e}"
     fi
