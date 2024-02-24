@@ -32,7 +32,7 @@ BREW_PYTHON_BIN_ARM=/opt/homebrew/opt/python3/bin
 # OPTIONAL: To set a fixed version of python
 # if installed with, for example, brew install python@3.11
 
-PYTHON_VERSION=3.11
+PYTHON_VERSION=3.12
 
 BREW_PYTHON_BIN_INTEL=/usr/local/opt/python@$PYTHON_VERSION/bin
 BREW_PYTHON_BIN_ARM=/opt/homebrew/opt/python@$PYTHON_VERSION/bin
@@ -75,7 +75,7 @@ fi
 
 echo
 echo "Setting up python environment..."
-pip_install pip setuptools
+# pip_install pip setuptools
 
 # ensure python -m site --user-base is setup
 python_base_path="$(python -m site --user-base)"
@@ -87,7 +87,7 @@ PATH="${HOME}/.local/bin:$python_library_bin:$PATH"
 pipx_bin_path="$python_library_bin"
 
 # install pipx
-pip install --user -U pipx --no-warn-script-location
+# pip install --user -U pipx --no-warn-script-location
 # pipx ensurepath --force
 
 echo
@@ -97,6 +97,8 @@ pipx upgrade-all
 echo
 echo "Checking for uninstalled dependencies..."
 declare my_essential_python_modules=(
+  pip
+  # setuptools
   pipenv
   autopep8
 )
