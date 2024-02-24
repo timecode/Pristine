@@ -51,20 +51,24 @@ echo "Forcing ${PYTHON_VERSION} to be default..."
 
 install_check=$(${BREW_PYTHON_BIN}/python${PYTHON_VERSION} --version >/dev/null 2>&1)
 if [ $? -eq 0 ]; then
-  echo "linking ${LOCAL_BIN}/python -> ${BREW_PYTHON_BIN}/python${PYTHON_VERSION}"
+  echo "\e[32mlinking ${LOCAL_BIN}/python -> ${BREW_PYTHON_BIN}/python${PYTHON_VERSION}\e[39m"
   ln -fs ${BREW_PYTHON_BIN}/python${PYTHON_VERSION} ${LOCAL_BIN}/python
+else
+  echo "\e[31munable to link ${LOCAL_BIN}/python -> ${BREW_PYTHON_BIN}/python${PYTHON_VERSION}\e[39m"
 fi
 
 # includes fix for brew issues when python version changes!
 install_check=$(${BREW_PYTHON_BIN}/pip${PYTHON_VERSION} --version >/dev/null 2>&1)
 if [ $? -eq 0 ]; then
-  echo "linking ${LOCAL_BIN}/pip -> ${BREW_PYTHON_BIN}/pip${PYTHON_VERSION}"
+  echo "\e[32mlinking ${LOCAL_BIN}/pip -> ${BREW_PYTHON_BIN}/pip${PYTHON_VERSION}\e[39m"
   ln -fs ${BREW_PYTHON_BIN}/pip${PYTHON_VERSION} ${LOCAL_BIN}/pip
 else
   install_check=$(${LOCAL_BIN}/pip${PYTHON_VERSION} --version >/dev/null 2>&1)
   if [ $? -eq 0 ]; then
-    echo "linking ${LOCAL_BIN}/pip -> ${LOCAL_BIN}/pip${PYTHON_VERSION}"
+    echo "\e[32mlinking ${LOCAL_BIN}/pip -> ${LOCAL_BIN}/pip${PYTHON_VERSION}\e[39m"
     ln -fs ${LOCAL_BIN}/pip${PYTHON_VERSION} ${LOCAL_BIN}/pip
+  else
+    echo "\e[31munable to link ${LOCAL_BIN}/pip -> ${LOCAL_BIN}/pip${PYTHON_VERSION}\e[39m"
   fi
 fi
 # ########################## FIXED VERSION END ##########################
