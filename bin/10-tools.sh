@@ -209,11 +209,11 @@ declare language_bottles=(
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
       rustup-init
-      tinygo
+      # tinygo
   )
   language_bottles=(${language_bottles[@]} ${requiresOSupgrade[@]})
 fi
-brew tap tinygo-org/tools
+# brew tap tinygo-org/tools
 brew_install_bottles "${language_bottles[@]}"
 
 declare work_casks=(
