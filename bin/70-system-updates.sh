@@ -4,9 +4,13 @@
 # Update the Mac OS, dependencies and Apple Store installs
 
 echo
-echo "Checking for Apple Store updates ..."
 
 if mas version >/dev/null 2>&1; then
+  echo "Currently installed apps from the Mac App Store ..."
+  mas list
+
+  echo
+  echo "Checking for Mac App Store updates ..."
   mas upgrade
 fi
 
