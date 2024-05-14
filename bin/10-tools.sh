@@ -130,7 +130,6 @@ echo "Checking for uninstalled dependencies..."
 declare my_essential_casks=(
   iterm2
   macdown
-  insomnia
   qlstephen
   quicklook-json
   qlvideo
@@ -139,6 +138,7 @@ if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
     visual-studio-code
     github
+    insomnia
     hammerspoon   # shiftit replacement https://github.com/peterklijn/hammerspoon-shiftit
     qlcolorcode
     qlmarkdown
