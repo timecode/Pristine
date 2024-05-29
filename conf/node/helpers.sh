@@ -115,8 +115,8 @@ ensure_latest_node() {
   previous_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   nvm install "${NODE_LTS}"
   current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  corepack install -g yarn
   corepack enable yarn
+  corepack install -g yarn
 
   echo
   echo "Ensuring latest node..."
@@ -124,8 +124,8 @@ ensure_latest_node() {
   previous_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   nvm install "${NODE_STABLE}"
   current_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  corepack install -g yarn
   corepack enable yarn
+  corepack install -g yarn
 
   if ((MAC_OS_VER >= 11)); then
     echo
@@ -134,8 +134,8 @@ ensure_latest_node() {
     previous_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
     nvm install "${NODE_NEXT_GEN}"
     current_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-    corepack install -g yarn
     corepack enable yarn
+    corepack install -g yarn
   fi
 
   echo
