@@ -6,7 +6,7 @@
 
 ensure_latest_nvm() {
   # to blow away nvm et al and start afresh
-  # rm -rf ~/.nvm ~/.nvmrc ~/.node ~/node_modules .yarn* .npm* ~/.config/yarn ~/package.json ~/package-lock.json
+  # rm -rf ~/.nvm ~/.nvmrc ~/.node ~/node_modules ~/.yarn* ~/.npm* ~/.cache/node ~/.config/yarn ~/yarn.lock ~/package.json ~/package-lock.json
   unset latest
   current="unknown"
   if [ -d "${HOME}/.nvm" ]; then
@@ -115,8 +115,8 @@ ensure_latest_node() {
   previous_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   nvm install "${NODE_LTS}"
   current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  corepack enable
-  yarn policies set-version
+  corepack install -g yarn
+  corepack enable yarn
 
   echo
   echo "Ensuring latest node..."
@@ -124,8 +124,8 @@ ensure_latest_node() {
   previous_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   nvm install "${NODE_STABLE}"
   current_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  corepack enable
-  yarn policies set-version
+  corepack install -g yarn
+  corepack enable yarn
 
   if ((MAC_OS_VER >= 11)); then
     echo
@@ -134,8 +134,8 @@ ensure_latest_node() {
     previous_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
     nvm install "${NODE_NEXT_GEN}"
     current_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-    corepack enable
-    yarn policies set-version
+    corepack install -g yarn
+    corepack enable yarn
   fi
 
   echo
@@ -144,10 +144,15 @@ ensure_latest_node() {
 
   echo
   echo "Ensuring global node directory setup..."
-  mkdir -p $(yarn_global_dir)
-  pushd "$(yarn_global_dir)"
-  yarn && yarn init --yes --ignore-engines >/dev/null 2>&1
-  popd >/dev/null 2>&1
+  if [ ! -f $(yarn_global_dir) ]; then
+    mkdir -p $(yarn_global_dir)
+    pushd "$(yarn_global_dir)"
+    touch yarn.lock
+    echo "enableGlobalCache: true\nnodeLinker: node-modules" > .yarnrc.yml
+    yarn set version stable
+    popd >/dev/null 2>&1
+    echo "... created: $(yarn_global_dir) ..."
+  fi
 
   echo
   echo "Currently installed node versions..."
@@ -345,24 +350,25 @@ yarn_global_install_packages() {
     echo "Installing global node packages (yarn)..."
     echo "${to_install[@]}"
     pushd "$(yarn_global_dir)"
-    yarn add "${to_install[@]}" --ignore-engines
+    yarn add "${to_install[@]}"
     popd >/dev/null 2>&1
   fi
 }
 
 yarn_global_dir() {
-  pushd $HOME && yarn global dir && popd >/dev/null 2>&1
+  # pushd $HOME && yarn global dir && popd >/dev/null 2>&1
+  echo ${HOME}/.config/yarn/global/
 }
 
 yarn_global_upgrade_packages() {
   pushd "$(yarn_global_dir)"
-  yarn upgrade --ignore-engines --silent
+  yarn up '*' >/dev/null 2>&1
   popd >/dev/null 2>&1
 }
 
 yarn_outdated_global_installed_packages_list() {
   pushd "$(yarn_global_dir)"
-  yarn outdated
+  yarn upgrade-interactive
   if [ $? -ne 0 ]; then
     >&2 echo "\e[33m"
     >&2 echo "... manually update global packages using ..."

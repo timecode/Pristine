@@ -34,10 +34,10 @@ if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
   return
 fi
 
-# list currently installed package versions
-echo "Checking currently installed node packages ..."
-# npm_global_installed_packages_list
-yarn_global_installed_packages_list
+# # list currently installed package versions
+# echo "Checking currently installed node packages ..."
+# # npm_global_installed_packages_list
+# yarn_global_installed_packages_list
 
 echo
 echo "Upgrading global node packages ..."
@@ -66,10 +66,10 @@ declare node_packages=(
 # npm_global_install_packages "${node_packages[@]}"
 yarn_global_install_packages "${node_packages[@]}"
 
-echo
-echo "Checking outdated global node packages ..."
-# npm_outdated_global_installed_packages_list
-yarn_outdated_global_installed_packages_list
+# echo
+# echo "Checking outdated global node packages ..."
+# # npm_outdated_global_installed_packages_list
+# yarn_outdated_global_installed_packages_list
 
 echo
 echo "Tidying yarn cache..."
