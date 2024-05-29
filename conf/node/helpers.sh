@@ -45,6 +45,7 @@ ensure_latest_node() {
   if ((MAC_OS_VER >= 11)); then
     NODE_STABLE="${NODE_NEXT_GEN}"
   else
+    export YARN_IGNORE_NODE=1
     NODE_STABLE="${NODE_STABLE_LEGACY}"
     NODE_LTS="${NODE_LTS_LEGACY}"
   fi
@@ -116,7 +117,6 @@ ensure_latest_node() {
   nvm install "${NODE_LTS}"
   current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   corepack enable yarn
-  corepack install -g yarn
 
   echo
   echo "Ensuring latest node..."
@@ -125,7 +125,6 @@ ensure_latest_node() {
   nvm install "${NODE_STABLE}"
   current_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   corepack enable yarn
-  corepack install -g yarn
 
   if ((MAC_OS_VER >= 11)); then
     echo
@@ -135,7 +134,6 @@ ensure_latest_node() {
     nvm install "${NODE_NEXT_GEN}"
     current_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
     corepack enable yarn
-    corepack install -g yarn
   fi
 
   echo
