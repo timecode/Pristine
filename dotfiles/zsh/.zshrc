@@ -184,7 +184,7 @@ echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
 
 ######################################################################
 # RBENV
-RUBY_VERSION=3.3.1
+RUBY_VERSION=3.3.3
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
