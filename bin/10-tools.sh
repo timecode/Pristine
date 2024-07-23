@@ -208,7 +208,6 @@ declare language_bottles=(
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
-      rustup-init
       # tinygo
   )
   language_bottles=(${language_bottles[@]} ${requiresOSupgrade[@]})
