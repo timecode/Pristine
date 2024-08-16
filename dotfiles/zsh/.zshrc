@@ -117,6 +117,7 @@ alias ll='ls -al | less'
 alias ..='cd ..'
 alias su='sudo su'
 alias root='sudo su'
+alias fvrestart='sudo fdesetup authrestart'
 
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
 alias wifimon='open "/System/Library/CoreServices/Applications/Wireless Diagnostics.app"'
