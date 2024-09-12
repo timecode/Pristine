@@ -264,12 +264,12 @@ echo "Now using $(python --version 2>&1)"
 
 ######################################################################
 # Java
-export JAVA_HOME="/usr/local/opt/openjdk"
-export CPPFLAGS="-I${JAVA_HOME}/include"
-echo "${PATH}" | grep -q -s "${JAVA_HOME}/bin"
-if [ $? -eq 1 ] ; then
-  export PATH="${JAVA_HOME}/bin:${PATH}"
-fi
+# export JAVA_HOME="/usr/local/opt/openjdk"
+# export CPPFLAGS="-I${JAVA_HOME}/include"
+# echo "${PATH}" | grep -q -s "${JAVA_HOME}/bin"
+# if [ $? -eq 1 ] ; then
+#   export PATH="${JAVA_HOME}/bin:${PATH}"
+# fi
 
 echo "Now using $(java --version 2>&1)"
 
