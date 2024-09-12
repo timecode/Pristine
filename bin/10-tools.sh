@@ -166,7 +166,6 @@ declare my_essential_bottles=(
   gnupg
   tree
   jq
-  nmap
   curl
   wget
   tmux
@@ -180,6 +179,7 @@ declare my_essential_bottles=(
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
+    nmap
     yq
     ncdu
     mas
