@@ -32,7 +32,13 @@ BREW_PYTHON_BIN_ARM=/opt/homebrew/opt/python3/bin
 # OPTIONAL: To set a fixed version of python
 # if installed with, for example, brew install python@3.11
 
-PYTHON_VERSION=3.12
+PYTHON_VERSION=3.13
+## ^ when modifying, pipx "may" cause issues afterwards
+## if so...
+# brew uninstall pipx
+# brew install pipx
+# pipx reinstall-all
+## then re-run the full update (which should complete OK)
 
 BREW_PYTHON_BIN_INTEL=/usr/local/opt/python@$PYTHON_VERSION/bin
 BREW_PYTHON_BIN_ARM=/opt/homebrew/opt/python@$PYTHON_VERSION/bin
