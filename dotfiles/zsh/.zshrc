@@ -57,9 +57,10 @@ export EDITOR="/usr/bin/vim"
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 
-# 'Natural Text Editing' Key mappings don't appear to work nicely with vi key mappings since macOS 15
-# Remove them from iTerm settings > Profile > Keys > Key mappings
-# and add requirements here instead
+# 'Natural Text Editing' Key mappings don't appear to work nicely with vi key mappings since iTerm 3.5.6
+# Un-tick "Treat ⌥ as Alt" in iTerm settings > Profile > Keys > General
+# and remove all mappings from iTerm settings > Profile > Keys > Key mappings
+# then add requirements here instead
 bindkey '^[[1;9D' backward-word   # alt-ArrowLeft
 bindkey '^[[1;9C' forward-word    # alt-ArrowRight
 
