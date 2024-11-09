@@ -57,9 +57,15 @@ export EDITOR="/usr/bin/vim"
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 
+# 'Natural Text Editing' Key mappings don't appear to work nicely with vi key mappings since macOS 15
+# Remove them from iTerm settings > Profile > Keys > Key mappings
+# and add requirements here instead
+bindkey '^[[1;9D' backward-word   # alt-ArrowLeft
+bindkey '^[[1;9C' forward-word    # alt-ArrowRight
+
 # History search
-bindkey "^R" history-incremental-search-backward
-bindkey "^F" history-incremental-search-forward
+bindkey '^R' history-incremental-search-backward
+bindkey '^F' history-incremental-search-forward
 
 # Aliases
 alias vim='/usr/bin/vim'
@@ -185,7 +191,7 @@ echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
 
 ######################################################################
 # RBENV
-RUBY_VERSION=3.3.4
+RUBY_VERSION=3.3.6
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
