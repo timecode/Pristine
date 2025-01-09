@@ -82,6 +82,7 @@ fi
 
 export HISTSIZE=10000
 export SAVEHIST=10000
+export MAC_OS_VER=$(sw_vers -productVersion | sed -E 's/^([0-9]+)\.*.*$/\1/')
 
 # Show history
 case ${HIST_STAMPS} in
@@ -192,7 +193,11 @@ echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
 
 ######################################################################
 # RBENV
-RUBY_VERSION=3.4.1
+if ((MAC_OS_VER >= 11)); then
+  RUBY_VERSION=3.4.1
+else
+  RUBY_VERSION=3.3.6
+fi
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
 # rbenv install -l        # all available versions
