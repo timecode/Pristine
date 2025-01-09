@@ -30,14 +30,14 @@ if [ ! -z ${NVM_NODE_UPDATES_AVAILABLE} ]; then
   fi
 fi
 
-if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
-  return
-fi
+# if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
+#   return
+# fi
 
 # # list currently installed package versions
-# echo "Checking currently installed node packages ..."
+echo "Checking currently installed node packages ..."
 # # npm_global_installed_packages_list
-# yarn_global_installed_packages_list
+yarn_global_installed_packages_list
 
 echo
 echo "Upgrading global node packages ..."

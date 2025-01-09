@@ -170,9 +170,9 @@ declare my_essential_bottles=(
   wget
   tmux
   tor
-  obfs4proxy
+  # obfs4proxy
   stow
-  syncthing
+  # syncthing
   # shellcheck
   watch
   cloudflared
