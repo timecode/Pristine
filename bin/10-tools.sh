@@ -132,7 +132,6 @@ declare my_essential_casks=(
   macdown
   qlstephen
   quicklook-json
-  qlvideo
 )
 if ((MAC_OS_VER >= 11)); then
   requiresOSupgrade=(
@@ -142,6 +141,7 @@ if ((MAC_OS_VER >= 11)); then
     hammerspoon   # shiftit replacement https://github.com/peterklijn/hammerspoon-shiftit
     qlcolorcode
     qlmarkdown
+    qlvideo
   )
   my_essential_casks=(${my_essential_casks[@]} ${requiresOSupgrade[@]})
 fi
