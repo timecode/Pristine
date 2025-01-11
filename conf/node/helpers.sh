@@ -142,15 +142,7 @@ ensure_latest_node() {
 
   echo
   echo "Ensuring global node directory setup..."
-  if [ ! -f $(yarn_global_dir) ]; then
-    mkdir -p $(yarn_global_dir)
-    pushd "$(yarn_global_dir)"
-    touch yarn.lock
-    echo "enableGlobalCache: true\nnodeLinker: node-modules" > .yarnrc.yml
-    yarn set version stable
-    popd >/dev/null 2>&1
-    echo "... created: $(yarn_global_dir) ..."
-  fi
+  ensure_yarn_global_dir_setup
 
   echo
   echo "Currently installed node versions..."
@@ -204,11 +196,11 @@ npm_global_installed_packages() {
   local installed=()
   IFS=' '; while read -r l; do installed+=( "${l}" ); done < <(npm list -g --depth=0 --json | jq ".dependencies" | jq -r 'keys[]')
   unset IFS
-  local gloably_installed=()
+  local globally_installed=()
   for element in "${installed[@]}"; do
-    gloably_installed+=("$(basename "${element}")")
+    globally_installed+=("$(basename "${element}")")
   done
-  echo "${gloably_installed[*]}"
+  echo "${globally_installed[*]}"
 }
 
 npm_global_installed_packages_list() {
@@ -285,18 +277,32 @@ npm_outdated_global_installed_packages_list() {
 ### yarn #####################################################################
 ##############################################################################
 
+ensure_yarn_global_dir_setup() {
+  if [ ! -f $(yarn_global_dir) ]; then
+    # echo "... creating: $(yarn_global_dir) ..."
+    mkdir -p $(yarn_global_dir)
+    pushd "$(yarn_global_dir)"
+    touch yarn.lock
+    echo "enableGlobalCache: true\nnodeLinker: node-modules" > .yarnrc.yml
+    yarn set version stable
+    popd >/dev/null 2>&1
+    echo "... created: $(yarn_global_dir) ..."
+  fi
+}
+
 yarn_global_installed_packages() {
+  ensure_yarn_global_dir_setup
   local installed=()
   while read -r l; do installed+=( "${l}" ); done < <(pushd "$(yarn_global_dir)" && yarn list --no-progress && popd >/dev/null 2>&1)
   unset IFS
-  local gloably_installed=()
+  local globally_installed=()
   regex="^- \w*"
   for element in "${installed[@]}"; do
     if [[ "${element}" =~ ${regex} ]]; then
-      gloably_installed+=("${element/- /}")
+      globally_installed+=("${element/- /}")
     fi
   done
-  echo "${gloably_installed[@]}"
+  echo "${globally_installed[@]}"
 }
 
 yarn_global_installed_packages_list() {

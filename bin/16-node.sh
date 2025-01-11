@@ -59,6 +59,8 @@ declare node_packages=(
   graphql
   prisma
   prettier
+  readdirp        # needed to help out wrangler
+  path-to-regexp  # needed to help out wrangler
   wrangler
   snyk
 
