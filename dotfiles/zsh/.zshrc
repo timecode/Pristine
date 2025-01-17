@@ -157,6 +157,8 @@ alias iploc='curl -s -L https://ipinfo.io/ | jq'
 # dropbox conflicted
 alias conflicted='find ~/Library/CloudStorage/Dropbox -name "*conflicted*" -depth'
 alias rmconflicted='conflicted -exec rm {} \;'
+alias syncconflict='find ~/ -name "*sync-conflict*" -depth'
+alias rmsyncconflict='syncconflict -exec rm {} \;'
 alias dropboxclean='find ~/Library/CloudStorage/Dropbox -name "*conflicted copy*" -delete'
 
 alias tf='terraform'

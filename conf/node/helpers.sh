@@ -141,10 +141,6 @@ ensure_latest_node() {
   echo "${NODE_LATEST}" > ${HOME}/.nvmrc
 
   echo
-  echo "Ensuring global node directory setup..."
-  ensure_yarn_global_dir_setup
-
-  echo
   echo "Currently installed node versions..."
   nvm ls
   echo
@@ -278,51 +274,50 @@ npm_outdated_global_installed_packages_list() {
 ##############################################################################
 
 ensure_yarn_global_dir_setup() {
-  if [ ! -f $(yarn_global_dir) ]; then
-    # echo "... creating: $(yarn_global_dir) ..."
+  if [ ! -d $(yarn_global_dir) ]; then
     mkdir -p $(yarn_global_dir)
     pushd "$(yarn_global_dir)"
     touch yarn.lock
     echo "enableGlobalCache: true\nnodeLinker: node-modules" > .yarnrc.yml
-    yarn set version stable
+    yarn set version stable >/dev/null 2>&1
     popd >/dev/null 2>&1
-    echo "... created: $(yarn_global_dir) ..."
+    echo ... created yarn global dir at: $(yarn_global_dir)
   fi
 }
 
-yarn_global_installed_packages() {
-  ensure_yarn_global_dir_setup
-  local installed=()
-  while read -r l; do installed+=( "${l}" ); done < <(pushd "$(yarn_global_dir)" && yarn list --no-progress && popd >/dev/null 2>&1)
-  unset IFS
-  local globally_installed=()
-  regex="^- \w*"
-  for element in "${installed[@]}"; do
-    if [[ "${element}" =~ ${regex} ]]; then
-      globally_installed+=("${element/- /}")
-    fi
-  done
-  echo "${globally_installed[@]}"
-}
+# yarn list no longer available !!!
+# yarn_global_installed_packages() {
+#   local installed=()
+#   while read -r l; do installed+=( "${l}" ); done < <(pushd "$(yarn_global_dir)" && yarn list --no-progress && popd >/dev/null 2>&1)
+#   unset IFS
+#   local globally_installed=()
+#   regex="^- \w*"
+#   for element in "${installed[@]}"; do
+#     if [[ "${element}" =~ ${regex} ]]; then
+#       globally_installed+=("${element/- /}")
+#     fi
+#   done
+#   echo "${globally_installed[@]}"
+# }
 
-yarn_global_installed_packages_list() {
-  local installed=()
-  while read -r -d $' ' l; do installed+=( "${l}" ); done < <(echo "$(yarn_global_installed_packages) ")
-  if [ ${#installed[@]} -gt 0 ]; then
-    echo
-    echo "Currently installed yarn global packages..."
-    for element in "${installed[@]}"; do
-      echo "${element}"
-    done
-  fi
-}
+# yarn_global_installed_packages_list() {
+#   local installed=()
+#   while read -r -d $' ' l; do installed+=( "${l}" ); done < <(echo "$(yarn_global_installed_packages) ")
+#   if [ ${#installed[@]} -gt 0 ]; then
+#     echo
+#     echo "Currently installed yarn global packages..."
+#     for element in "${installed[@]}"; do
+#       echo "${element}"
+#     done
+#   fi
+# }
 
 yarn_global_install_packages() {
   local install=("${@}")
   local to_install=()
   local installed=()
   local i=0
-  while read -r -d $' ' l; do installed+=( "${l}" ); done < <(echo "$(yarn_global_installed_packages) ")
+  # while read -r -d $' ' l; do installed+=( "${l}" ); done < <(echo "$(yarn_global_installed_packages) ")
 
   len="${#install[@]}"
   if [ "${len}" -gt 0 ]; then

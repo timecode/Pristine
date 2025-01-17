@@ -34,10 +34,15 @@ fi
 #   return
 # fi
 
+echo
+echo "Ensuring global node directory setup..."
+ensure_yarn_global_dir_setup
+
 # # list currently installed package versions
-echo "Checking currently installed node packages ..."
+# echo
+# echo "Checking currently installed node packages ..."
 # # npm_global_installed_packages_list
-yarn_global_installed_packages_list
+# yarn_global_installed_packages_list
 
 echo
 echo "Upgrading global node packages ..."
