@@ -134,7 +134,7 @@ declare my_essential_casks=(
   quicklook-json
 )
 if ((MAC_OS_VER >= 11)); then
-  requiresOSupgrade=(
+  modernOS=(
     visual-studio-code
     github
     insomnia
@@ -143,7 +143,7 @@ if ((MAC_OS_VER >= 11)); then
     qlmarkdown
     qlvideo
   )
-  my_essential_casks=(${my_essential_casks[@]} ${requiresOSupgrade[@]})
+  my_essential_casks=(${my_essential_casks[@]} ${modernOS[@]})
 fi
 brew_install_casks "${my_essential_casks[@]}"
 # brew cask upgrade "${my_essential_casks[@]}"
@@ -162,7 +162,6 @@ qlmanage -r >/dev/null 2>&1
 declare my_essential_bottles=(
   openssl@3
   lesspipe
-  git
   gnupg
   tree
   jq
@@ -177,14 +176,20 @@ declare my_essential_bottles=(
   watch
   cloudflared
 )
-if ((MAC_OS_VER >= 11)); then
-  requiresOSupgrade=(
+if ((MAC_OS_VER < 11)); then
+  oldOS=(
+    # git # @2.47.1
+  )
+  my_essential_bottles=(${my_essential_bottles[@]} ${oldOS[@]})
+else
+  modernOS=(
+    git
     nmap
     yq
     ncdu
     mas
   )
-  my_essential_bottles=(${my_essential_bottles[@]} ${requiresOSupgrade[@]})
+  my_essential_bottles=(${my_essential_bottles[@]} ${modernOS[@]})
 fi
 brew_install_bottles "${my_essential_bottles[@]}"
 
@@ -197,6 +202,7 @@ brew_install_casks "${language_casks[@]}"
 
 declare language_bottles=(
   python@3.13 # also, update PYTHON_VERSION in `15-python.sh` to match
+  # see https://www.python.org/downloads/
   pipx
   rbenv
   go
@@ -207,10 +213,10 @@ declare language_bottles=(
   # ktlint
 )
 if ((MAC_OS_VER >= 11)); then
-  requiresOSupgrade=(
+  modernOS=(
       # tinygo
   )
-  language_bottles=(${language_bottles[@]} ${requiresOSupgrade[@]})
+  language_bottles=(${language_bottles[@]} ${modernOS[@]})
 fi
 # brew tap tinygo-org/tools
 brew_install_bottles "${language_bottles[@]}"

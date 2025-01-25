@@ -33,6 +33,7 @@ BREW_PYTHON_BIN_ARM=/opt/homebrew/opt/python3/bin
 # if installed with, for example, brew install python@3.11
 
 PYTHON_VERSION=3.13
+# see https://www.python.org/downloads/
 ## ^ when modifying, pipx "may" cause issues afterwards
 ## if so...
 # brew uninstall pipx
