@@ -361,6 +361,7 @@ yarn_global_dir() {
 
 yarn_global_upgrade_packages() {
   pushd "$(yarn_global_dir)"
+  yarn set version stable >/dev/null 2>&1
   yarn up '*' >/dev/null 2>&1
   popd >/dev/null 2>&1
 }
