@@ -206,6 +206,7 @@ declare language_bottles=(
   pipx
   rbenv
   go
+  staticcheck
   # yarn # use corepack enabled version
   nodeenv
   # openjdk # using cask temurin now
