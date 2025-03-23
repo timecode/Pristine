@@ -350,5 +350,25 @@ echo
 ######################################################################
 ######################################################################
 echo
-echo 'Login and run command complete'
+if [ -n "$SSH_CONNECTION" ]; then
+  echo "SSH Connection Info:"
+  # Extract the remote and local connection details
+  remote_ip=$(echo $SSH_CONNECTION | awk '{print $1}')
+  remote_port=$(echo $SSH_CONNECTION | awk '{print $2}')
+  local_ip=$(echo $SSH_CONNECTION | awk '{print $3}')
+  local_port=$(echo $SSH_CONNECTION | awk '{print $4}')
+
+  # Calculate the maximum length between remote_ip and local_ip
+  col_width_ip=$(echo -e "$remote_ip\n$local_ip" | awk '{ print length($0) }' | sort -n | tail -n 1)
+
+  # Calculate the maximum length between remote_port and local_port
+  col_width_port=$(echo -e "$remote_port\n$local_port" | awk '{ print length($0) }' | sort -n | tail -n 1)
+
+  # Display the formatted output with dynamic column width
+  printf "Client: %-*s %*s\n" "$col_width_ip" "$remote_ip" "$col_width_port" "$remote_port"
+  printf "Server: %-*s %*s\n" "$col_width_ip" "$local_ip" "$col_width_port" "$local_port"
+  echo
+fi
+
+echo "Login and run command complete (.zshrc) as user: ${USER}"
 echo
