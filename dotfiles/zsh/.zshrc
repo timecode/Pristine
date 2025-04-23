@@ -118,10 +118,22 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
+# some more ls aliases
+alias ll='ls -alhF'
+alias ln='ls -anhF'
+alias la='ls -A'
+# alias l='ls -CF'
+
 alias h='history'
 alias c='clear'
 alias l='ls -al'
-alias ll='ls -al | less'
+alias ..='cd ..'
+
+# Some more alias to avoid making mistakes:
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
 alias ..='cd ..'
 alias su='sudo su'
 alias root='sudo su'
@@ -196,7 +208,7 @@ echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
 ######################################################################
 # RBENV
 if ((MAC_OS_VER >= 11)); then
-  RUBY_VERSION=3.4.1
+  RUBY_VERSION=3.4.3
 else
   RUBY_VERSION=3.3.6
 fi
