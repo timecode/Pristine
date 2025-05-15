@@ -210,7 +210,7 @@ echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
 if ((MAC_OS_VER >= 11)); then
   RUBY_VERSION=3.4.3
 else
-  RUBY_VERSION=3.3.6
+  RUBY_VERSION=3.3.8
 fi
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
@@ -256,6 +256,10 @@ echo "Now using $(go version)"
 # nvm ls
 # nvm unalias default
 # nvm alias "default" "21.1.0"
+
+if ((MAC_OS_VER < 11)); then
+  export YARN_IGNORE_NODE=1
+fi
 
 export NVM_DIR="${HOME}/.nvm"
 nvm_loc="${NVM_DIR}/nvm.sh"
