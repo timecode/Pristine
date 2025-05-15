@@ -361,8 +361,25 @@ yarn_global_dir() {
 
 yarn_global_upgrade_packages() {
   pushd "$(yarn_global_dir)"
-  yarn set version stable # >/dev/null 2>&1
-  yarn up '*' # >/dev/null 2>&1
+  if ((MAC_OS_VER >= 11)); then
+    yarn set version stable # >/dev/null 2>&1
+    yarn up '*' # >/dev/null 2>&1
+  else
+    yarn set version 4.8.1 # >/dev/null 2>&1
+    YARN_IGNORE_NODE=1 yarn up '*'
+    #
+    # to fix back to version 4.8.1 ...
+    #
+    # cd ${HOME}/.config/yarn/global/
+    #
+    # vi package.json
+    # ^ edit "packageManager": "yarn@4.8.1",
+    #
+    # YARN_IGNORE_NODE=1 yarn set version 4.8.1
+    #
+    # YARN_IGNORE_NODE=1 yarn install
+    #
+  fi
   popd >/dev/null 2>&1
 }
 
