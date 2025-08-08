@@ -208,7 +208,7 @@ echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
 ######################################################################
 # RBENV
 if ((MAC_OS_VER >= 11)); then
-  RUBY_VERSION=3.4.3
+  RUBY_VERSION=3.4.5
 else
   RUBY_VERSION=3.3.8
 fi
