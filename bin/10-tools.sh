@@ -167,14 +167,17 @@ declare my_essential_bottles=(
   jq
   curl
   wget
+  rsync
   tmux
   tor
   # obfs4proxy
   stow
-  # syncthing
+  syncthing
   # shellcheck
   watch
   cloudflared
+  nextcloud
+  # nextcloud-vfs
 )
 if ((MAC_OS_VER < 11)); then
   oldOS=(
@@ -237,7 +240,7 @@ declare work_bottles=(
   # wireguard-tools
   qrencode
   # zbar
-  # awscli
+  awscli
   # aws-sam-cli
   # minikube
   # kubernetes-cli
