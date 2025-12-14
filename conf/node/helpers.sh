@@ -36,11 +36,12 @@ ensure_latest_nvm() {
 ensure_latest_node() {
 
   NODE_LTS_LEGACY=16
-  NODE_LTS=20
   NODE_STABLE_LEGACY=17
-  NODE_STABLE=22
-  # https://nodejs.org/en/blog/announcements/v22-release-announce
-  NODE_NEXT_GEN=22
+  NODE_LTS=24
+  NODE_STABLE=25
+  # nvm ls
+  # https://nodejs.org/en/about/previous-releases
+  NODE_NEXT_GEN=25
 
   if ((MAC_OS_VER >= 11)); then
     NODE_STABLE="${NODE_NEXT_GEN}"
@@ -112,33 +113,39 @@ ensure_latest_node() {
 
   echo
   echo "Ensuring latest lts node ..."
+  cd "${HOME}"
   nvm use "${NODE_LTS}" >/dev/null 2>&1
   previous_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   nvm install "${NODE_LTS}"
+  npm install -g corepack
   current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   corepack enable yarn
 
   echo
   echo "Ensuring latest node..."
+  cd "${HOME}"
   nvm use "${NODE_STABLE}" >/dev/null 2>&1
   previous_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   nvm install "${NODE_STABLE}"
+  npm install -g corepack
   current_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
   corepack enable yarn
 
   if ((MAC_OS_VER >= 11)); then
     echo
     echo "Ensuring latest next-gen node..."
+    cd "${HOME}"
     nvm use "${NODE_NEXT_GEN}" >/dev/null 2>&1
     previous_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
     nvm install "${NODE_NEXT_GEN}"
+    npm install -g corepack
     current_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
     corepack enable yarn
   fi
 
   echo
   echo "Creating ~/.nvmrc ..."
-  echo "${NODE_LATEST}" > ${HOME}/.nvmrc
+  echo "${NODE_LATEST}" > "${HOME}/.nvmrc"
 
   echo
   echo "Currently installed node versions..."
