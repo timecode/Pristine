@@ -119,7 +119,9 @@ ensure_latest_node() {
   nvm install "${NODE_LTS}"
   npm install -g corepack
   current_node_lts=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  corepack enable yarn
+  npm install -g npm@latest
+  # corepack enable yarn
+  corepack prepare yarn@latest --activate
 
   echo
   echo "Ensuring latest node..."
@@ -129,7 +131,9 @@ ensure_latest_node() {
   nvm install "${NODE_STABLE}"
   npm install -g corepack
   current_node=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-  corepack enable yarn
+  npm install -g npm@latest
+  # corepack enable yarn
+  corepack prepare yarn@latest --activate
 
   if ((MAC_OS_VER >= 11)); then
     echo
@@ -140,7 +144,9 @@ ensure_latest_node() {
     nvm install "${NODE_NEXT_GEN}"
     npm install -g corepack
     current_node_next_gen=$(nvm current | tail -n 1 | sed -E 's/^.*(v[0-9.]*).*/\1/')
-    corepack enable yarn
+    npm install -g npm@latest
+    # corepack enable yarn
+    corepack prepare yarn@latest --activate
   fi
 
   echo
