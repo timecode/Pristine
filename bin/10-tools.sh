@@ -74,13 +74,18 @@ if [ -d "$BREW_DIR/Library/Taps/homebrew/" ]; then
   fi
 fi
 
-# shellcheck source=path/to/file
-
 brew update 1>/dev/null
 brew --version
 
 # check brew health
-brew doctor --verbose
+if ! brew doctor --verbose; then
+  echo ""
+  >&2 echo -n "\e[33m"
+  echo "Use the following to discover if a formula is still required..."
+  >&2 echo -n "\e[34m"
+  echo "brew uses --installed --recursive <formula>"
+  >&2 echo -n "\e[39m"
+fi
 
 # remove unneeded formulae
 echo
