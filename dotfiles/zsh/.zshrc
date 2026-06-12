@@ -208,9 +208,9 @@ echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
 ######################################################################
 # RBENV
 if ((MAC_OS_VER >= 11)); then
-  RUBY_VERSION=4.0.0 # 3.4.8
+  RUBY_VERSION=4.0.5 # 3.4.8
 else
-  RUBY_VERSION=3.3.9
+  RUBY_VERSION=3.3.11
 fi
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions

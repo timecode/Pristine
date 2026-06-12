@@ -41,7 +41,7 @@ ensure_latest_node() {
   NODE_STABLE=25
   # nvm ls
   # https://nodejs.org/en/about/previous-releases
-  NODE_NEXT_GEN=25
+  NODE_NEXT_GEN=26
 
   if ((MAC_OS_VER >= 11)); then
     NODE_STABLE="${NODE_NEXT_GEN}"
