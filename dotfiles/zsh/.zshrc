@@ -120,7 +120,7 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 # some more ls aliases
 alias ll='ls -alhF'
-alias ln='ls -anhF'
+alias ls='ls -anhF'
 alias la='ls -A'
 # alias l='ls -CF'
 
