@@ -170,7 +170,7 @@ brew_upgrade_bottles() {
 
   # Hmmm, so when there ARE updates, ^ we end up running blind so, until
   # --quiet does what's expected, maybe live with the Warnings noise :-(
-  brew upgrade --quiet --formulae "${to_update[@]}"
+  brew upgrade --quiet --yes --formulae "${to_update[@]}"
 }
 
 brew_upgrade_casks() {
@@ -198,7 +198,7 @@ brew_upgrade_casks() {
     done
   fi
 
-  brew upgrade --quiet --casks "${to_update[@]}"
+  brew upgrade --quiet --yes --casks "${to_update[@]}"
 }
 
 show_brew_installs_not_installed_by_this_repo() {
