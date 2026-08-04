@@ -126,10 +126,6 @@ echo "Checking for cask upgrades..."
 brew_upgrade_casks
 
 echo
-echo "Adding aws/tap..."
-brew tap aws/tap
-
-echo
 echo "Checking for uninstalled dependencies..."
 
 declare my_essential_casks=(
@@ -245,8 +241,7 @@ declare work_bottles=(
   # wireguard-tools
   qrencode
   # zbar
-  awscli
-  # aws-sam-cli
+  aws-sam-cli
   # minikube
   # kubernetes-cli
   # packer
