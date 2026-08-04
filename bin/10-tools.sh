@@ -130,7 +130,7 @@ echo "Checking for uninstalled dependencies..."
 
 declare my_essential_casks=(
   iterm2
-  macdown
+  macdown-3000
   qlstephen
   quicklook-json
 )
