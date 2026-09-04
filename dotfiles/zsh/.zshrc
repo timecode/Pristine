@@ -202,15 +202,15 @@ fi
 [ -s "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"  # This loads cargo
 echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
 [ $? -eq 0 ] &&
-  echo "Now using $(cargo --version)" &&
-  echo "Now using $(rustc --version)"
+  echo "Now using $(rustc --version)" &&
+  echo "Now using $(cargo --version)"
 
 ######################################################################
 # RBENV
 if ((MAC_OS_VER >= 11)); then
-  RUBY_VERSION=4.0.6 # 3.4.8
+  RUBY_VERSION=4.0.6 # 3.4.10
 else
-  RUBY_VERSION=3.3.11
+  RUBY_VERSION=3.3.12
 fi
 # https://github.com/rbenv/rbenv
 # rbenv versions          # all local versions
@@ -275,10 +275,10 @@ if [ $? -eq 1 ] ; then
 fi
 
 # add local node_modules to the PATH
-echo "${PATH}" | grep -q -s "\./node_modules/.bin"
-if [ $? -eq 1 ] ; then
-  export PATH="./node_modules/.bin:${PATH}"
-fi
+# echo "${PATH}" | grep -q -s "\./node_modules/.bin"
+# if [ $? -eq 1 ] ; then
+#   export PATH="./node_modules/.bin:${PATH}"
+# fi
 
 # nvm_shell_completion="${NVM_DIR}/bash_completion"
 # # shellcheck source=/dev/null
@@ -338,13 +338,13 @@ fi
 
 ######################################################################
 # Local bin
-echo "${PATH}" | grep -q -s "\./bin"
-[ $? -eq 1 ] && export PATH="./bin:${PATH}"
+# echo "${PATH}" | grep -q -s "\./bin"
+# [ $? -eq 1 ] && export PATH="./bin:${PATH}"
 
 ######################################################################
 # "No" to NVM Bash completion
 # grep -v "This loads nvm bash_completion" .zshrc > tmpfile && mv tmpfile .zshrc
-sed -i '' '/^\[ -s "$NVM_DIR\/bash_completion" \]/d' ~/$(readlink ~/.zshrc)
+# sed -i '' '/^\[ -s "$NVM_DIR\/bash_completion" \]/d' ~/$(readlink ~/.zshrc)
 
 ######################################################################
 # Source other files
@@ -385,6 +385,16 @@ if [ -n "$SSH_CONNECTION" ]; then
   printf "Server: %-*s %*s\n" "$col_width_ip" "$local_ip" "$col_width_port" "$local_port"
   echo
 fi
+
+# devenv - Auto Activation
+# eval "$(devenv hook zsh)"
+# ^ using direnv instead now...
+# direnv
+eval "$(direnv hook zsh)"
+export DIRENV_WARN_TIMEOUT=0s
+
+# Added by Antigravity IDE
+export PATH="/Users/rob/.antigravity-ide/antigravity-ide/bin:$PATH"
 
 echo "Login and run command complete (.zshrc) as user: ${USER}"
 echo
