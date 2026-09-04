@@ -44,9 +44,18 @@ echo "... modifying .zpretzorc ..."
 
 RC=$(readlink -n ${ZDOTDIR:-$HOME}/.zpreztorc)
 
-sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'pristine'/g" ${RC}
-sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto:module:editor' key-bindings 'vi'/g" ${RC}
-# sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' 'node' \\\/g" ${RC}
-# removing node module due to prezto-grunt-cache.502.zsh:37: command not found: compdef
-sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' \\\/g" ${RC}
+# sed -i '' "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'pristine'/g" ${RC}
+# sed -i '' "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto:module:editor' key-bindings 'vi'/g" ${RC}
+# # sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' 'node' \\\/g" ${RC}
+# # removing node module due to prezto-grunt-cache.502.zsh:37: command not found: compdef
+# sed -i '' "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' \\\/g" ${RC}
 
+# ^ In BSD sed, the -i option requires an extension argument for backups. Passing '' explicitly tells BSD sed not to create a backup file
+# GNU sed treats the -i option differently (the backup extension is optional and must follow -i immediately - no space = e.g. -i.bak)
+# Solution a simple universal standard POSIX redirection with a temp file; avoids -i incompatibility
+# sed "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'pristine'/g" "${RC}" > "${RC}.tmp" && mv -f "${RC}.tmp" "${RC}"
+# or, setup the command in advance (based on the version of sed in use), then use that...
+sedi() { sed --version >/dev/null 2>&1 && sed -i "$@" || sed -i '' "$@"; }
+sedi "s/zstyle ':prezto:module:prompt' theme 'sorin'/zstyle ':prezto:module:prompt' theme 'pristine'/g" "${RC}"
+sedi "s/zstyle ':prezto:module:editor' key-bindings 'emacs'/zstyle ':prezto:module:editor' key-bindings 'vi'/g" ${RC}
+sedi "s/\s*zstyle \':prezto:load\' pmodule \\\.*/zstyle ':prezto:load' pmodule 'git' 'python' 'ruby' \\\/g" ${RC}
