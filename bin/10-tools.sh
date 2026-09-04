@@ -188,6 +188,8 @@ if ((MAC_OS_VER < 11)); then
 else
   modernOS=(
     git
+    direnv
+    act
     nmap
     yq
     ncdu
