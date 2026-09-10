@@ -100,6 +100,9 @@ pipx_bin_path="$python_library_bin"
 echo
 echo "Checking for upgrades..."
 pipx upgrade-all
+# ^ if this fails
+# pipx reinstall-all
+# pipx upgrade-all
 
 echo
 echo "Checking for uninstalled dependencies..."
