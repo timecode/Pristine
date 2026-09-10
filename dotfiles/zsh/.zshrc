@@ -92,14 +92,19 @@ case ${HIST_STAMPS} in
   *) alias history='fc -i -l -D 0' ;;
 esac
 
+# setopt hist_ignore_dups       # ignores a new command if it matches the previous history entry
+# setopt hist_ignore_all_dups   # removes all older matching entries when the new command is added
+# setopt hist_save_no_dups      # removes duplicate entries when history is written to the history file
+#                               # but does not necessarily affect the in-memory history list immediately.
 setopt append_history
 setopt extended_history
 setopt hist_expire_dups_first
-setopt hist_ignore_dups # ignore duplication command history list
+setopt hist_ignore_all_dups     # hist_ignore_dups only ignores a new command if it matches the very-previous history entry
+setopt hist_save_no_dups
 setopt hist_ignore_space
 setopt hist_verify
 setopt inc_append_history
-setopt share_history # share command history data
+setopt share_history            # share command history data
 
 export LESSOPEN="|/usr/local/bin/lesspipe.sh %s" LESS_ADVANCED_PREPROCESSOR=1
 
@@ -141,12 +146,12 @@ alias fvrestart='sudo fdesetup authrestart'
 
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
 alias wifimon='open "/System/Library/CoreServices/Applications/Wireless Diagnostics.app"'
-alias profile='code ~/.zshrc'
-alias dev='cd ~/Development/'
+alias profile='code ${HOME}/.zshrc'
+alias dev='cd ${HOME}/Development/'
 
 # dev stuff
-alias pris='code ~/Pristine'
-alias update='~/Pristine/setup.sh'
+alias pris='code ${HOME}/Pristine'
+alias update='${HOME}/Pristine/setup.sh'
 # ENABLE / DISNABLE NVM updates by Pristine from the command line:
 alias nvmyes="sed -E -i '' 's/^# (unset DISABLE_NVM_NODE_UPDATES)/\1/g' ${HOME}/Pristine/bin/16-node.sh"
 alias nvmno="sed -E -i '' 's/^(unset DISABLE_NVM_NODE_UPDATES)/# \1/g' ${HOME}/Pristine/bin/16-node.sh"
@@ -157,7 +162,7 @@ alias subl='code'
 alias st='code'
 alias mate='code'
 alias a='code .'
-alias sourceme='. ~/.zshrc'
+alias sourceme='. ${HOME}/.zshrc'
 alias spoofme='sudo spoof randomize en1' # see https://github.com/feross/spoo
 alias t='tmux attach || tmux'
 alias tls='tmux ls'
@@ -167,11 +172,15 @@ alias nettestamazon='ping access-alexa-na.amazon.com | perl -nlE '"'"'use POSIX 
 alias iploc='curl -s -L https://ipinfo.io/ | jq'
 
 # dropbox conflicted
-alias conflicted='find ~/Library/CloudStorage/Dropbox -name "*conflicted*" -depth'
-alias rmconflicted='conflicted -exec rm {} \;'
-alias syncconflict='find ~/ -name "*sync-conflict*" -depth'
-alias rmsyncconflict='syncconflict -exec rm {} \;'
-alias dropboxclean='find ~/Library/CloudStorage/Dropbox -name "*conflicted copy*" -delete'
+# DROPBOX_DIR="${HOME}/Library/CloudStorage/Dropbox"
+DROPBOX_DIR="${HOME}/Dropbox/"
+alias conflicted='find "${DROPBOX_DIR}" -iname "*conflicted*"'
+alias rmconflicted='conflicted -exec rm -- {} +'
+alias dropboxclean='rmconflicted'
+
+# syncthing conflicted
+alias syncconflict='find "${HOME}" -iname "*sync-conflict*"'
+alias rmsyncconflict='syncconflict -exec rm -- {} +'
 
 alias tf='terraform'
 
@@ -185,7 +194,7 @@ alias drmi='docker rmi $(docker images -q)'
 
 alias curl='$(brew --prefix)/opt/curl/bin/curl'
 
-dir=~/Applications/dynamodb_local_latest
+dir="${HOME}/Applications/dynamodb_local_latest"
 if [ -e ${dir} ]; then
   alias dynamodb'cd "${dir}"; java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb'
 else
@@ -353,15 +362,15 @@ echo
 
 # source functions-dev
 # shellcheck source=/dev/null
-[ -e ~/.functions-dev ] &&. ~/.functions-dev
+[ -e ${HOME}/.functions-dev ] &&. ${HOME}/.functions-dev
 
 # source functions
 # shellcheck source=/dev/null
-[ -e ~/.functions ] && . ~/.functions
+[ -e ${HOME}/.functions ] && . ${HOME}/.functions
 
-# keep sensitive / non-repo profile requirements in ~/.zsh_profile
+# keep sensitive / non-repo profile requirements in ${HOME}/.zsh_profile
 # shellcheck source=/dev/null
-[ -e ~/.zsh_profile ] && . ~/.zsh_profile
+[ -e ${HOME}/.zsh_profile ] && . ${HOME}/.zsh_profile
 
 ######################################################################
 ######################################################################
