@@ -230,8 +230,8 @@ brew_install_bottles "${language_bottles[@]}"
 
 declare work_casks=(
   # virtualbox
-  vagrant
-  ngrok
+  # vagrant
+  # ngrok
   # docker-toolbox
   # pgadmin4
 )
