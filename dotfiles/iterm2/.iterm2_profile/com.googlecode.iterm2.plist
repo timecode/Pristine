@@ -16,10 +16,6 @@
 	<integer>2</integer>
 	<key>AIVectorStore</key>
 	<integer>0</integer>
-	<key>AboutToPasteTabsWithCancel</key>
-	<true/>
-	<key>AboutToPasteTabsWithCancel_selection</key>
-	<integer>0</integer>
 	<key>AiMaxTokens</key>
 	<integer>1050000</integer>
 	<key>AiModel</key>
@@ -997,7 +993,7 @@
 	<key>VisualIndicatorForEsc</key>
 	<false/>
 	<key>findMode_iTerm</key>
-	<integer>0</integer>
+	<integer>2</integer>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
