@@ -147,12 +147,12 @@ alias fvrestart='sudo fdesetup authrestart'
 alias dtrace1="sudo dtrace -n 'syscall::open:entry{trace(execname);}'"
 alias wifimon='open "/System/Library/CoreServices/Applications/Wireless Diagnostics.app"'
 alias profile='code ${HOME}/.zshrc'
-alias dev='cd ${HOME}/Development/'
+# alias dev='cd ${HOME}/Development/'
 
 # dev stuff
 alias pris='code ${HOME}/Pristine'
 alias update='${HOME}/Pristine/setup.sh'
-# ENABLE / DISNABLE NVM updates by Pristine from the command line:
+# ENABLE / DISABLE NVM updates by Pristine from the command line:
 alias nvmyes="sed -E -i '' 's/^# (unset DISABLE_NVM_NODE_UPDATES)/\1/g' ${HOME}/Pristine/bin/16-node.sh"
 alias nvmno="sed -E -i '' 's/^(unset DISABLE_NVM_NODE_UPDATES)/# \1/g' ${HOME}/Pristine/bin/16-node.sh"
 alias brew1st='brew leaves | xargs brew deps --installed --for-each | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
@@ -163,7 +163,7 @@ alias st='code'
 alias mate='code'
 alias a='code .'
 alias sourceme='. ${HOME}/.zshrc'
-alias spoofme='sudo spoof randomize en1' # see https://github.com/feross/spoo
+# alias spoofme='sudo spoof randomize en1' # see https://github.com/feross/spoo
 alias t='tmux attach || tmux'
 alias tls='tmux ls'
 # shellcheck disable=SC2154
@@ -208,43 +208,46 @@ fi
 
 ######################################################################
 # Cargo / Rust
-[ -s "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"  # This loads cargo
-echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
-[ $? -eq 0 ] &&
-  echo "Now using $(rustc --version)" &&
-  echo "Now using $(cargo --version)"
+# [ -s "${HOME}/.cargo/env" ] && . "${HOME}/.cargo/env"  # This loads cargo
+# echo "${PATH}" | grep -q -s "${HOME}/.cargo/bin"
+# [ $? -eq 0 ] &&
+#   echo "Now using $(rustc --version)" &&
+#   echo "Now using $(cargo --version)"
+command -v rustc >/dev/null 2>&1 && echo "Now using $(rustc --version)" || true
+command -v cargo >/dev/null 2>&1 && echo "Now using $(cargo --version)" || true
 
 ######################################################################
-# RBENV
-if ((MAC_OS_VER >= 11)); then
-  RUBY_VERSION=4.0.6 # 3.4.10
-else
-  RUBY_VERSION=3.3.12
-fi
-# https://github.com/rbenv/rbenv
-# rbenv versions          # all local versions
-# rbenv install -l        # all available versions
-# rbenv install x.x.x     # install a particular version
-# rbenv uninstall x.x.x   # uninstall a particular version
-# rbenv rehash            # run after installing a new version
-# rbenv global x.x.x      # set the version to be used globally
+# # RBENV
+# if ((MAC_OS_VER >= 11)); then
+#   RUBY_VERSION=4.0.6 # 3.4.10
+# else
+#   RUBY_VERSION=3.3.12
+# fi
+# # https://github.com/rbenv/rbenv
+# # rbenv versions          # all local versions
+# # rbenv install -l        # all available versions
+# # rbenv install x.x.x     # install a particular version
+# # rbenv uninstall x.x.x   # uninstall a particular version
+# # rbenv rehash            # run after installing a new version
+# # rbenv global x.x.x      # set the version to be used globally
 
-openssl_loc=$(brew --prefix openssl@3)
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${openssl_loc}"
+# openssl_loc=$(brew --prefix openssl@3)
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${openssl_loc}"
 
-echo "${PATH}" | grep -q -s "${HOME}/.rbenv/bin"
-[ $? -eq 1 ] && export PATH="${HOME}/.rbenv/bin:${PATH}"
+# echo "${PATH}" | grep -q -s "${HOME}/.rbenv/bin"
+# [ $? -eq 1 ] && export PATH="${HOME}/.rbenv/bin:${PATH}"
 
-echo "${PATH}" | grep -q -s "${HOME}/.rbenv/shims"
-[ $? -eq 1 ] && eval "$(rbenv init -)"
+# echo "${PATH}" | grep -q -s "${HOME}/.rbenv/shims"
+# [ $? -eq 1 ] && eval "$(rbenv init -)"
 
-# rbenv rehash
-if ! rbenv global "${RUBY_VERSION}"; then
-  echo "install required version with:"
-  echo "$ rbenv install ${RUBY_VERSION}"
-fi
+# # rbenv rehash
+# if ! rbenv global "${RUBY_VERSION}"; then
+#   echo "install required version with:"
+#   echo "$ rbenv install ${RUBY_VERSION}"
+# fi
 
-echo "Now using $(ruby --version)"
+# echo "Now using $(ruby --version)"
+command -v ruby >/dev/null 2>&1 && echo "Now using $(ruby --version)" || true
 
 ######################################################################
 # GOLANG
@@ -257,41 +260,42 @@ export CGO_CFLAGS_ALLOW="-Xpreprocessor"
 echo "Now using $(go version)"
 
 ######################################################################
-# NVM
-# nvm install-latest-npm
-# nvm ls-remote
-# nvm install 21.1.0
-# nvm uninstall 20.9.0
-# nvm ls
-# nvm unalias default
-# nvm alias "default" "21.1.0"
+# # NVM
+# # nvm install-latest-npm
+# # nvm ls-remote
+# # nvm install 21.1.0
+# # nvm uninstall 20.9.0
+# # nvm ls
+# # nvm unalias default
+# # nvm alias "default" "21.1.0"
 
-if ((MAC_OS_VER < 11)); then
-  export YARN_IGNORE_NODE=1
-fi
-
-export NVM_DIR="${HOME}/.nvm"
-nvm_loc="${NVM_DIR}/nvm.sh"
-# shellcheck source=/dev/null
-[ -e "${nvm_loc}" ] && . "${nvm_loc}"                # This loads nvm
-nvm use >/dev/null 2>&1                              # use version from .nvmrc
-echo "Now using node $(nvm current) [npm v$(npm --version)] [yarn v$(yarn --version)]"
-
-# add global node_modules to the PATH
-echo "${PATH}" | grep -q -s "yarn/global/node_modules/.bin"
-if [ $? -eq 1 ] ; then
-  export PATH="${HOME}/.config/yarn/global/node_modules/.bin:${PATH}"
-fi
-
-# add local node_modules to the PATH
-# echo "${PATH}" | grep -q -s "\./node_modules/.bin"
-# if [ $? -eq 1 ] ; then
-#   export PATH="./node_modules/.bin:${PATH}"
+# if ((MAC_OS_VER < 11)); then
+#   export YARN_IGNORE_NODE=1
 # fi
 
-# nvm_shell_completion="${NVM_DIR}/bash_completion"
+# export NVM_DIR="${HOME}/.nvm"
+# nvm_loc="${NVM_DIR}/nvm.sh"
 # # shellcheck source=/dev/null
-# [ -e "${nvm_shell_completion}" ] && . "${nvm_shell_completion}"
+# [ -e "${nvm_loc}" ] && . "${nvm_loc}"                # This loads nvm
+# nvm use >/dev/null 2>&1                              # use version from .nvmrc
+# echo "Now using node $(nvm current) [npm v$(npm --version)] [yarn v$(yarn --version)]"
+command -v node >/dev/null 2>&1 && echo "Now using node $(node --version)" || true
+
+# # add global node_modules to the PATH
+# echo "${PATH}" | grep -q -s "yarn/global/node_modules/.bin"
+# if [ $? -eq 1 ] ; then
+#   export PATH="${HOME}/.config/yarn/global/node_modules/.bin:${PATH}"
+# fi
+
+# # add local node_modules to the PATH
+# # echo "${PATH}" | grep -q -s "\./node_modules/.bin"
+# # if [ $? -eq 1 ] ; then
+# #   export PATH="./node_modules/.bin:${PATH}"
+# # fi
+
+# # nvm_shell_completion="${NVM_DIR}/bash_completion"
+# # # shellcheck source=/dev/null
+# # [ -e "${nvm_shell_completion}" ] && . "${nvm_shell_completion}"
 
 ######################################################################
 # Python
@@ -313,9 +317,9 @@ echo "Now using $(python --version 2>&1)"
 echo "Now using $(java --version 2>&1)"
 
 ######################################################################
-# OPENSSL 3.x
-echo "${PATH}" | grep -q -s "openssl@3"
-[ $? -eq 1 ] && export PATH="$(brew --prefix)/opt/openssl@3/bin:${PATH}"
+# OPENSSL 4.x
+echo "${PATH}" | grep -q -s "openssl@4"
+[ $? -eq 1 ] && export PATH="$(brew --prefix)/opt/openssl@4/bin:${PATH}"
 
 ######################################################################
 # google-cloud-sdk
@@ -356,6 +360,45 @@ fi
 # sed -i '' '/^\[ -s "$NVM_DIR\/bash_completion" \]/d' ~/$(readlink ~/.zshrc)
 
 ######################################################################
+# Nix, devenv, direnv
+
+NIX_LOCAL_BIN_PATH="${HOME}/.local/state/nix/profiles/profile/bin"
+echo "${PATH}" | grep -q -s "${NIX_LOCAL_BIN_PATH}"
+[ $? -eq 1 ] && export PATH="${NIX_LOCAL_BIN_PATH}:${PATH}"
+
+eval "$(direnv hook zsh)"
+export DIRENV_WARN_TIMEOUT=0s
+
+### Helper scripts
+
+# helper: prints the git project root dir path to stdout
+function git_project_root_dir {
+   local root
+   root=$(git rev-parse --show-toplevel 2> /dev/null)
+   if [ -z "$root" ]; then
+       echo "Not inside a git initialised devenv project" >&2
+       return 1
+   fi
+   echo "$root"
+}
+# shortcut: cd to git project root directory
+function groot {
+   local root
+   root=$(git_project_root_dir) || return 1
+   cd "$root" || return 1
+}
+# shortcut: cd to git project .github/workflows directory
+function gw {
+   local root
+   root=$(git_project_root_dir) || return 1
+   cd "$root/.github/workflows" || return 1
+}
+alias ub='groot && pushd .. && popd'
+# ^ use to force a manual reload of devenv
+#   ... a 'cd-UP-cd-BACK' move that will "re-enter the project", thus
+#       provoking devenv to auto-(re)load upon (re)entry
+
+######################################################################
 # Source other files
 
 echo
@@ -374,6 +417,7 @@ echo
 
 ######################################################################
 ######################################################################
+
 echo
 if [ -n "$SSH_CONNECTION" ]; then
   echo "SSH Connection Info:"
@@ -395,15 +439,11 @@ if [ -n "$SSH_CONNECTION" ]; then
   echo
 fi
 
-# devenv - Auto Activation
-# eval "$(devenv hook zsh)"
-# ^ using direnv instead now...
-# direnv
-eval "$(direnv hook zsh)"
-export DIRENV_WARN_TIMEOUT=0s
-
 # Added by Antigravity IDE
-export PATH="/Users/rob/.antigravity-ide/antigravity-ide/bin:$PATH"
+export PATH="${HOME}/.antigravity-ide/antigravity-ide/bin:$PATH"
 
 echo "Login and run command complete (.zshrc) as user: ${USER}"
 echo
+
+# Added by Antigravity IDE
+export PATH="/Users/rob/.antigravity-ide/antigravity-ide/bin:$PATH"

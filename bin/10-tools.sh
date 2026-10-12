@@ -161,7 +161,7 @@ defaults write org.n8gray.QLColorCode extraHLFlags "--line-numbers"
 qlmanage -r >/dev/null 2>&1
 
 declare my_essential_bottles=(
-  openssl@3
+  openssl@4
   lesspipe
   gnupg
   tree
@@ -174,8 +174,8 @@ declare my_essential_bottles=(
   # obfs4proxy
   stow
   syncthing
-  # shellcheck
-  watch
+  shellcheck
+  # watch
   cloudflared
   nextcloud
   # nextcloud-vfs
@@ -188,11 +188,10 @@ if ((MAC_OS_VER < 11)); then
 else
   modernOS=(
     git
-    direnv
-    act
+    # act
     nmap
-    yq
-    ncdu
+    # yq
+    # ncdu
     mas
   )
   my_essential_bottles=(${my_essential_bottles[@]} ${modernOS[@]})
@@ -210,11 +209,11 @@ declare language_bottles=(
   python@3.14 # also, update PYTHON_VERSION in `15-python.sh` to match
   # see https://www.python.org/downloads/
   pipx
-  rbenv
+  # rbenv # use devenv for ruby projects
   go
   staticcheck
   # yarn # use corepack enabled version
-  nodeenv
+  # nodeenv # use devenv for node projects
   # openjdk # using cask temurin now
   # kotlin
   # ktlint
@@ -241,7 +240,7 @@ brew_install_casks "${work_casks[@]}"
 declare work_bottles=(
   docker-credential-helper
   # wireguard-tools
-  qrencode
+  # qrencode
   # zbar
   aws-sam-cli
   # minikube

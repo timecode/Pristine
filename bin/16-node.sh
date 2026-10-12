@@ -5,86 +5,86 @@ SCRIPTS_PATH="$(cd "$(dirname "${0}")" >/dev/null 2>&1 || exit ; pwd -P)/.."
 . "${SCRIPTS_PATH}/conf/node/helpers.sh"
 
 ######################################
-# nvm and node
-echo
-echo "Checking nvm, node, npm status..."
+# # nvm and node
+# echo
+# echo "Checking nvm, node, npm status..."
 
-ensure_latest_nvm
-remove_non_nvm_installed_npm
+# ensure_latest_nvm
+# remove_non_nvm_installed_npm
 
-DISABLE_NVM_NODE_UPDATES=true
-# uncomment the next line to ENABLE nvm node updates, or just use the following conditional
-# unset DISABLE_NVM_NODE_UPDATES
+# DISABLE_NVM_NODE_UPDATES=true
+# # uncomment the next line to ENABLE nvm node updates, or just use the following conditional
+# # unset DISABLE_NVM_NODE_UPDATES
 
-ensure_latest_node
+# ensure_latest_node
 
-# conditional for node updates
-if [ ! -z ${NVM_NODE_UPDATES_AVAILABLE} ]; then
-  echo "\e[33m"
-  read -q "REPLY?... update now? (y/N) "
-  echo "\e[39m"
-  if [ $REPLY = "y" ]; then
-    # echo "\n... yay, updating ..."
-    unset DISABLE_NVM_NODE_UPDATES
-    ensure_latest_node
-  fi
-fi
-
-# if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
-#   return
+# # conditional for node updates
+# if [ ! -z ${NVM_NODE_UPDATES_AVAILABLE} ]; then
+#   echo "\e[33m"
+#   read -q "REPLY?... update now? (y/N) "
+#   echo "\e[39m"
+#   if [ $REPLY = "y" ]; then
+#     # echo "\n... yay, updating ..."
+#     unset DISABLE_NVM_NODE_UPDATES
+#     ensure_latest_node
+#   fi
 # fi
 
-echo
-echo "Ensuring global node directory setup..."
-ensure_yarn_global_dir_setup
-
-# # list currently installed package versions
-# echo
-# echo "Checking currently installed node packages ..."
-# # npm_global_installed_packages_list
-# yarn_global_installed_packages_list
-
-echo
-echo "Upgrading global node packages ..."
-# npm -g upgrade
-yarn_global_upgrade_packages
-
-declare node_packages=(
-
-  ### essential packages
-  node-gyp
-  spoof
-  nodemon
-  fast-run
-
-  ### work packages
-  http-server
-  serve
-  jest
-  graphql
-  prisma
-  prettier
-  readdirp        # needed to help out wrangler
-  path-to-regexp  # needed to help out wrangler
-  wrangler
-  snyk
-
-)
-# npm_global_install_packages "${node_packages[@]}"
-yarn_global_install_packages "${node_packages[@]}"
+# # if [ ! -z ${DISABLE_NVM_NODE_UPDATES} ]; then
+# #   return
+# # fi
 
 # echo
-# echo "Checking outdated global node packages ..."
-# # npm_outdated_global_installed_packages_list
-# yarn_outdated_global_installed_packages_list
+# echo "Ensuring global node directory setup..."
+# ensure_yarn_global_dir_setup
 
-echo
-echo "Tidying yarn cache..."
-yarn_cache_clean_global
-# pushd $HOME && yarn cache clean && popd >/dev/null 2>&1
+# # # list currently installed package versions
+# # echo
+# # echo "Checking currently installed node packages ..."
+# # # npm_global_installed_packages_list
+# # yarn_global_installed_packages_list
 
-echo
-echo "Tidying nvm cache..."
-nvm cache clear
+# echo
+# echo "Upgrading global node packages ..."
+# # npm -g upgrade
+# yarn_global_upgrade_packages
 
-# remove_npm
+# declare node_packages=(
+
+#   ### essential packages
+#   node-gyp
+#   spoof
+#   nodemon
+#   fast-run
+
+#   ### work packages
+#   http-server
+#   serve
+#   jest
+#   graphql
+#   prisma
+#   prettier
+#   readdirp        # needed to help out wrangler
+#   path-to-regexp  # needed to help out wrangler
+#   wrangler
+#   snyk
+
+# )
+# # npm_global_install_packages "${node_packages[@]}"
+# yarn_global_install_packages "${node_packages[@]}"
+
+# # echo
+# # echo "Checking outdated global node packages ..."
+# # # npm_outdated_global_installed_packages_list
+# # yarn_outdated_global_installed_packages_list
+
+# echo
+# echo "Tidying yarn cache..."
+# yarn_cache_clean_global
+# # pushd $HOME && yarn cache clean && popd >/dev/null 2>&1
+
+# echo
+# echo "Tidying nvm cache..."
+# nvm cache clear
+
+# # remove_npm

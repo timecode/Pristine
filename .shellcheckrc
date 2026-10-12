@@ -1,1 +1,36 @@
+# See https://github.com/koalaman/shellcheck/wiki
+#     https://www.shellcheck.net/wiki/
+
+# Turn on warnings for unquoted variables with safe values
+enable=quote-safe-variables
+
+# Use multiple `enable=` or assign in groups, e,g,
+# enable=require-variable-braces,quote-safe-variables
+
+# Turn on warnings for unassigned uppercase variables
+enable=check-unassigned-uppercase
+
+# Allow [ ! -z foo ] instead of suggesting -n
+# disable=SC2236
+
+# Disable individual error codes
+# disable=SC2059,SC2034
+
+# Disable a range of error codes
+# disable=SC1090-SC1100
+
+# To ignore all instances of a rule in a file
+# Add a directive at the top of the file:
+# e.g.
+# # shellcheck disable=SC2059
 disable=SC1071
+
+# To ignore all errors in a file
+# Add a directive at the top of the file
+# (must be on the first non-commented/non-whitespace line after the shebang)
+# e.g.
+# # shellcheck disable=all
+
+# Allow following other files
+external-sources=true
+
